@@ -9,10 +9,15 @@
 import UIKit
 
 class ViewController: UIViewController {
+    var cache: NSCache?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        cache = NSCache()
+        
+        cache?.setObject(1, forKey: "1")
     }
 
     override func didReceiveMemoryWarning() {
