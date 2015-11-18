@@ -16,41 +16,49 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="erE-Bt-yed">
-                                <rect key="frame" x="68" y="28" width="185" height="29"/>
-                                <animations/>
-                                <segments>
-                                    <segment title="First"/>
-                                    <segment title="Second"/>
-                                    <segment title="Third"/>
-                                </segments>
-                                <connections>
-                                    <action selector="touchSegmentedControl:" destination="vXZ-lx-hvc" eventType="valueChanged" id="K1z-RI-mL1"/>
-                                </connections>
-                            </segmentedControl>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Ox-S7-O1z">
-                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <rect key="frame" x="0.0" y="57" width="320" height="511"/>
                                 <animations/>
                                 <connections>
                                     <segue destination="0Q3-7B-UWS" kind="embed" id="Gmx-Lh-CcU"/>
                                 </connections>
                             </containerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hws-gH-LJ4">
+                                <rect key="frame" x="0.0" y="20" width="320" height="37"/>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="LH0-vn-pbX">
+                                        <rect key="frame" x="99" y="5" width="123" height="29"/>
+                                        <animations/>
+                                        <segments>
+                                            <segment title="First"/>
+                                            <segment title="Second"/>
+                                        </segments>
+                                    </segmentedControl>
+                                </subviews>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="37" id="pIk-4k-6wH"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="6Ox-S7-O1z" firstAttribute="top" secondItem="hws-gH-LJ4" secondAttribute="bottom" id="5HM-TB-EVN"/>
+                            <constraint firstItem="hws-gH-LJ4" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="9yM-Tv-jNm"/>
+                            <constraint firstItem="hws-gH-LJ4" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="FdN-cp-jkN"/>
+                            <constraint firstItem="hws-gH-LJ4" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="GCX-nP-NhR"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="6Ox-S7-O1z" secondAttribute="bottom" id="JxO-yt-R3Z"/>
                             <constraint firstItem="6Ox-S7-O1z" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="LMB-Ob-BmU"/>
-                            <constraint firstItem="erE-Bt-yed" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="8" id="cM6-Of-lcv"/>
-                            <constraint firstItem="6Ox-S7-O1z" firstAttribute="top" secondItem="erE-Bt-yed" secondAttribute="bottom" constant="8" id="fYW-xi-6Th"/>
+                            <constraint firstAttribute="trailing" secondItem="hws-gH-LJ4" secondAttribute="trailing" id="aKA-5l-r7G"/>
+                            <constraint firstAttribute="trailing" secondItem="hws-gH-LJ4" secondAttribute="trailing" id="peg-i9-gTi"/>
                             <constraint firstAttribute="trailing" secondItem="6Ox-S7-O1z" secondAttribute="trailing" id="vo8-jD-S1b"/>
-                            <constraint firstAttribute="centerX" secondItem="erE-Bt-yed" secondAttribute="centerX" id="wQ3-GS-enD"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="containerView" destination="6Ox-S7-O1z" id="yaw-QA-p3b"/>
-                        <outlet property="segmentedControl" destination="erE-Bt-yed" id="d45-B0-Q6c"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -74,7 +82,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Eyb-8D-St9">
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Eyb-8D-St9">
                             <size key="itemSize" width="320" height="320"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
