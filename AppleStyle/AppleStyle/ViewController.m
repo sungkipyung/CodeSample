@@ -75,15 +75,19 @@
     
     CGFloat scrollOffset = scrollView.contentOffset.y;
     CGFloat scrollDiff = scrollOffset - self.previousScrollViewYOffset;
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        if (scrollDiff > 0) {
-            self.topViewHeight.constant = MAX(self.topViewHeight.constant - scrollDiff, 0);
-        } else {
-            self.topViewHeight.constant = MIN(self.topViewHeight.constant - scrollDiff, top_view_max_height);
-        }
-        [self.view layoutIfNeeded];
-    }];
+
+    if (scrollDiff > 0 && self.topViewHeight.constant > 0) {
+        self.topViewHeight.constant = MAX(self.topViewHeight.constant - scrollDiff, 0);
+        [UIView animateWithDuration:0.1 animations:^{
+            [self.view layoutIfNeeded];
+        }];
+
+    } else if (self.topViewHeight.constant < top_view_max_height) {
+        self.topViewHeight.constant = MIN(self.topViewHeight.constant - scrollDiff, top_view_max_height);
+        [UIView animateWithDuration:0.1 animations:^{
+            [self.view layoutIfNeeded];
+        }];
+    }
 //
     self.previousScrollViewYOffset = scrollOffset;
 }
