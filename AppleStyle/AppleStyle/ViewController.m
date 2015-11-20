@@ -83,7 +83,7 @@
         }];
 
     } else if (self.topViewHeight.constant < top_view_max_height) {
-        self.topViewHeight.constant = MIN(self.topViewHeight.constant - scrollDiff, top_view_max_height);
+        self.topViewHeight.constant = MIN(MAX(self.topViewHeight.constant - scrollDiff, 0), top_view_max_height);
         [UIView animateWithDuration:0.1 animations:^{
             [self.view layoutIfNeeded];
         }];
