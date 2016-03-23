@@ -1,0 +1,12 @@
+# Uncomment this line to define a global platform for your project
+# platform :ios, '6.0'
+pod 'EZAudio', '~> 1.1.2'
+
+target 'AudioEnginePractice' do
+
+end
+
+target 'AudioEnginePracticeTests' do
+
+end
+
