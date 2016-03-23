@@ -62,10 +62,10 @@
     
     if (firstIndexPath.row == 0) {
         
-        [UIView animateWithDuration:0.3 animations:^{
-            self.topViewHeight.constant = top_view_max_height;
-            [self.view layoutIfNeeded];
-        }];
+//        [UIView animateWithDuration:0.3 animations:^{
+//            self.topViewHeight.constant = top_view_max_height;
+//            [self.view layoutIfNeeded];
+//        }];
         return ;
     }
     
