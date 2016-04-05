@@ -93,7 +93,7 @@
             // Internally the audio plot will handle all the drawing related code,
             // history management, and freeing its own resources.
             // Hence, one badass line of code gets you a pretty plot :)
-            [weakSelf.audioPlot updateBuffer:buffer.floatChannelData[0] withBufferSize:buffer.frameCapacity];
+//            [weakSelf.audioPlot updateBuffer:buffer.floatChannelData[0] withBufferSize:buffer.frameCapacity];
         });
     }];
     
