@@ -49,22 +49,25 @@ extension UIInterfaceOrientation {
     }
 }
 
+typealias CameraSetupComplete = ((CameraManualSetupResult) -> (Void))
+
 class Camera: NSObject {
     // MARK: properties
     internal var session: AVCaptureSession = AVCaptureSession.init()
-    internal var setupResult:CameraManualSetupResult = CameraManualSetupResult.CameraNotAuthorized
     private var sessionQueue: dispatch_queue_t = dispatch_queue_create("com.campmobile.band.Camera", DISPATCH_QUEUE_SERIAL)
-    private var backgroundRecordingID:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
-    
-    
     private var videoDevice:AVCaptureDevice?
     private var videoDeviceInput: AVCaptureDeviceInput?
-
+    private var stillImageOutput:AVCaptureStillImageOutput?
+    
+    // MARK: Utilities
+    internal var setupResult:CameraManualSetupResult = CameraManualSetupResult.CameraNotAuthorized
+    internal private(set) var sessionRunning:Bool = false
+    private var backgroundRecordingID:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     
     // MARK: handler
-    var onCompleteInitialization: ((CameraManualSetupResult) -> (Void))? = nil
+    var onStartCamera: ((CameraManualSetupResult) -> (Void))? = nil
     
-    private func setupWithPreview(preview:CameraPreview) {
+    internal func setupWithPreview(preview:CameraPreview, complete:CameraSetupComplete) {
         let authorizationStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)
         
         switch (authorizationStatus) {
@@ -90,7 +93,39 @@ class Camera: NSObject {
             break;
         }
         
-        setupCaptureSession(preview)
+        setupCaptureSession(preview, complete: complete)
+    }
+    
+    internal func turnOn(complete:CameraSetupComplete) {
+        dispatch_async(self.sessionQueue) {
+            if (self.setupResult == .Success) {
+                // Only setup observers and start the session running if setup succeeded.
+                self.addObservers()
+                self.session.startRunning()
+                self.sessionRunning = self.session.running
+            }
+            dispatch_async(dispatch_get_main_queue()) {
+                complete(self.setupResult)
+            };
+        }
+    }
+    
+    internal func turnOff(complete: (Void) -> (Void)) {
+        dispatch_async(self.sessionQueue) { 
+            if (self.setupResult == CameraManualSetupResult.Success) {
+                self.session.stopRunning()
+                self.removeObservers();
+            }
+            dispatch_async(dispatch_get_main_queue()) {
+                complete()
+            };
+        }
+    }
+    
+    private func addObservers() {
+    }
+    
+    private func removeObservers() {
     }
     
     // Setup the capture session.
@@ -98,8 +133,7 @@ class Camera: NSObject {
     // Why not do all of this on the main queue?
     // Because -[AVCaptureSession startRunning] is a blocking call which can take a long time. We dispatch session setup to the sessionQueue
     // so that the main queue isn't blocked, which keeps the UI responsive.
-    private func setupCaptureSession(preview:CameraPreview) {
-        
+    private func setupCaptureSession(preview:CameraPreview, complete:CameraSetupComplete) {
         dispatch_async(self.sessionQueue) {
             if ( self.setupResult != CameraManualSetupResult.Success ) {
                 return;
@@ -111,10 +145,12 @@ class Camera: NSObject {
 
             do {
                 // create and add VideoDeviceInput
+                self.session.beginConfiguration()
+                
                 let videoDevice = Camera.deviceWithMediaType(AVMediaTypeVideo, preferringPosition: AVCaptureDevicePosition.Back)
                 let videoDeviceInput: AVCaptureDeviceInput = try AVCaptureDeviceInput.init(device: videoDevice)
                 
-                self.session.beginConfiguration()
+                
                 if (self.session.canAddInput(videoDeviceInput)) {
                     self.session .addInput(videoDeviceInput)
                     self.videoDeviceInput = videoDeviceInput
@@ -136,13 +172,36 @@ class Camera: NSObject {
                         }
                     }
                 }
-                self.session.commitConfiguration()
                 
+                
+                let audioDevice:AVCaptureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeAudio)
+                let audioDeviceInput:AVCaptureDeviceInput = try AVCaptureDeviceInput.init(device: audioDevice)
+                
+                if (self.session.canAddInput(audioDeviceInput)) {
+                    self.session.addInput(audioDeviceInput)
+                }
+                
+                let movieFileOut:AVCaptureMovieFileOutput = AVCaptureMovieFileOutput.init()
+                if (self.session.canAddOutput(movieFileOut)) {
+                    self.session.addOutput(movieFileOut)
+                }
+                
+                
+                let stillImageOutput:AVCaptureStillImageOutput = AVCaptureStillImageOutput.init()
+                if (self.session.canAddOutput(stillImageOutput)) {
+                    self.session.addOutput(stillImageOutput)
+                    
+                    stillImageOutput.outputSettings = [AVVideoCodecKey:AVVideoCodecJPEG]
+                    stillImageOutput.highResolutionStillImageOutputEnabled = true
+                    
+                    self.stillImageOutput = stillImageOutput
+                }
+                
+                self.session.commitConfiguration()
             } catch let error as NSError {
-                NSLog("Could not create video device input: %@", error )
+                NSLog("Could not create device input: %@", error)
                 self.setupResult = CameraManualSetupResult.SessionConfigurationFailed
             }
-        
         };
     }
     
