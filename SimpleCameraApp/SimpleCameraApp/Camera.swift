@@ -12,6 +12,43 @@ import AVFoundation
 enum CameraManualSetupResult: Int {
     case Success, CameraNotAuthorized, SessionConfigurationFailed
 }
+/**
+ mapping
+ 
+ public enum AVCaptureVideoOrientation : Int {
+ 
+ case Portrait
+ case PortraitUpsideDown
+ case LandscapeRight
+ case LandscapeLeft
+ }
+ 
+ public enum UIInterfaceOrientation : Int {
+ 
+ case Unknown
+ case Portrait
+ case PortraitUpsideDown
+ case LandscapeLeft
+ case LandscapeRight
+ }
+ */
+extension UIInterfaceOrientation {
+    func toAVCaptureVideoOrientation() -> (AVCaptureVideoOrientation) {
+        switch self {
+        case .Portrait:
+            return AVCaptureVideoOrientation.Portrait
+        case .LandscapeLeft:
+            return AVCaptureVideoOrientation.LandscapeLeft
+        case .LandscapeRight:
+            return AVCaptureVideoOrientation.LandscapeRight
+        case .PortraitUpsideDown:
+            return AVCaptureVideoOrientation.PortraitUpsideDown
+        default:
+            return AVCaptureVideoOrientation.Portrait
+        }
+    }
+}
+
 class Camera: NSObject {
     // MARK: properties
     internal var session: AVCaptureSession = AVCaptureSession.init()
@@ -27,7 +64,7 @@ class Camera: NSObject {
     // MARK: handler
     var onCompleteInitialization: ((CameraManualSetupResult) -> (Void))? = nil
     
-    private func setupWithPreview(preview:UIView) {
+    private func setupWithPreview(preview:CameraPreview) {
         let authorizationStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)
         
         switch (authorizationStatus) {
@@ -61,7 +98,7 @@ class Camera: NSObject {
     // Why not do all of this on the main queue?
     // Because -[AVCaptureSession startRunning] is a blocking call which can take a long time. We dispatch session setup to the sessionQueue
     // so that the main queue isn't blocked, which keeps the UI responsive.
-    private func setupCaptureSession(preview:UIView) {
+    private func setupCaptureSession(preview:CameraPreview) {
         
         dispatch_async(self.sessionQueue) {
             if ( self.setupResult != CameraManualSetupResult.Success ) {
@@ -93,49 +130,9 @@ class Camera: NSObject {
                         // Use the status bar orientation as the initial video orientation. Subsequent orientation changes are handled by
                         // -[viewWillTransitionToSize:withTransitionCoordinator:].
                         let statusBarOrientation:UIInterfaceOrientation = UIApplication.sharedApplication().statusBarOrientation;
-                        var initialVideoOrientation:AVCaptureVideoOrientation = AVCaptureVideoOrientation.Portrait;
-                        
-                        /* 
-                         mapping
-                         
-                         public enum AVCaptureVideoOrientation : Int {
-                         
-                         case Portrait
-                         case PortraitUpsideDown
-                         case LandscapeRight
-                         case LandscapeLeft
-                         }
-                         
-                         public enum UIInterfaceOrientation : Int {
-                         
-                         case Unknown
-                         case Portrait
-                         case PortraitUpsideDown
-                         case LandscapeLeft
-                         case LandscapeRight
-                         }
-                         
-                         */
-                        
-                        switch statusBarOrientation {
-                        case .Portrait:
-                            initialVideoOrientation = AVCaptureVideoOrientation.Portrait
-                            break;
-                        case .LandscapeLeft:
-                            initialVideoOrientation = AVCaptureVideoOrientation.LandscapeLeft
-                            break;
-                        case .LandscapeRight:
-                            initialVideoOrientation = AVCaptureVideoOrientation.LandscapeRight
-                            break;
-                        case .PortraitUpsideDown:
-                            initialVideoOrientation = AVCaptureVideoOrientation.PortraitUpsideDown
-                            break;
-                        default:
-                            break;
-                        }
                         
                         if let previewLayer:AVCaptureVideoPreviewLayer = preview.layer as? AVCaptureVideoPreviewLayer {
-                            previewLayer.connection.videoOrientation = initialVideoOrientation;
+                            previewLayer.connection.videoOrientation = statusBarOrientation.toAVCaptureVideoOrientation();
                         }
                     }
                 }
@@ -143,6 +140,7 @@ class Camera: NSObject {
                 
             } catch let error as NSError {
                 NSLog("Could not create video device input: %@", error )
+                self.setupResult = CameraManualSetupResult.SessionConfigurationFailed
             }
         
         };
