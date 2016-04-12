@@ -443,7 +443,15 @@ class Camera: NSObject {
     }
     
     static func setFlashMode(flashMode:AVCaptureFlashMode, forDevice device:AVCaptureDevice) {
-        
+        if (device.hasFlash && device.isFlashModeSupported(flashMode)) {
+            do {
+                try device.lockForConfiguration()
+                device.flashMode = flashMode
+                device.unlockForConfiguration()
+            } catch let error as NSError {
+                NSLog("Could not lock device for configuration \(error)")
+            }
+        }
     }
     
     static func setScaleFactor(scaleFactor:CGFloat, forDevice device:AVCaptureDevice) {
