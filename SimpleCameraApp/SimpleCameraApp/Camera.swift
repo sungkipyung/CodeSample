@@ -50,25 +50,35 @@ extension UIInterfaceOrientation {
 }
 
 typealias CameraSetupComplete = ((CameraManualSetupResult) -> (Void))
+private var SessionRunningContext = 0
+private var CapturingStillImageContext = 0
+private var FocusModeContext = 0
+private var LensPositionContext = 0
+private var ExposureModeContext = 0
+private var ExposureDurationContext = 0
+private var ISOContext = 0
+private var ExposureTargetOffsetContext = 0
+private var WhiteBalanceModeContext = 0
+private var DeviceWhiteBalanceGainsContext = 0
+private var LensStabilizationContext = 0
 
 class Camera: NSObject {
     // MARK: properties
     internal var session: AVCaptureSession = AVCaptureSession.init()
     private var sessionQueue: dispatch_queue_t = dispatch_queue_create("com.campmobile.band.Camera", DISPATCH_QUEUE_SERIAL)
-    private var videoDevice:AVCaptureDevice?
-    private var videoDeviceInput: AVCaptureDeviceInput?
-    private var stillImageOutput:AVCaptureStillImageOutput?
+    private var videoDevice:AVCaptureDevice!
+    private var videoDeviceInput: AVCaptureDeviceInput!
+    private var stillImageOutput:AVCaptureStillImageOutput!
     
     // MARK: Utilities
     internal var setupResult:CameraManualSetupResult = CameraManualSetupResult.CameraNotAuthorized
     internal private(set) var sessionRunning:Bool = false
     private var backgroundRecordingID:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     
-    // MARK: handler
-    var onStartCamera: ((CameraManualSetupResult) -> (Void))? = nil
-    
     internal func setupWithPreview(preview:CameraPreview, complete:CameraSetupComplete) {
         let authorizationStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)
+        self.setupResult = CameraManualSetupResult.Success;
+        preview.session = self.session
         
         switch (authorizationStatus) {
         case.Authorized:
@@ -112,7 +122,7 @@ class Camera: NSObject {
     
     internal func turnOff(complete: (Void) -> (Void)) {
         dispatch_async(self.sessionQueue) { 
-            if (self.setupResult == CameraManualSetupResult.Success) {
+            if (self.setupResult == .Success) {
                 self.session.stopRunning()
                 self.removeObservers();
             }
@@ -122,11 +132,107 @@ class Camera: NSObject {
         }
     }
     
+    // MARK: KVO
+    
     private func addObservers() {
+        self.session.addObserver(self, forKeyPath: "running", options: NSKeyValueObservingOptions.New, context: &SessionRunningContext)
+        self.stillImageOutput.addObserver(self, forKeyPath: "capturingStillImage", options: NSKeyValueObservingOptions.New, context: &CapturingStillImageContext)
+        self.videoDevice.addObserver(self, forKeyPath: "focusMode", options: NSKeyValueObservingOptions.Old.union(NSKeyValueObservingOptions.New), context: &FocusModeContext)
+        self.videoDevice.addObserver(self, forKeyPath: "lensPosition", options: NSKeyValueObservingOptions.New, context: &LensPositionContext)
+        self.videoDevice.addObserver(self, forKeyPath: "exposureMode", options: NSKeyValueObservingOptions.Old.union(NSKeyValueObservingOptions.New), context: &ExposureModeContext)
+        self.videoDevice.addObserver(self, forKeyPath: "exposureDuration", options: NSKeyValueObservingOptions.New, context: &ExposureDurationContext)
+        self.videoDevice.addObserver(self, forKeyPath: "ISO", options: NSKeyValueObservingOptions.New, context: &ISOContext)
+        self.videoDevice.addObserver(self, forKeyPath: "exposureTargetOffset", options: NSKeyValueObservingOptions.New, context: &ExposureTargetOffsetContext)
+        self.videoDevice.addObserver(self, forKeyPath: "whiteBalanceMode", options: NSKeyValueObservingOptions.Old.union(NSKeyValueObservingOptions.New), context: &WhiteBalanceModeContext)
+        self.videoDevice.addObserver(self, forKeyPath: "deviceWhiteBalanceGains", options: NSKeyValueObservingOptions.New, context: &DeviceWhiteBalanceGainsContext)
+        self.stillImageOutput.addObserver(self, forKeyPath: "lensStabilizationDuringBracketedCaptureEnabled", options: NSKeyValueObservingOptions.Old.union(NSKeyValueObservingOptions.New), context: &LensStabilizationContext)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(subjectAreaDidChange), name: AVCaptureDeviceSubjectAreaDidChangeNotification, object: self.videoDevice)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(sessionRuntimeError), name: AVCaptureSessionRuntimeErrorNotification, object: self.session)
+        
+        // A session can only run when the app is full screen. It will be interrupted in a multi-app layout, introduced in iOS 9,
+        // see also the documentation of AVCaptureSessionInterruptionReason. Add observers to handle these session interruptions
+        // and show a preview is paused message. See the documentation of AVCaptureSessionWasInterruptedNotification for other
+        // interruption reasons.
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(sessionWasInterrupted), name: AVCaptureSessionWasInterruptedNotification, object: self.session)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(sessionInterruptionEnded), name: AVCaptureSessionInterruptionEndedNotification, object: self.session)
     }
     
     private func removeObservers() {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
+        self.session.removeObserver(self, forKeyPath:"running", context:&SessionRunningContext)
+        self.stillImageOutput.removeObserver(self, forKeyPath:"capturingStillImage", context:&CapturingStillImageContext)
+        
+        self.videoDevice.removeObserver(self, forKeyPath:"focusMode", context:&FocusModeContext)
+        self.videoDevice.removeObserver(self, forKeyPath:"lensPosition", context:&LensPositionContext)
+        self.videoDevice.removeObserver(self, forKeyPath:"exposureMode", context:&ExposureModeContext)
+        self.videoDevice.removeObserver(self, forKeyPath:"exposureDuration", context:&ExposureDurationContext)
+        self.videoDevice.removeObserver(self, forKeyPath:"ISO", context:&ISOContext)
+        self.videoDevice.removeObserver(self, forKeyPath:"exposureTargetOffset", context:&ExposureTargetOffsetContext)
+        self.videoDevice.removeObserver(self, forKeyPath:"whiteBalanceMode", context:&WhiteBalanceModeContext)
+        self.videoDevice.removeObserver(self, forKeyPath:"deviceWhiteBalanceGains", context:&DeviceWhiteBalanceGainsContext)
+        
+        self.stillImageOutput.removeObserver(self, forKeyPath:"lensStabilizationDuringBracketedCaptureEnabled", context:&LensStabilizationContext)
     }
+    
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+//        var oldValue:AnyObject? = change?[NSKeyValueChangeOldKey] is NSNull ? nil : change?[NSKeyValueChangeOldKey]
+//        var newValue:AnyObject? = change?[NSKeyValueChangeNewKey] is NSNull ? nil : change?[NSKeyValueChangeNewKey]
+//        
+        // TODO: Handle changed camera option values
+    }
+    
+    @objc func subjectAreaDidChange(notification: NSNotification) {
+    }
+    
+    @objc func sessionRuntimeError(notification: NSNotification) {
+        if let error: NSError = notification.userInfo?[AVCaptureSessionErrorKey] as? NSError {
+            NSLog("Capture Session runtime error \(error)")
+            
+            if (error.code == AVError.MediaServicesWereReset.rawValue) {
+                dispatch_async(self.sessionQueue) {
+                    // If we aren't trying to resume the session running, then try to restart it since it must have been stopped due to an error. See also -[resumeInterruptedSession:].
+                    if (self.sessionRunning) {
+                        self.session.startRunning()
+                        self.sessionRunning = self.session.running
+                    } else {
+                        // TODO : Have to restart Session
+                    }
+                };
+            } else {
+                // TODO : Have to restart Session
+            }
+        }
+    }
+    
+    @objc func sessionWasInterrupted(notification: NSNotification) {
+        // In some scenarios we want to enable the user to resume the session running.
+        // For example, if music playback is initiated via control center while using AVCamManual,
+        // then the user can let AVCamManual resume the session running, which will stop music playback.
+        // Note that stopping music playback in control center will not automatically resume the session running.
+        // Also note that it is not always possible to resume, see -[resumeInterruptedSession:].
+        
+        // In iOS 9 and later, the userInfo dictionary contains information on why the session was interrupted.
+        
+        let anyObj:AnyObject? = notification.userInfo?[AVCaptureSessionInterruptionReasonKey] is NSNull ? nil : notification.userInfo?[AVCaptureSessionInterruptionReasonKey]
+        
+        if let number = anyObj as? NSNumber {
+            let reason:AVCaptureSessionInterruptionReason = AVCaptureSessionInterruptionReason.init(rawValue: number.integerValue)!
+            switch reason {
+            case .AudioDeviceInUseByAnotherClient:
+                break
+            case .VideoDeviceInUseByAnotherClient:
+                break
+            default:
+                break
+            }
+        }
+    }
+    
+    @objc func sessionInterruptionEnded(notification: NSNotification) {
+    }
+    // MARK: KVO END
     
     // Setup the capture session.
     // In general it is not safe to mutate an AVCaptureSession or any of its inputs, outputs, or connections from multiple threads at the same time.
@@ -136,6 +242,10 @@ class Camera: NSObject {
     private func setupCaptureSession(preview:CameraPreview, complete:CameraSetupComplete) {
         dispatch_async(self.sessionQueue) {
             if ( self.setupResult != CameraManualSetupResult.Success ) {
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    complete(self.setupResult)
+                }
                 return;
             }
         
@@ -198,11 +308,19 @@ class Camera: NSObject {
                 }
                 
                 self.session.commitConfiguration()
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    complete(self.setupResult)
+                }
             } catch let error as NSError {
                 NSLog("Could not create device input: %@", error)
                 self.setupResult = CameraManualSetupResult.SessionConfigurationFailed
             }
         };
+    }
+    
+    private func resumeInterruptedSession() {
+        
     }
     
     static func deviceWithMediaType(mediaType:String, preferringPosition position:(AVCaptureDevicePosition)) -> AVCaptureDevice? {

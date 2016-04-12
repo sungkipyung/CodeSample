@@ -9,11 +9,41 @@
 import UIKit
 
 class CameraViewController: UIViewController {
-
+    @IBOutlet weak var cameraPreview: CameraPreview!
+    @IBOutlet weak var cameraToggleButton: UIButton!
+    @IBOutlet weak var cameraFlashButton: UIButton!
+    
+    var camera:Camera = Camera.init()
+    
+    override func loadView() {
+        super.loadView()
+        cameraToggleButton.layer.cornerRadius = cameraToggleButton.frame.width / 2
+        cameraToggleButton.layer.masksToBounds = true
+        cameraToggleButton.layer.borderColor = cameraPreview.tintColor.CGColor
+        cameraToggleButton.layer.borderWidth = 1
+        
+        cameraFlashButton.layer.cornerRadius = cameraFlashButton.frame.width / 2
+        cameraFlashButton.layer.masksToBounds = true
+        cameraFlashButton.layer.borderColor = cameraPreview.tintColor.CGColor
+        cameraFlashButton.layer.borderWidth = 1
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        camera.setupWithPreview(cameraPreview) { (result:CameraManualSetupResult) -> (Void) in
+            
+        }
+        camera.turnOn({ (result:CameraManualSetupResult) -> (Void) in
+            
+        })
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        camera.turnOff { () -> (Void) in
+            
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -21,7 +51,9 @@ class CameraViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
     /*
     // MARK: - Navigation
 

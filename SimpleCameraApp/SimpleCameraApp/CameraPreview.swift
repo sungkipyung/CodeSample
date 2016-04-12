@@ -13,21 +13,23 @@ class CameraPreview: UIView {
     
     var session: AVCaptureSession? {
         get {
-            if let previewLayer:AVCaptureVideoPreviewLayer = self.layer as? AVCaptureVideoPreviewLayer {
+            if (self.layer is AVCaptureVideoPreviewLayer) {
+                let previewLayer:AVCaptureVideoPreviewLayer = self.layer as! AVCaptureVideoPreviewLayer
                 return previewLayer.session
             }
             return nil;
         }
         
         set (newSession) {
-            if let previewLayer:AVCaptureVideoPreviewLayer = self.layer as? AVCaptureVideoPreviewLayer {
-                return previewLayer.session = newSession;
+            if (self.layer is AVCaptureVideoPreviewLayer) {
+                let previewLayer:AVCaptureVideoPreviewLayer = self.layer as! AVCaptureVideoPreviewLayer
+                previewLayer.setSessionWithNoConnection(newSession)
             }
         }
     }
 
     override class func layerClass() -> AnyClass {
-        return AVCaptureVideoPreviewLayer.superclass()!
+        return AVCaptureVideoPreviewLayer.self
     }
     
     /*
