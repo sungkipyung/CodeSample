@@ -50,7 +50,7 @@ extension UIInterfaceOrientation {
 }
 
 typealias CameraSetupComplete = ((result:CameraManualSetupResult) -> (Void))
-typealias CameraTakePictureComplete = ((image:UIImage?) -> (Void))
+typealias CameraTakePictureComplete = ((imageData:NSData?) -> (Void))
 
 private var SessionRunningContext = 0
 private var CapturingStillImageContext = 0
@@ -163,8 +163,11 @@ class Camera: NSObject {
                     
                     if (imageDataSampleBuffer != nil) {
                         let imageData:NSData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer)
-                        complete(image:UIImage.init(data: imageData))
+                        complete(imageData: imageData)
+                        return
                     }
+                    
+                    complete(imageData: nil)
                 })
             }
         }
@@ -377,7 +380,6 @@ class Camera: NSObject {
                         }
                     }
                 }
-                
                 
                 let audioDevice:AVCaptureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeAudio)
                 let audioDeviceInput:AVCaptureDeviceInput = try AVCaptureDeviceInput.init(device: audioDevice)
