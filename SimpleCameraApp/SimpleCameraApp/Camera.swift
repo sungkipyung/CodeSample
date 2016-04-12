@@ -49,7 +49,9 @@ extension UIInterfaceOrientation {
     }
 }
 
-typealias CameraSetupComplete = ((CameraManualSetupResult) -> (Void))
+typealias CameraSetupComplete = ((result:CameraManualSetupResult) -> (Void))
+typealias CameraTakePictureComplete = ((image:UIImage?) -> (Void))
+
 private var SessionRunningContext = 0
 private var CapturingStillImageContext = 0
 private var FocusModeContext = 0
@@ -69,6 +71,7 @@ class Camera: NSObject {
     private var videoDevice:AVCaptureDevice!
     private var videoDeviceInput: AVCaptureDeviceInput!
     private var stillImageOutput:AVCaptureStillImageOutput!
+    private var movieFileOutput:AVCaptureMovieFileOutput!
     
     // MARK: Utilities
     internal var setupResult:CameraManualSetupResult = CameraManualSetupResult.CameraNotAuthorized
@@ -115,7 +118,7 @@ class Camera: NSObject {
                 self.sessionRunning = self.session.running
             }
             dispatch_async(dispatch_get_main_queue()) {
-                complete(self.setupResult)
+                complete(result:self.setupResult)
             };
         }
     }
@@ -132,20 +135,109 @@ class Camera: NSObject {
         }
     }
     
+    internal func takePicture(complete:CameraTakePictureComplete, withPreview preview:CameraPreview) {
+        dispatch_async(self.sessionQueue) {
+            let stillImageConnection = self.stillImageOutput.connectionWithMediaType(AVMediaTypeVideo)
+            let previewLayer = preview.layer as! AVCaptureVideoPreviewLayer
+            
+            // Update the orientation on the still image output video connection before capturing.
+            stillImageConnection.videoOrientation = previewLayer.connection.videoOrientation
+            
+            // Flash set to Auto for Still Capture
+            if (self.videoDevice.exposureMode == AVCaptureExposureMode.Custom ) {
+                Camera.setFlashMode(AVCaptureFlashMode.Off, forDevice: self.videoDevice)
+            }
+            else {
+                Camera.setFlashMode(AVCaptureFlashMode.Auto, forDevice: self.videoDevice)
+            }
+            
+            if (false == self.stillImageOutput.lensStabilizationDuringBracketedCaptureEnabled) {
+                // Capture a still image
+                
+                self.stillImageOutput.captureStillImageAsynchronouslyFromConnection(self.stillImageOutput.connectionWithMediaType(AVMediaTypeVideo), completionHandler: { (imageDataSampleBuffer:CMSampleBuffer?, error:NSError?) in
+                    
+                    if (error != nil) {
+                        NSLog("Error capture still image \(error)")
+                        return
+                    }
+                    
+                    if (imageDataSampleBuffer != nil) {
+                        let imageData:NSData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer)
+                        complete(image:UIImage.init(data: imageData))
+                    }
+                })
+            }
+        }
+        
+    }
+    
+    internal func toggleCamera(complete: (error:NSError?) -> (Void)) {
+        dispatch_async(self.sessionQueue) {
+            
+            var preferredPosition: AVCaptureDevicePosition = AVCaptureDevicePosition.Unspecified
+            
+            switch (self.videoDevice.position) {
+            case .Unspecified:
+                preferredPosition = AVCaptureDevicePosition.Back;
+            case .Front:
+                preferredPosition = AVCaptureDevicePosition.Back;
+                break;
+            case .Back:
+                preferredPosition = AVCaptureDevicePosition.Front;
+                break;
+            }
+            
+            do {
+                let newVideoDevice = Camera.deviceWithMediaType(AVMediaTypeVideo, preferringPosition: preferredPosition)
+                let newVideoDeviceInput = try AVCaptureDeviceInput.init(device: newVideoDevice)
+                
+                self.session.beginConfiguration()
+                self.session .removeInput(self.videoDeviceInput)
+                
+                if (self.session.canAddInput(newVideoDeviceInput)) {
+                    NSNotificationCenter.defaultCenter().removeObserver(self, name: AVCaptureDeviceSubjectAreaDidChangeNotification, object: self.videoDevice)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(self.subjectAreaDidChange), name: AVCaptureDeviceSubjectAreaDidChangeNotification, object: newVideoDevice)
+                    
+                    self.session.addInput(newVideoDeviceInput)
+                    self.videoDeviceInput = newVideoDeviceInput
+                    self.videoDevice = newVideoDevice
+                } else {
+                    self.session.addInput(self.videoDeviceInput)
+                }
+                
+                let connection: AVCaptureConnection = self.movieFileOutput.connectionWithMediaType(AVMediaTypeVideo)
+                
+                if (connection.supportsVideoStabilization) {
+                    connection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode.Auto
+                }
+                
+                self.session .commitConfiguration()
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    complete(error: nil)
+                })
+            } catch let error as NSError {
+                dispatch_async(dispatch_get_main_queue(), {
+                    complete(error:error)
+                })
+            }
+        }
+    }
+    
     // MARK: KVO
     
     private func addObservers() {
-        self.session.addObserver(self, forKeyPath: "running", options: NSKeyValueObservingOptions.New, context: &SessionRunningContext)
-        self.stillImageOutput.addObserver(self, forKeyPath: "capturingStillImage", options: NSKeyValueObservingOptions.New, context: &CapturingStillImageContext)
-        self.videoDevice.addObserver(self, forKeyPath: "focusMode", options: NSKeyValueObservingOptions.Old.union(NSKeyValueObservingOptions.New), context: &FocusModeContext)
-        self.videoDevice.addObserver(self, forKeyPath: "lensPosition", options: NSKeyValueObservingOptions.New, context: &LensPositionContext)
-        self.videoDevice.addObserver(self, forKeyPath: "exposureMode", options: NSKeyValueObservingOptions.Old.union(NSKeyValueObservingOptions.New), context: &ExposureModeContext)
-        self.videoDevice.addObserver(self, forKeyPath: "exposureDuration", options: NSKeyValueObservingOptions.New, context: &ExposureDurationContext)
-        self.videoDevice.addObserver(self, forKeyPath: "ISO", options: NSKeyValueObservingOptions.New, context: &ISOContext)
-        self.videoDevice.addObserver(self, forKeyPath: "exposureTargetOffset", options: NSKeyValueObservingOptions.New, context: &ExposureTargetOffsetContext)
-        self.videoDevice.addObserver(self, forKeyPath: "whiteBalanceMode", options: NSKeyValueObservingOptions.Old.union(NSKeyValueObservingOptions.New), context: &WhiteBalanceModeContext)
-        self.videoDevice.addObserver(self, forKeyPath: "deviceWhiteBalanceGains", options: NSKeyValueObservingOptions.New, context: &DeviceWhiteBalanceGainsContext)
-        self.stillImageOutput.addObserver(self, forKeyPath: "lensStabilizationDuringBracketedCaptureEnabled", options: NSKeyValueObservingOptions.Old.union(NSKeyValueObservingOptions.New), context: &LensStabilizationContext)
+        self.session.addObserver(self, forKeyPath:"running", options: NSKeyValueObservingOptions.New, context: &SessionRunningContext)
+        self.stillImageOutput.addObserver(self, forKeyPath:"capturingStillImage", options: NSKeyValueObservingOptions.New, context: &CapturingStillImageContext)
+        self.videoDevice.addObserver(self, forKeyPath:"focusMode", options: NSKeyValueObservingOptions.Old.union(NSKeyValueObservingOptions.New), context: &FocusModeContext)
+        self.videoDevice.addObserver(self, forKeyPath:"lensPosition", options: NSKeyValueObservingOptions.New, context: &LensPositionContext)
+        self.videoDevice.addObserver(self, forKeyPath:"exposureMode", options: NSKeyValueObservingOptions.Old.union(NSKeyValueObservingOptions.New), context: &ExposureModeContext)
+        self.videoDevice.addObserver(self, forKeyPath:"exposureDuration", options: NSKeyValueObservingOptions.New, context: &ExposureDurationContext)
+        self.videoDevice.addObserver(self, forKeyPath:"ISO", options: NSKeyValueObservingOptions.New, context: &ISOContext)
+        self.videoDevice.addObserver(self, forKeyPath:"exposureTargetOffset", options: NSKeyValueObservingOptions.New, context: &ExposureTargetOffsetContext)
+        self.videoDevice.addObserver(self, forKeyPath:"whiteBalanceMode", options: NSKeyValueObservingOptions.Old.union(NSKeyValueObservingOptions.New), context: &WhiteBalanceModeContext)
+        self.videoDevice.addObserver(self, forKeyPath:"deviceWhiteBalanceGains", options: NSKeyValueObservingOptions.New, context: &DeviceWhiteBalanceGainsContext)
+        self.stillImageOutput.addObserver(self, forKeyPath:"lensStabilizationDuringBracketedCaptureEnabled", options: NSKeyValueObservingOptions.Old.union(NSKeyValueObservingOptions.New), context: &LensStabilizationContext)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(subjectAreaDidChange), name: AVCaptureDeviceSubjectAreaDidChangeNotification, object: self.videoDevice)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(sessionRuntimeError), name: AVCaptureSessionRuntimeErrorNotification, object: self.session)
@@ -244,7 +336,7 @@ class Camera: NSObject {
             if ( self.setupResult != CameraManualSetupResult.Success ) {
                 
                 dispatch_async(dispatch_get_main_queue()) {
-                    complete(self.setupResult)
+                    complete(result:self.setupResult)
                 }
                 return;
             }
@@ -256,7 +348,7 @@ class Camera: NSObject {
             do {
                 // create and add VideoDeviceInput
                 self.session.beginConfiguration()
-                
+                self.session.sessionPreset = AVCaptureSessionPresetPhoto
                 let videoDevice = Camera.deviceWithMediaType(AVMediaTypeVideo, preferringPosition: AVCaptureDevicePosition.Back)
                 let videoDeviceInput: AVCaptureDeviceInput = try AVCaptureDeviceInput.init(device: videoDevice)
                 
@@ -265,6 +357,9 @@ class Camera: NSObject {
                     self.session .addInput(videoDeviceInput)
                     self.videoDeviceInput = videoDeviceInput
                     self.videoDevice = videoDevice
+                    try self.videoDevice.lockForConfiguration()
+                    self.videoDevice.videoZoomFactor = 1.0
+                    self.videoDevice.unlockForConfiguration()
                     
                     dispatch_async(dispatch_get_main_queue()) {
                         // Why are we dispatching this to the main queue?
@@ -291,9 +386,16 @@ class Camera: NSObject {
                     self.session.addInput(audioDeviceInput)
                 }
                 
-                let movieFileOut:AVCaptureMovieFileOutput = AVCaptureMovieFileOutput.init()
-                if (self.session.canAddOutput(movieFileOut)) {
-                    self.session.addOutput(movieFileOut)
+                let movieFileOutput:AVCaptureMovieFileOutput = AVCaptureMovieFileOutput.init()
+                if (self.session.canAddOutput(movieFileOutput)) {
+                    self.session.addOutput(movieFileOutput)
+                    
+                    let connection:AVCaptureConnection  = movieFileOutput.connectionWithMediaType(AVMediaTypeVideo);
+                    
+                    if (connection.supportsVideoStabilization) {
+                        connection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode.Auto;
+                    }
+                    self.movieFileOutput = movieFileOutput;
                 }
                 
                 
@@ -310,7 +412,7 @@ class Camera: NSObject {
                 self.session.commitConfiguration()
                 
                 dispatch_async(dispatch_get_main_queue()) {
-                    complete(self.setupResult)
+                    complete(result:self.setupResult)
                 }
             } catch let error as NSError {
                 NSLog("Could not create device input: %@", error)
@@ -336,5 +438,12 @@ class Camera: NSObject {
             return captureDevice
         }
         return nil;
+    }
+    
+    static func setFlashMode(flashMode:AVCaptureFlashMode, forDevice device:AVCaptureDevice) {
+        
+    }
+    
+    static func setScaleFactor(scaleFactor:CGFloat, forDevice device:AVCaptureDevice) {
     }
 }

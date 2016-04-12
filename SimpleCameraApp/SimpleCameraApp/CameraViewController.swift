@@ -7,16 +7,20 @@
 //
 
 import UIKit
+import AVFoundation
 
 class CameraViewController: UIViewController {
     @IBOutlet weak var cameraPreview: CameraPreview!
     @IBOutlet weak var cameraToggleButton: UIButton!
     @IBOutlet weak var cameraFlashButton: UIButton!
+    @IBOutlet weak var cameraShotButton: UIButton!
     
     var camera:Camera = Camera.init()
     
     override func loadView() {
         super.loadView()
+        let avLayer = cameraPreview.layer as? AVCaptureVideoPreviewLayer
+        avLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
         cameraToggleButton.layer.cornerRadius = cameraToggleButton.frame.width / 2
         cameraToggleButton.layer.masksToBounds = true
         cameraToggleButton.layer.borderColor = cameraPreview.tintColor.CGColor
@@ -66,5 +70,26 @@ class CameraViewController: UIViewController {
 
     @IBAction func onTouchBackButton(sender: UIButton) {
         self.dismissViewControllerAnimated(true, completion: nil);
+    }
+    @IBAction func onTouchShotButton(sender: UIButton) {
+        self.camera.takePicture({ (image) -> (Void) in
+            
+            }, withPreview: self.cameraPreview)
+    }
+    
+    @IBAction func onTouchDownControl(sender: UIControl) {
+    }
+    
+    @IBAction func onTouchUpControl(sender: UIControl) {
+    }
+    
+    @IBAction func onTouchCameraToggleButton(sender: UIControl) {
+        cameraShotButton.enabled = false
+        cameraToggleButton.enabled = false
+        
+        self.camera.toggleCamera { (error) -> (Void) in
+            self.cameraShotButton.enabled = true
+            self.cameraToggleButton.enabled = true
+        }
     }
 }
