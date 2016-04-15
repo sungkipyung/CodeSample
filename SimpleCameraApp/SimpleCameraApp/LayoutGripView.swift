@@ -8,14 +8,13 @@
 
 import UIKit
 
-protocol LayoutGripViewDelegate {
-    func layoutGripViewDidChangeLocation(view:LayoutGripView, origin:CGPoint)
-}
+typealias LayoutGripViewDidChangeLocation = (view:LayoutGripView, origin:CGPoint) -> (Void)
 
 class LayoutGripView: UIView {
     private var originalPosition: CGPoint?
     private var touchOffset: CGPoint?
-    var delegate:LayoutGripViewDelegate?
+    
+    var onChangeLocation:LayoutGripViewDidChangeLocation?
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -36,7 +35,7 @@ class LayoutGripView: UIView {
         if let loc:CGPoint = touches.first!.locationInView(self.superview) {
             let deltaX = fabs(loc.x - self.touchOffset!.x)
             let deltaY = fabs(loc.y - self.touchOffset!.y)
-            self.delegate?.layoutGripViewDidChangeLocation(self, origin: CGPoint(x: deltaX, y: deltaY))
+            self.onChangeLocation?(view: self, origin: CGPoint(x: deltaX, y: deltaY))
         }
     }
     

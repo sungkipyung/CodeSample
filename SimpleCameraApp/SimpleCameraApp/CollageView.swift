@@ -11,7 +11,7 @@ import UIKit
 /**
  View Collage (꼴라주)
  */
-class CollageView: UIView, LayoutGripViewDelegate {
+class CollageView: UIView {
     var layout: Layout?
     private var collageCells: Array<CollageCell>?
     
@@ -29,10 +29,19 @@ class CollageView: UIView, LayoutGripViewDelegate {
         applyCellPath()
         
         let button: LayoutGripView = LayoutGripView.init(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 40, height: 40)))
-        button.delegate = self
         button.center = CollageView.scalePoint(self.layout!.point, frame:self.bounds)
         button.backgroundColor = UIColor.orangeColor()
         self.addSubview(button)
+        
+        weak var weakSelf = self
+        button.onChangeLocation = {(view:LayoutGripView, origin: CGPoint) -> (Void) in
+            view.center.x = origin.x
+            if let s_self = weakSelf {
+                s_self.layout?.alpha = origin.x / self.frame.size.width
+                // alpha has changed then redraw path
+                weakSelf?.applyCellPath()
+            }
+        }
     }
     
     private func applyCellPath() {
@@ -53,14 +62,6 @@ class CollageView: UIView, LayoutGripViewDelegate {
             count += 1
         }
         return collageCells
-    }
-    
-    // MARK: LayoutGripViewDelegate
-    func layoutGripViewDidChangeLocation(view: LayoutGripView, origin: CGPoint) {
-        view.center.x = origin.x
-        self.layout?.alpha = origin.x / self.frame.size.width
-        // alpha has changed then redraw path
-        applyCellPath()
     }
     
     // MARK: Static
