@@ -8,64 +8,34 @@
 
 import UIKit
 
-typealias PolygonCell = Array<NSValue>
-typealias Polygon = (Void) -> (Array<PolygonCell>)
-//typealias CreateCollageCell = (frame:CGRect, polygon:Polygon) -> (Array<UIView>)
-
+/**
+ View Collage (꼴라주)
+ */
 class CollageView: UIView, LayoutGripViewDelegate {
     var layout: Layout?
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        // Drawing code
-    }
-    */
-    private var dragging: Bool = false
     private var collageCells: Array<CollageCell>?
     
     override func awakeFromNib() {
         // define input parameter
-        let layout:Layout = Layout(numberOfCells: 2, alpha: 0.5, point: CGPoint(x: 0.5, y: 0.5))
-        self.layout = layout
+        self.layout = Layout(numberOfCells: 2, alpha: 0.5, point: CGPoint(x: 0.5, y: 0.5))
         
-        var count = 0
-        var collageCells: Array<CollageCell> = []
-        
-        while count < layout.numberOfCells {
-            let cell:CollageCell = CollageCell.init(frame: self.bounds)
-            collageCells.append(cell)
-            count += 1
-        }
-        
-        self.collageCells = collageCells
-        let collageCellPaths = CollageView.generateCollageCellPath(self.layout!, view: self)
+        self.collageCells = createCollageCells(layout!.numberOfCells)
         
         // add cells
-        for (index, collageCell) in self.collageCells!.enumerate() {
-            collageCell.shapeLayerPath = collageCellPaths[index]
+        for collageCell in self.collageCells! {
             self.addSubview(collageCell)
         }
         
-        // attach button
-//        let button:UIButton = UIButton(frame: CGRect(origin: scalePoint(layout.point), size:CGSize(width: 10, height: 10)))
-//        button.setTitleColor(UIColor.orangeColor(), forState: UIControlState.Normal)
-        let button: LayoutGripView = LayoutGripView.init(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 10, height: 10)))
+        applyCellPath()
+        
+        let button: LayoutGripView = LayoutGripView.init(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 40, height: 40)))
         button.delegate = self
-        button.center = CollageView.scalePoint(layout.point, frame:self.bounds)
+        button.center = CollageView.scalePoint(self.layout!.point, frame:self.bounds)
         button.backgroundColor = UIColor.orangeColor()
         self.addSubview(button)
     }
     
-//    let controlPoint = centerOfPoints(scalePoint(pointArray[index-1].CGPointValue()), point2: newPoint)
-//    path.addQuadCurveToPoint(newPoint, controlPoint: controlPoint)
-    
-    
-    func centerOfPoints(point1: CGPoint, point2: CGPoint) -> CGPoint {
-        return CGPoint(x:(point1.x + point2.x) / 2, y:(point1.y + point2.y))
-    }
-    
-    func applyCellPath() {
+    private func applyCellPath() {
         let collageCellPaths = CollageView.generateCollageCellPath(self.layout!, view: self)
         
         // add cells
@@ -74,6 +44,26 @@ class CollageView: UIView, LayoutGripViewDelegate {
         }
     }
     
+    private func createCollageCells(numberOfCells:Int) -> Array<CollageCell> {
+        var collageCells: Array<CollageCell> = []
+        var count = 0
+        while (count < numberOfCells) {
+            let cell:CollageCell = CollageCell.init(frame: self.bounds)
+            collageCells.append(cell)
+            count += 1
+        }
+        return collageCells
+    }
+    
+    // MARK: LayoutGripViewDelegate
+    func layoutGripViewDidChangeLocation(view: LayoutGripView, origin: CGPoint) {
+        view.center.x = origin.x
+        self.layout?.alpha = origin.x / self.frame.size.width
+        // alpha has changed then redraw path
+        applyCellPath()
+    }
+    
+    // MARK: Static
     static func generateCollageCellPath(layout: Layout, view:UIView) -> Array<UIBezierPath> {
         var collageCellPaths: Array<UIBezierPath> = []
         for polygon in layout.polygons() {
@@ -91,7 +81,7 @@ class CollageView: UIView, LayoutGripViewDelegate {
             
             collageCellPaths.append(path)
         }
-
+        
         return collageCellPaths
     }
     
@@ -99,11 +89,19 @@ class CollageView: UIView, LayoutGripViewDelegate {
         return CGPointMake(point.x * frame.size.width, point.y * frame.size.height)
     }
     
-    func layoutGripViewDidChangeLocation(view: LayoutGripView, origin: CGPoint) {
-        view.center.x = origin.x
-        self.layout?.alpha = origin.x / self.frame.size.width
-        NSLog("alpha : \(self.layout?.alpha)")
-        // alpha has changed then redraw path
-        applyCellPath()
-    }
+    /*
+     // Only override drawRect: if you perform custom drawing.
+     // An empty implementation adversely affects performance during animation.
+     override func drawRect(rect: CGRect) {
+     // Drawing code
+     }
+     */
+    
+    
+    //    let controlPoint = centerOfPoints(scalePoint(pointArray[index-1].CGPointValue()), point2: newPoint)
+    //    path.addQuadCurveToPoint(newPoint, controlPoint: controlPoint)
+//    func centerOfPoints(point1: CGPoint, point2: CGPoint) -> CGPoint {
+//        return CGPoint(x:(point1.x + point2.x) / 2, y:(point1.y + point2.y))
+//    }
+    
 }
