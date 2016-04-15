@@ -76,23 +76,9 @@ class CameraViewController: UIViewController {
         self.camera.takePicture({ (imageData:NSData?) -> (Void) in
             if (imageData == nil) {
                 return
-            }
-            
-//            let capturedImage:UIImage = UIImage.init(data:imageData!)!
-            // save image to photo_album
-            PHPhotoLibrary.requestAuthorization({ (status: PHAuthorizationStatus) in
-                if (status != PHAuthorizationStatus.Authorized) {
-                    return
-                }
-                PHPhotoLibrary.sharedPhotoLibrary().performChanges({ 
-                    PHAssetCreationRequest.creationRequestForAsset().addResourceWithType(PHAssetResourceType.Photo, data: imageData!, options: nil)
-                    }, completionHandler: { (success: Bool, error: NSError?) in
-                        if (success == false) {
-                            NSLog("Error occured while saving image to photo library : \(error)")
-                        }
-                })
-            })
-            
+            }            
+            let capturedImage:UIImage = UIImage.init(data:imageData!)!
+            // TODO: Save Image
             }, withPreview: self.cameraPreview)
     }
     

@@ -151,25 +151,27 @@ class Camera: NSObject {
                 Camera.setFlashMode(AVCaptureFlashMode.Auto, forDevice: self.videoDevice)
             }
             
-            if (false == self.stillImageOutput.lensStabilizationDuringBracketedCaptureEnabled) {
-                // Capture a still image
-                
-                self.stillImageOutput.captureStillImageAsynchronouslyFromConnection(self.stillImageOutput.connectionWithMediaType(AVMediaTypeVideo), completionHandler: { (imageDataSampleBuffer:CMSampleBuffer?, error:NSError?) in
-                    
-                    if (error != nil) {
-                        NSLog("Error capture still image \(error)")
-                        return
-                    }
-                    
-                    if (imageDataSampleBuffer != nil) {
-                        let imageData:NSData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer)
-                        complete(imageData: imageData)
-                        return
-                    }
-                    
-                    complete(imageData: nil)
-                })
+            if #available(iOS 9.0, *) {
+                if (true == self.stillImageOutput.lensStabilizationDuringBracketedCaptureEnabled) {
+                    return ;
+                }
             }
+            
+            // Capture a still image
+            self.stillImageOutput.captureStillImageAsynchronouslyFromConnection(self.stillImageOutput.connectionWithMediaType(AVMediaTypeVideo), completionHandler: { (imageDataSampleBuffer:CMSampleBuffer?, error:NSError?) in
+                if (error != nil) {
+                    NSLog("Error capture still image \(error)")
+                    return
+                }
+                
+                if (imageDataSampleBuffer != nil) {
+                    let imageData:NSData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer)
+                    complete(imageData: imageData)
+                    return
+                }
+                
+                complete(imageData: nil)
+            })
         }
         
     }
@@ -309,19 +311,21 @@ class Camera: NSObject {
         // Also note that it is not always possible to resume, see -[resumeInterruptedSession:].
         
         // In iOS 9 and later, the userInfo dictionary contains information on why the session was interrupted.
-        
-        let anyObj:AnyObject? = notification.userInfo?[AVCaptureSessionInterruptionReasonKey] is NSNull ? nil : notification.userInfo?[AVCaptureSessionInterruptionReasonKey]
-        
-        if let number = anyObj as? NSNumber {
-            let reason:AVCaptureSessionInterruptionReason = AVCaptureSessionInterruptionReason.init(rawValue: number.integerValue)!
-            switch reason {
-            case .AudioDeviceInUseByAnotherClient:
-                break
-            case .VideoDeviceInUseByAnotherClient:
-                break
-            default:
-                break
+        if #available(iOS 9.0, *) {
+            let anyObj:AnyObject? = notification.userInfo?[AVCaptureSessionInterruptionReasonKey] is NSNull ? nil : notification.userInfo?[AVCaptureSessionInterruptionReasonKey]
+            if let number = anyObj as? NSNumber {
+                let reason:AVCaptureSessionInterruptionReason = AVCaptureSessionInterruptionReason.init(rawValue: number.integerValue)!
+                switch reason {
+                case .AudioDeviceInUseByAnotherClient:
+                    break
+                case .VideoDeviceInUseByAnotherClient:
+                    break
+                default:
+                    break
+                }
             }
+        } else {
+            // Fallback on earlier versions
         }
     }
     
