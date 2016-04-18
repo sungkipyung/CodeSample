@@ -38,9 +38,11 @@ extension UIInterfaceOrientation {
         case .Portrait:
             return AVCaptureVideoOrientation.Portrait
         case .LandscapeLeft:
-            return AVCaptureVideoOrientation.LandscapeLeft
-        case .LandscapeRight:
+            // TODO: Check left Right Conversion
             return AVCaptureVideoOrientation.LandscapeRight
+        case .LandscapeRight:
+            // TODO: Check left Right Conversion
+            return AVCaptureVideoOrientation.LandscapeLeft
         case .PortraitUpsideDown:
             return AVCaptureVideoOrientation.PortraitUpsideDown
         default:

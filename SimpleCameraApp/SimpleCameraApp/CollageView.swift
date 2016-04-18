@@ -12,44 +12,143 @@ import UIKit
  View Collage (꼴라주)
  */
 class CollageView: UIView {
-    var layout: Layout?
     private var collageCells: Array<CollageCell>?
+    private var cellGrapButtons: Array<LayoutGripView>?
     
     override func awakeFromNib() {
         // define input parameter
-        self.layout = Layout(numberOfCells: 2, alpha: 0.5, point: CGPoint(x: 0.5, y: 0.5))
+        // very simple axis Layout Example
+//        var axisLayout = AxisLayout(cellCount: 2, vs: [0.5], originalVS: [0.5]
+//            , grapPoints: { (vs:[CGFloat]) -> [NSValue] in
+//                return [PointObj(vs[0],y:0.5)]
+//        }) { (vs:[CGFloat]) -> [UnitPolygon] in
+//                return [
+//                    [PointObj(0,y:0), PointObj(vs[0],y:0), PointObj(vs[0],y:1), PointObj(0,y:1), PointObj(0,y:0)],
+//                    [PointObj(vs[0],y:0), PointObj(1,y:0), PointObj(1,y:1), PointObj(vs[0],y:1), PointObj(vs[0],y:0)]
+//                ]
+//        }
         
-        self.collageCells = createCollageCells(layout!.numberOfCells)
+        // Complex axis layout Example
+        let vs:[CGFloat] = [1/3.0, 2/3.0, 1/3.0, 2/3.0,
+                  2/3.0, 1/3.0, 2/3.0, 1/3.0]
+        
+        var axisLayout = AxisLayout(cellCount: 9
+            , vs: vs
+            , originalVS: vs
+            , grapPoints: { (vs:[CGFloat]) -> [NSValue] in
+                return [
+                    PointObj(vs[0], y:vs[7]*0.5),
+                    PointObj(vs[1], y:vs[3]*0.75),
+                    
+                    PointObj(0.5 * (1 + vs[1]), y:vs[2]),
+                    PointObj(0.25 * (1 + 3 * vs[5]), y:vs[3]),
+                    
+                    PointObj(vs[4], y:(1 + vs[3]) / 2),
+                    PointObj(vs[5], y:(1 + 3 * vs[7]) * 0.25),
+                    
+                    PointObj(0.5 * vs[5], y:vs[6]),
+                    PointObj(3/4*vs[1], y:vs[7])
+                ]
+            }
+            , grapPointsChangeHandlers: [
+                // g0
+                { (point, vs) in var newVS = Array.init(vs)
+                    newVS[0] = max(min(point.x, vs[1]), 0)
+                    return newVS
+                },
+                // g1
+                { (point, vs) in var newVS = Array.init(vs)
+                    newVS[1] = max(min(point.x, 1), max(vs[0], vs[5]))
+                    return newVS
+                },
+                // g2
+                { (point, vs) in var newVS = Array.init(vs)
+                    newVS[2] = max(min(point.y, vs[3]), 0)
+                    return newVS
+                },
+                // g3
+                { (point, vs) in var newVS = Array.init(vs)
+                    newVS[3] = max(min(point.y, 1), max(vs[7], vs[2]))
+                    return newVS
+                },
+                // g4
+                { (point, vs) in var newVS = Array.init(vs)
+                    newVS[4] = max(min(point.x, 1), vs[5])
+                    return newVS
+                },
+                // g5
+                { (point, vs) in var newVS = Array.init(vs)
+                    newVS[5] = min(max(point.x, 0), min(vs[1], vs[4]))
+                    return newVS
+                },
+                // g6
+                { (point, vs) in var newVS = Array.init(vs)
+                    newVS[6] = max(min(point.y, 1), vs[7])
+                    return newVS
+                },
+                // g7
+                { (point, vs) in var newVS = Array.init(vs)
+                    newVS[7] = min(max(point.y, 0), min(vs[6], vs[3]))
+                    return newVS
+                },
+            ]
+            , points: { (vs:[CGFloat]) -> [UnitPolygon] in
+                return [
+                    [PointObj(0, y:0), PointObj(vs[0], y:0), PointObj(vs[0], y:vs[7]), PointObj(0, y:vs[7]), PointObj(0, y:0)], // 0
+                    [PointObj(vs[0], y:0), PointObj(vs[1], y:0), PointObj(vs[1], y:vs[7]), PointObj(vs[0], y:vs[7]), PointObj(vs[0], y:0)], // 1
+                    [PointObj(vs[1], y:0), PointObj(1, y:0), PointObj(1, y:vs[2]), PointObj(vs[1], y:vs[2]), PointObj(vs[1], y:0)], // 2
+                    [PointObj(vs[1], y:vs[2]), PointObj(1, y:vs[2]), PointObj(1, y:vs[3]), PointObj(vs[1], y:vs[3]), PointObj(vs[1], y:vs[2])], // 3
+                    
+                    [PointObj(vs[4], y:vs[3]), PointObj(1, y:vs[3]), PointObj(1, y:1), PointObj(vs[4], y:1), PointObj(vs[4], y:vs[3])], // 4
+                    [PointObj(vs[5], y:vs[3]), PointObj(vs[4], y:vs[3]), PointObj(vs[4], y:1), PointObj(vs[5], y:1), PointObj(vs[5], y:vs[3])], // 5
+                    [PointObj(0, y:vs[6]), PointObj(vs[5], y:vs[6]), PointObj(vs[5], y:1), PointObj(0, y:1), PointObj(0, y:vs[6])], // 6
+                    
+                    [PointObj(0, y:vs[7]), PointObj(vs[5], y:vs[7]), PointObj(vs[5], y:vs[6]), PointObj(0, y:vs[6]), PointObj(0, y:vs[7])], // 7
+                    
+                    [PointObj(vs[5], y:vs[7]), PointObj(vs[1], y:vs[7]), PointObj(vs[1], y:vs[3]), PointObj(vs[5], y:vs[3]), PointObj(vs[5], y:vs[7])], // 8
+                ]
+        })
+        
+
+        self.collageCells = createCollageCells(axisLayout.numberOfCells())
         
         // add cells
         for collageCell in self.collageCells! {
             self.addSubview(collageCell)
         }
         
-        applyCellPath()
+        let grapPoints = axisLayout.getGrapPoints()
         
-        let button: LayoutGripView = LayoutGripView.init(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 40, height: 40)))
-        button.center = CollageView.scalePoint(self.layout!.point, frame:self.bounds)
-        button.backgroundColor = UIColor.orangeColor()
-        self.addSubview(button)
+        var cellGrapButtons:[LayoutGripView] = []
         
         weak var weakSelf = self
-        button.onChangeLocation = {(view:LayoutGripView, origin: CGPoint) -> (Void) in
-            view.center.x = origin.x
-            if let s_self = weakSelf {
-                s_self.layout?.alpha = origin.x / self.frame.size.width
-                // alpha has changed then redraw path
-                weakSelf?.applyCellPath()
+        for (index, grapPoint) in grapPoints.enumerate() {
+            let button: LayoutGripView = LayoutGripView.init(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 40, height: 40)))
+            button.center = CollageView.scalePoint(grapPoint.CGPointValue(), frame:self.bounds)
+            button.backgroundColor = UIColor.orangeColor()
+            button.onChangeLocation = {(view:LayoutGripView, origin: CGPoint) -> (Void) in
+                axisLayout.vs = axisLayout.changeGrapPoints(index, point: CGPointMake(origin.x / self.frame.size.width, origin.y / self.frame.size.height))
+                weakSelf?.applyCellPath(axisLayout)
             }
+            cellGrapButtons.append(button)
+            self.addSubview(button)
         }
+        self.cellGrapButtons = cellGrapButtons
+        
+        applyCellPath(axisLayout)
     }
     
-    private func applyCellPath() {
-        let collageCellPaths = CollageView.generateCollageCellPath(self.layout!, view: self)
+    private func applyCellPath(layout:Layout) {
+        let collageCellPaths = CollageView.generateCollageCellPath(layout, view: self)
+        let grapButtonPoints = layout.getGrapPoints()
         
         // add cells
         for (index, collageCell) in self.collageCells!.enumerate() {
             collageCell.shapeLayerPath = collageCellPaths[index]
+        }
+        
+        for (index, grapButton) in self.cellGrapButtons!.enumerate() {
+            grapButton.center = CollageView.scalePoint(grapButtonPoints[index].CGPointValue(), frame:self.bounds)
         }
     }
     
@@ -67,7 +166,7 @@ class CollageView: UIView {
     // MARK: Static
     static func generateCollageCellPath(layout: Layout, view:UIView) -> Array<UIBezierPath> {
         var collageCellPaths: Array<UIBezierPath> = []
-        for polygon in layout.polygons() {
+        for polygon in layout.layout() {
             let path: UIBezierPath = UIBezierPath.init()
             
             for (index, value) in polygon.enumerate() {

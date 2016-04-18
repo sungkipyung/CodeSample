@@ -27,15 +27,15 @@ class LayoutGripView: UIView {
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         originalPosition = self.center
         if let position:CGPoint = touches.first?.locationInView(self.superview)  {
-            touchOffset = CGPoint(x: self.center.x - position.x, y: self.center.y - position.y)
+            touchOffset = position
         }
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if let loc:CGPoint = touches.first!.locationInView(self.superview) {
-            let deltaX = fabs(loc.x - self.touchOffset!.x)
-            let deltaY = fabs(loc.y - self.touchOffset!.y)
-            self.onChangeLocation?(view: self, origin: CGPoint(x: deltaX, y: deltaY))
+            let deltaX = loc.x - self.touchOffset!.x
+            let deltaY = loc.y - self.touchOffset!.y
+            self.onChangeLocation?(view: self, origin: CGPoint(x: self.originalPosition!.x + deltaX, y: self.originalPosition!.y + deltaY))
         }
     }
     
