@@ -1,27 +1,27 @@
 //
-//  CollageViewController.swift
+//  ScrollViewController.swift
 //  SimpleCameraApp
 //
-//  Created by 성기평 on 2016. 4. 14..
+//  Created by 성기평 on 2016. 4. 19..
 //  Copyright © 2016년 hothead. All rights reserved.
 //
 
 import UIKit
 
-class CollageViewController: UIViewController {
+class ScrollViewController: UIViewController, UIScrollViewDelegate {
 
+    @IBOutlet weak var scrollView: UIScrollView!
+    weak var imageView: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        let image = UIImage.init(named: "stretched-1920-1200-120548.jpg")!
+        let imageView = UIImageView.init(image: image)
+        imageView.frame = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
+        scrollView.contentSize = image.size
+        scrollView.addSubview(imageView)
+        self.imageView = imageView
         // Do any additional setup after loading the view.
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
     }
 
     override func didReceiveMemoryWarning() {
@@ -30,6 +30,9 @@ class CollageViewController: UIViewController {
     }
     
 
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+        return self.imageView
+    }
     /*
     // MARK: - Navigation
 
@@ -40,7 +43,4 @@ class CollageViewController: UIViewController {
     }
     */
 
-    @IBAction func onTouchBackButton(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
 }

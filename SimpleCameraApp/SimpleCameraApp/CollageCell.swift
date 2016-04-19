@@ -8,31 +8,43 @@
 
 import UIKit
 
-class CollageCell: UIView {
+class CollageCell: UIView, UIScrollViewDelegate {
 //
 //    @IBOutlet weak var marginTopConstraint: NSLayoutConstraint!
 //    @IBOutlet weak var marginLeftConstraint: NSLayoutConstraint!
 //    @IBOutlet weak var marginRightConstraint: NSLayoutConstraint!
 //    @IBOutlet weak var marginBottomConstraint: NSLayoutConstraint!
 //    @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var cameraPreview: CameraPreview!
+    @IBOutlet weak var imageScrollView: UIScrollView!
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var lineView: UIView!
     
-    var shapeLayerPath: UIBezierPath! {
-        didSet {
-            if let subLayers: Array<CALayer> = self.layer.sublayers {
-                for layer in subLayers {
-                    layer.removeFromSuperlayer()
-                }
-            }
-            let mask: CAShapeLayer = CAShapeLayer.init()
-            mask.path = self.shapeLayerPath.CGPath
+    var shapeLayerPath: UIBezierPath? {
+        didSet (newLayer) {
+            let shapeLayerPath = self.shapeLayerPath!
+            let mask: CAShapeLayer = CAShapeLayer()
+            mask.path = shapeLayerPath.CGPath
             self.layer.mask = mask
             
+            self.lineView.layer.sublayers?.forEach({ (sublayer) in
+                sublayer.removeFromSuperlayer()
+            })
             let line = CAShapeLayer.init()
-            line.path = self.shapeLayerPath.CGPath
+            line.path = shapeLayerPath.CGPath
+            line.lineDashPattern = [8, 8]
             line.lineWidth = 2
             line.fillColor = UIColor.clearColor().CGColor
             line.strokeColor = UIColor.whiteColor().CGColor
-            self.layer.addSublayer(line)
+            self.lineView.layer.addSublayer(line)
+        }
+    }
+    
+    override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
+        if let path:UIBezierPath =  self.shapeLayerPath {
+            return path.containsPoint(point)
+        } else {
+            return super.pointInside(point, withEvent: event)
         }
     }
     
@@ -55,6 +67,14 @@ class CollageCell: UIView {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
+    }
+    
+    override func awakeFromNib() {
+        self.imageScrollView.delegate = self
+    }
+
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+        return self.imageView
     }
 }

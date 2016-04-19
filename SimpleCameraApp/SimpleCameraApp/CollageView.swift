@@ -12,8 +12,8 @@ import UIKit
  View Collage (꼴라주)
  */
 class CollageView: UIView {
-    private var collageCells: Array<CollageCell>?
-    private var cellGrapButtons: Array<LayoutGripView>?
+    private var collageCells: Array<CollageCell>!
+    private var cellGrapButtons: Array<LayoutGripView>!
     
     override func awakeFromNib() {
         // define input parameter
@@ -29,6 +29,7 @@ class CollageView: UIView {
 //        }
         
         // Complex axis layout Example
+        
         let vs:[CGFloat] = [1/3.0, 2/3.0, 1/3.0, 2/3.0,
                   2/3.0, 1/3.0, 2/3.0, 1/3.0]
         
@@ -110,10 +111,10 @@ class CollageView: UIView {
         })
         
 
-        self.collageCells = createCollageCells(axisLayout.numberOfCells())
+        let collageCells = createCollageCells(axisLayout.numberOfCells())
         
         // add cells
-        for collageCell in self.collageCells! {
+        for collageCell in collageCells {
             self.addSubview(collageCell)
         }
         
@@ -123,27 +124,32 @@ class CollageView: UIView {
         
         weak var weakSelf = self
         for (index, grapPoint) in grapPoints.enumerate() {
-            let button: LayoutGripView = LayoutGripView.init(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 40, height: 40)))
+            let button: LayoutGripView = LayoutGripView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 40, height: 40)))
             button.center = CollageView.scalePoint(grapPoint.CGPointValue(), frame:self.bounds)
             button.backgroundColor = UIColor.orangeColor()
             button.onChangeLocation = {(view:LayoutGripView, origin: CGPoint) -> (Void) in
                 axisLayout.vs = axisLayout.changeGrapPoints(index, point: CGPointMake(origin.x / self.frame.size.width, origin.y / self.frame.size.height))
-                weakSelf?.applyCellPath(axisLayout)
+                weakSelf?.applyCellPath(axisLayout, collageCells:collageCells)
             }
             cellGrapButtons.append(button)
             self.addSubview(button)
         }
         self.cellGrapButtons = cellGrapButtons
         
-        applyCellPath(axisLayout)
+        let colors = [UIColor.blueColor(), UIColor.redColor(), UIColor.yellowColor(), UIColor.whiteColor(), UIColor.greenColor(), UIColor.grayColor(), UIColor.orangeColor(), UIColor.magentaColor(), UIColor.cyanColor()]
+        
+        for (index, collageCell) in collageCells.enumerate() {
+            collageCell.backgroundColor = colors[index]
+        }
+        applyCellPath(axisLayout, collageCells:collageCells)
     }
     
-    private func applyCellPath(layout:Layout) {
+    private func applyCellPath(layout:Layout, collageCells:[CollageCell]) {
         let collageCellPaths = CollageView.generateCollageCellPath(layout, view: self)
         let grapButtonPoints = layout.getGrapPoints()
         
         // add cells
-        for (index, collageCell) in self.collageCells!.enumerate() {
+        for (index, collageCell) in collageCells.enumerate() {
             collageCell.shapeLayerPath = collageCellPaths[index]
         }
         
@@ -152,12 +158,17 @@ class CollageView: UIView {
         }
     }
     
-    private func createCollageCells(numberOfCells:Int) -> Array<CollageCell> {
-        var collageCells: Array<CollageCell> = []
+    private func createCollageCells(numberOfCells:Int) -> [CollageCell] {
+        var collageCells: [CollageCell] = []
         var count = 0
         while (count < numberOfCells) {
-            let cell:CollageCell = CollageCell.init(frame: self.bounds)
-            collageCells.append(cell)
+            if let cell = UINib(nibName: "CollageCell", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? CollageCell {
+                cell.frame = self.bounds
+                let image = UIImage(named: "\(count % 5 + 1).jpg")!
+                cell.imageView.image = image
+                cell.imageScrollView.contentSize = image.size
+                collageCells.append(cell)
+            }
             count += 1
         }
         return collageCells
