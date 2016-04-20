@@ -17,9 +17,15 @@ class CollageCell: UIView, UIScrollViewDelegate {
 //    @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var cameraPreview: CameraPreview!
     @IBOutlet weak var imageScrollView: UIScrollView!
+    @IBOutlet weak var imageScrollViewOriginX: NSLayoutConstraint!
+    @IBOutlet weak var imageScrollViewOriginY: NSLayoutConstraint!
+    
+    @IBOutlet weak var imageScrollViewWidth: NSLayoutConstraint!
+    @IBOutlet weak var imageScrollViewHeight: NSLayoutConstraint!
+    
     weak var imageView: UIImageView!
     @IBOutlet weak var lineView: UIView!
-    private static let BORDER_WIDTH:CGFloat = 0
+    private static let BORDER_WIDTH:CGFloat = 10
     
     var shapeLayerPath: UIBezierPath? {
         didSet (newLayer) {
@@ -41,7 +47,13 @@ class CollageCell: UIView, UIScrollViewDelegate {
             line.strokeColor = UIColor.whiteColor().CGColor
             self.lineView.layer.addSublayer(line)
             
-            self.imageScrollView.frame = CGRectInset(CGPathGetPathBoundingBox(path), CollageCell.BORDER_WIDTH, CollageCell.BORDER_WIDTH)
+            let frame = CGRectInset(CGPathGetPathBoundingBox(path), CollageCell.BORDER_WIDTH, CollageCell.BORDER_WIDTH)
+            
+            self.imageScrollViewOriginX.constant = frame.origin.x == CGFloat.infinity ? 0 : frame.origin.x
+            self.imageScrollViewOriginY.constant = frame.origin.y == CGFloat.infinity ? 0 : frame.origin.y
+            self.imageScrollViewWidth.constant = frame.size.width
+            self.imageScrollViewHeight.constant = frame.size.height
+            
         }
     }
     
@@ -77,13 +89,10 @@ class CollageCell: UIView, UIScrollViewDelegate {
     
     override func awakeFromNib() {
         self.imageScrollView.delegate = self
+//        self.imageScrollView.frame = CGRectInset(self.bounds, CollageCell.BORDER_WIDTH, CollageCell.BORDER_WIDTH)
+//        
         let imageView = UIImageView(frame: self.bounds)
-        
         imageView.contentMode = UIViewContentMode.ScaleAspectFill
-        self.imageScrollView.frame = CGRectInset(self.bounds, CollageCell.BORDER_WIDTH, CollageCell.BORDER_WIDTH)
-        self.imageScrollView.subviews.forEach { (view) in
-            view.removeFromSuperview()
-        }
         self.imageScrollView.addSubview(imageView)
         self.imageView = imageView
     }

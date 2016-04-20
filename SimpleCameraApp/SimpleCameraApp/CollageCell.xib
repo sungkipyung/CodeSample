@@ -15,16 +15,20 @@
                     <rect key="frame" x="0.0" y="0.0" width="385" height="278"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.5" maximumZoomScale="2" translatesAutoresizingMaskIntoConstraints="NO" id="zJE-vB-J9K">
-                    <rect key="frame" x="0.0" y="0.0" width="242" height="155"/>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.5" maximumZoomScale="2" translatesAutoresizingMaskIntoConstraints="NO" id="zJE-vB-J9K">
+                    <rect key="frame" x="57" y="34" width="271" height="211"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="271" id="Lkr-3p-uV5"/>
+                        <constraint firstAttribute="height" constant="211" id="eTd-Th-Nv0"/>
+                    </constraints>
                 </scrollView>
                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pZ6-bR-iux" userLabel="LineView">
                     <rect key="frame" x="0.0" y="0.0" width="385" height="278"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="7nL-t0-RXq" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="1kP-Le-hNZ"/>
                 <constraint firstItem="7nL-t0-RXq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="2pu-ho-e2K"/>
@@ -33,13 +37,19 @@
                 <constraint firstItem="pZ6-bR-iux" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="G7Z-zU-jNe"/>
                 <constraint firstAttribute="trailing" secondItem="pZ6-bR-iux" secondAttribute="trailing" id="GGi-SD-tTa"/>
                 <constraint firstAttribute="bottom" secondItem="7nL-t0-RXq" secondAttribute="bottom" id="LKz-nx-xtb"/>
+                <constraint firstItem="zJE-vB-J9K" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="57" id="NAa-TH-5G2"/>
                 <constraint firstAttribute="bottom" secondItem="pZ6-bR-iux" secondAttribute="bottom" id="NJf-to-0sT"/>
+                <constraint firstItem="zJE-vB-J9K" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="34" id="snq-EH-9pf"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="cameraPreview" destination="7nL-t0-RXq" id="hmU-7W-tzM"/>
                 <outlet property="imageScrollView" destination="zJE-vB-J9K" id="zvA-lm-o8Q"/>
+                <outlet property="imageScrollViewHeight" destination="eTd-Th-Nv0" id="yAm-AZ-y5d"/>
+                <outlet property="imageScrollViewOriginX" destination="NAa-TH-5G2" id="xhu-TT-YFr"/>
+                <outlet property="imageScrollViewOriginY" destination="snq-EH-9pf" id="x3a-KE-5Qo"/>
+                <outlet property="imageScrollViewWidth" destination="Lkr-3p-uV5" id="pdA-o7-tBu"/>
                 <outlet property="lineView" destination="pZ6-bR-iux" id="eRG-H3-fqN"/>
             </connections>
             <point key="canvasLocation" x="237.5" y="369"/>

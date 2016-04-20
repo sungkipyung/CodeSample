@@ -134,7 +134,7 @@ class CollageView: UIView {
         weak var weakSelf = self
         if var axisLayout = layout as? AxisLayout {
             for (index, grapPoint) in grapPoints.enumerate() {
-                let button: LayoutGripView = LayoutGripView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 40, height: 40)))
+                let button: LayoutGripView = LayoutGripView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 20, height: 20)))
                 
                 button.center = CollageView.scalePoint(grapPoint.CGPointValue(), frame:self.bounds)
                 button.backgroundColor = UIColor.orangeColor()
@@ -150,12 +150,6 @@ class CollageView: UIView {
         }
         
         applyCellPath(layout, collageCells:collageCells, cellGrapButtons: cellGrapButtons)
-        
-        let colors = [UIColor.blueColor(), UIColor.redColor(), UIColor.yellowColor(), UIColor.whiteColor(), UIColor.greenColor(), UIColor.grayColor(), UIColor.orangeColor(), UIColor.magentaColor(), UIColor.cyanColor()]
-        
-        for (index, collageCell) in collageCells.enumerate() {
-            collageCell.backgroundColor = colors[index]
-        }
     }
     
     private func applyCellPath(layout:Layout, collageCells:[CollageCell], cellGrapButtons:[LayoutGripView]) {

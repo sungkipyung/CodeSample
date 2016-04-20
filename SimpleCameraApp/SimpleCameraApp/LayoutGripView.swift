@@ -23,12 +23,21 @@ class LayoutGripView: UIView {
     }
     */
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.layer.cornerRadius = min(frame.width, frame.height) / 2
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         originalPosition = self.center
         if let position:CGPoint = touches.first?.locationInView(self.superview)  {
             touchOffset = position
         }
+        self.alpha = 0.8
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -40,7 +49,7 @@ class LayoutGripView: UIView {
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        
+        self.alpha = 1.0
     }
     
     override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {

@@ -10,9 +10,15 @@ import UIKit
 
 class CollageViewController: UIViewController {
 
+    @IBOutlet weak var collageView: CollageView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        UIGraphicsBeginImageContext(self.collageView.frame.size);
+        UIImage(named: "pattern-7.png")?.drawInRect(self.collageView.bounds)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        self.collageView.backgroundColor = UIColor(patternImage: image)
         // Do any additional setup after loading the view.
     }
     
