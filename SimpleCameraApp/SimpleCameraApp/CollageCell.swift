@@ -17,26 +17,31 @@ class CollageCell: UIView, UIScrollViewDelegate {
 //    @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var cameraPreview: CameraPreview!
     @IBOutlet weak var imageScrollView: UIScrollView!
-    @IBOutlet weak var imageView: UIImageView!
+    weak var imageView: UIImageView!
     @IBOutlet weak var lineView: UIView!
+    private static let BORDER_WIDTH:CGFloat = 0
     
     var shapeLayerPath: UIBezierPath? {
         didSet (newLayer) {
             let shapeLayerPath = self.shapeLayerPath!
+            let path = shapeLayerPath.CGPath
+            
             let mask: CAShapeLayer = CAShapeLayer()
-            mask.path = shapeLayerPath.CGPath
+            mask.path = path
             self.layer.mask = mask
             
             self.lineView.layer.sublayers?.forEach({ (sublayer) in
                 sublayer.removeFromSuperlayer()
             })
             let line = CAShapeLayer.init()
-            line.path = shapeLayerPath.CGPath
+            line.path = path
             line.lineDashPattern = [8, 8]
             line.lineWidth = 2
             line.fillColor = UIColor.clearColor().CGColor
             line.strokeColor = UIColor.whiteColor().CGColor
             self.lineView.layer.addSublayer(line)
+            
+            self.imageScrollView.frame = CGRectInset(CGPathGetPathBoundingBox(path), CollageCell.BORDER_WIDTH, CollageCell.BORDER_WIDTH)
         }
     }
     
@@ -72,6 +77,15 @@ class CollageCell: UIView, UIScrollViewDelegate {
     
     override func awakeFromNib() {
         self.imageScrollView.delegate = self
+        let imageView = UIImageView(frame: self.bounds)
+        
+        imageView.contentMode = UIViewContentMode.ScaleAspectFill
+        self.imageScrollView.frame = CGRectInset(self.bounds, CollageCell.BORDER_WIDTH, CollageCell.BORDER_WIDTH)
+        self.imageScrollView.subviews.forEach { (view) in
+            view.removeFromSuperview()
+        }
+        self.imageScrollView.addSubview(imageView)
+        self.imageView = imageView
     }
 
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {

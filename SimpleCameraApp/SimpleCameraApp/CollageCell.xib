@@ -15,53 +15,34 @@
                     <rect key="frame" x="0.0" y="0.0" width="385" height="278"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zJE-vB-J9K">
-                    <rect key="frame" x="0.0" y="0.0" width="385" height="278"/>
-                    <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="m2z-4P-kVb">
-                            <rect key="frame" x="0.0" y="0.0" width="385" height="278"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        </imageView>
-                    </subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.5" maximumZoomScale="2" translatesAutoresizingMaskIntoConstraints="NO" id="zJE-vB-J9K">
+                    <rect key="frame" x="0.0" y="0.0" width="242" height="155"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="m2z-4P-kVb" firstAttribute="height" secondItem="zJE-vB-J9K" secondAttribute="height" id="LbN-g0-GfW"/>
-                        <constraint firstAttribute="bottom" secondItem="m2z-4P-kVb" secondAttribute="bottom" id="h2t-51-QpX"/>
-                        <constraint firstAttribute="trailing" secondItem="m2z-4P-kVb" secondAttribute="trailing" id="hQW-zH-wef"/>
-                        <constraint firstItem="m2z-4P-kVb" firstAttribute="leading" secondItem="zJE-vB-J9K" secondAttribute="leading" id="uYa-1w-kec"/>
-                        <constraint firstItem="m2z-4P-kVb" firstAttribute="width" secondItem="zJE-vB-J9K" secondAttribute="width" id="ve4-Fm-HiM"/>
-                        <constraint firstItem="m2z-4P-kVb" firstAttribute="top" secondItem="zJE-vB-J9K" secondAttribute="top" id="xJC-r3-OBg"/>
-                    </constraints>
                 </scrollView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pZ6-bR-iux" userLabel="LineView">
+                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pZ6-bR-iux" userLabel="LineView">
                     <rect key="frame" x="0.0" y="0.0" width="385" height="278"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="zJE-vB-J9K" secondAttribute="bottom" id="0Kr-mI-EiL"/>
                 <constraint firstItem="7nL-t0-RXq" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="1kP-Le-hNZ"/>
                 <constraint firstItem="7nL-t0-RXq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="2pu-ho-e2K"/>
-                <constraint firstItem="zJE-vB-J9K" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="6jq-tC-rJj"/>
                 <constraint firstAttribute="trailing" secondItem="7nL-t0-RXq" secondAttribute="trailing" id="AgF-nL-dXt"/>
                 <constraint firstItem="pZ6-bR-iux" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Cjx-BZ-ybB"/>
                 <constraint firstItem="pZ6-bR-iux" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="G7Z-zU-jNe"/>
                 <constraint firstAttribute="trailing" secondItem="pZ6-bR-iux" secondAttribute="trailing" id="GGi-SD-tTa"/>
                 <constraint firstAttribute="bottom" secondItem="7nL-t0-RXq" secondAttribute="bottom" id="LKz-nx-xtb"/>
                 <constraint firstAttribute="bottom" secondItem="pZ6-bR-iux" secondAttribute="bottom" id="NJf-to-0sT"/>
-                <constraint firstAttribute="trailing" secondItem="zJE-vB-J9K" secondAttribute="trailing" id="mPw-Bd-aUo"/>
-                <constraint firstItem="zJE-vB-J9K" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="qql-qz-QX7"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="cameraPreview" destination="7nL-t0-RXq" id="hmU-7W-tzM"/>
                 <outlet property="imageScrollView" destination="zJE-vB-J9K" id="zvA-lm-o8Q"/>
-                <outlet property="imageView" destination="m2z-4P-kVb" id="mmU-Dr-N23"/>
                 <outlet property="lineView" destination="pZ6-bR-iux" id="eRG-H3-fqN"/>
             </connections>
-            <point key="canvasLocation" x="117.5" y="289"/>
+            <point key="canvasLocation" x="237.5" y="369"/>
         </view>
     </objects>
 </document>
