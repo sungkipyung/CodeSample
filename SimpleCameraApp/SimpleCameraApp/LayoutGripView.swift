@@ -8,7 +8,8 @@
 
 import UIKit
 
-typealias LayoutGripViewDidChangeLocation = (view:LayoutGripView, origin:CGPoint) -> (Void)
+//typealias LayoutGripViewDidChangeLocation = (view:LayoutGripView, origin:CGPoint) -> (Void)
+typealias LayoutGripViewDidChangeLocation = (view: LayoutGripView, originalPosition: CGPoint, incX: CGFloat, incY: CGFloat) -> (Void)
 
 class LayoutGripView: UIView {
     private var originalPosition: CGPoint?
@@ -44,7 +45,8 @@ class LayoutGripView: UIView {
         if let loc:CGPoint = touches.first!.locationInView(self.superview) {
             let deltaX = loc.x - self.touchOffset!.x
             let deltaY = loc.y - self.touchOffset!.y
-            self.onChangeLocation?(view: self, origin: CGPoint(x: self.originalPosition!.x + deltaX, y: self.originalPosition!.y + deltaY))
+            self.onChangeLocation?(view: self, originalPosition:self.originalPosition!, incX: deltaX, incY: deltaY)
+//            self.onChangeLocation?(view: self, origin: CGPoint(x: self.originalPosition!.x + deltaX, y: self.originalPosition!.y + deltaY))
         }
     }
     

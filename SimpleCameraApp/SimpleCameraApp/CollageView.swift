@@ -13,6 +13,8 @@ import UIKit
  */
 
 class CollageView: UIView {
+    // layout
+    // selected images
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,88 +39,7 @@ class CollageView: UIView {
 //        }
         
         // Complex axis layout Example
-        
-        let vs:[CGFloat] = [1/3.0, 2/3.0, 1/3.0, 2/3.0,
-                  2/3.0, 1/3.0, 2/3.0, 1/3.0]
-        
-        let axisLayout = AxisLayout(cellCount: 9
-            , vs: vs
-            , originalVS: vs
-            , grapPoints: { (vs:[CGFloat]) -> [NSValue] in
-                return [
-                    PointObj(vs[0], y:vs[7]*0.5),
-                    PointObj(vs[1], y:vs[3]*0.75),
-                    
-                    PointObj(0.5 * (1 + vs[1]), y:vs[2]),
-                    PointObj(0.25 * (1 + 3 * vs[5]), y:vs[3]),
-                    
-                    PointObj(vs[4], y:(1 + vs[3]) / 2),
-                    PointObj(vs[5], y:(1 + 3 * vs[7]) * 0.25),
-                    
-                    PointObj(0.5 * vs[5], y:vs[6]),
-                    PointObj(3/4*vs[1], y:vs[7])
-                ]
-            }
-            , grapPointsChangeHandlers: [
-                // g0
-                { (point, vs) in var newVS = Array.init(vs)
-                    newVS[0] = max(min(point.x, vs[1]), 0)
-                    return newVS
-                },
-                // g1
-                { (point, vs) in var newVS = Array.init(vs)
-                    newVS[1] = max(min(point.x, 1), max(vs[0], vs[5]))
-                    return newVS
-                },
-                // g2
-                { (point, vs) in var newVS = Array.init(vs)
-                    newVS[2] = max(min(point.y, vs[3]), 0)
-                    return newVS
-                },
-                // g3
-                { (point, vs) in var newVS = Array.init(vs)
-                    newVS[3] = max(min(point.y, 1), max(vs[7], vs[2]))
-                    return newVS
-                },
-                // g4
-                { (point, vs) in var newVS = Array.init(vs)
-                    newVS[4] = max(min(point.x, 1), vs[5])
-                    return newVS
-                },
-                // g5
-                { (point, vs) in var newVS = Array.init(vs)
-                    newVS[5] = min(max(point.x, 0), min(vs[1], vs[4]))
-                    return newVS
-                },
-                // g6
-                { (point, vs) in var newVS = Array.init(vs)
-                    newVS[6] = max(min(point.y, 1), vs[7])
-                    return newVS
-                },
-                // g7
-                { (point, vs) in var newVS = Array.init(vs)
-                    newVS[7] = min(max(point.y, 0), min(vs[6], vs[3]))
-                    return newVS
-                },
-            ]
-            , points: { (vs:[CGFloat]) -> [UnitPolygon] in
-                return [
-                    [PointObj(0, y:0), PointObj(vs[0], y:0), PointObj(vs[0], y:vs[7]), PointObj(0, y:vs[7]), PointObj(0, y:0)], // 0
-                    [PointObj(vs[0], y:0), PointObj(vs[1], y:0), PointObj(vs[1], y:vs[7]), PointObj(vs[0], y:vs[7]), PointObj(vs[0], y:0)], // 1
-                    [PointObj(vs[1], y:0), PointObj(1, y:0), PointObj(1, y:vs[2]), PointObj(vs[1], y:vs[2]), PointObj(vs[1], y:0)], // 2
-                    [PointObj(vs[1], y:vs[2]), PointObj(1, y:vs[2]), PointObj(1, y:vs[3]), PointObj(vs[1], y:vs[3]), PointObj(vs[1], y:vs[2])], // 3
-                    
-                    [PointObj(vs[4], y:vs[3]), PointObj(1, y:vs[3]), PointObj(1, y:1), PointObj(vs[4], y:1), PointObj(vs[4], y:vs[3])], // 4
-                    [PointObj(vs[5], y:vs[3]), PointObj(vs[4], y:vs[3]), PointObj(vs[4], y:1), PointObj(vs[5], y:1), PointObj(vs[5], y:vs[3])], // 5
-                    [PointObj(0, y:vs[6]), PointObj(vs[5], y:vs[6]), PointObj(vs[5], y:1), PointObj(0, y:1), PointObj(0, y:vs[6])], // 6
-                    
-                    [PointObj(0, y:vs[7]), PointObj(vs[5], y:vs[7]), PointObj(vs[5], y:vs[6]), PointObj(0, y:vs[6]), PointObj(0, y:vs[7])], // 7
-                    
-                    [PointObj(vs[5], y:vs[7]), PointObj(vs[1], y:vs[7]), PointObj(vs[1], y:vs[3]), PointObj(vs[5], y:vs[3]), PointObj(vs[5], y:vs[7])], // 8
-                ]
-        })
-        
-        let layout = axisLayout
+        let layout = LayoutFactory.sharedInstance.getLayout(0, limit: 1)![0]
         
         let collageCells = createCollageCells(layout.numberOfCells())
         
@@ -132,22 +53,45 @@ class CollageView: UIView {
         var cellGrapButtons:[LayoutGripView] = []
         
         weak var weakSelf = self
-        if var axisLayout = layout as? AxisLayout {
+        
+        if var normalLayout = layout as? NormalLayout {
             for (index, grapPoint) in grapPoints.enumerate() {
                 let button: LayoutGripView = LayoutGripView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 20, height: 20)))
-                
+
                 button.center = CollageView.scalePoint(grapPoint.CGPointValue(), frame:self.bounds)
                 button.backgroundColor = UIColor.orangeColor()
-                
-                button.onChangeLocation = {(view:LayoutGripView, origin: CGPoint) -> (Void) in
-                    axisLayout.vs = axisLayout.changeGrapPoints(index, point: CGPointMake(origin.x / self.frame.size.width, origin.y / self.frame.size.height))
-                    weakSelf?.applyCellPath(axisLayout, collageCells:collageCells, cellGrapButtons: cellGrapButtons)
+
+                button.onChangeLocation = {(view:LayoutGripView, originalPosition: CGPoint, incX: CGFloat, incY: CGFloat) -> (Void) in
+                    let unitX = (originalPosition.x + incX) / self.frame.size.width
+                    let unitY = (originalPosition.y + incY) / self.frame.size.height
+                    
+                    let xyArrayTubple: ([CGFloat], [CGFloat]) = normalLayout.changeGrapPoints(index, unitPoint: CGPoint(x: unitX, y: unitY))
+                    normalLayout.xs = xyArrayTubple.0
+                    normalLayout.ys = xyArrayTubple.1
+//                    axisLayout.vs = normalLayout.changeGrapPoints(index, unitPoint: CGPointMake(origin.x / self.frame.size.width, origin.y / self.frame.size.height))
+                    weakSelf?.applyCellPath(normalLayout, collageCells:collageCells, cellGrapButtons: cellGrapButtons)
                 }
                 
                 cellGrapButtons.append(button)
                 self.addSubview(button)
             }
         }
+//        if var axisLayout = layout as? AxisLayout {
+//            for (index, grapPoint) in grapPoints.enumerate() {
+//                let button: LayoutGripView = LayoutGripView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 20, height: 20)))
+//                
+//                button.center = CollageView.scalePoint(grapPoint.CGPointValue(), frame:self.bounds)
+//                button.backgroundColor = UIColor.orangeColor()
+//                
+//                button.onChangeLocation = {(view:LayoutGripView, origin: CGPoint) -> (Void) in
+//                    axisLayout.vs = axisLayout.changeGrapPoints(index, unitPoint: CGPointMake(origin.x / self.frame.size.width, origin.y / self.frame.size.height))
+//                    weakSelf?.applyCellPath(axisLayout, collageCells:collageCells, cellGrapButtons: cellGrapButtons)
+//                }
+//                
+//                cellGrapButtons.append(button)
+//                self.addSubview(button)
+//            }
+//        }
         
         applyCellPath(layout, collageCells:collageCells, cellGrapButtons: cellGrapButtons)
     }

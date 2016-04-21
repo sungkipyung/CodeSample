@@ -25,7 +25,7 @@ class CollageCell: UIView, UIScrollViewDelegate {
     
     weak var imageView: UIImageView!
     @IBOutlet weak var lineView: UIView!
-    private static let BORDER_WIDTH:CGFloat = 10
+    private static let BORDER_WIDTH:CGFloat = 0
     
     var shapeLayerPath: UIBezierPath? {
         didSet (newLayer) {

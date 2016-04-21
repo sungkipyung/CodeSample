@@ -15,7 +15,7 @@ class CollageViewController: UIViewController {
         super.viewDidLoad()
 
         UIGraphicsBeginImageContext(self.collageView.frame.size);
-        UIImage(named: "pattern-7.png")?.drawInRect(self.collageView.bounds)
+        UIImage(named: "pattern-repeat-4.png")?.drawInRect(self.collageView.bounds)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         self.collageView.backgroundColor = UIColor(patternImage: image)
