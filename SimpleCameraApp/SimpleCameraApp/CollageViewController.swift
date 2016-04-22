@@ -11,6 +11,13 @@ import UIKit
 class CollageViewController: UIViewController {
 
     @IBOutlet weak var collageView: CollageView!
+    
+    @IBOutlet weak var intervalControlButton: RadioButton!
+    @IBOutlet weak var intervalProgressView: UIProgressView!
+    
+    @IBOutlet weak var roundControlButton: RadioButton!
+    @IBOutlet weak var roundProgressView: UIProgressView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,6 +27,34 @@ class CollageViewController: UIViewController {
         UIGraphicsEndImageContext()
         self.collageView.backgroundColor = UIColor(patternImage: image)
         // Do any additional setup after loading the view.
+        
+        intervalControlButton.onChangeLocation = { (view: RadioButton, originalPosition: CGPoint, incX: CGFloat, incY: CGFloat) -> (Void) in
+            let buttonRadious = view.frame.size.width / 2
+            
+            let start = buttonRadious
+            let end = view.superview!.frame.size.width - buttonRadious
+            
+            view.center.x = min(max(originalPosition.x + incX, start), end)
+            
+            let progress: Float = (Float)(view.center.x - start)/(Float)(end - start)
+            
+            self.intervalProgressView.setProgress(progress, animated: false)
+        }
+        
+        roundControlButton.onChangeLocation = { (view: RadioButton, originalPosition: CGPoint, incX: CGFloat, incY: CGFloat) -> (Void) in
+            let buttonRadious = view.frame.size.width / 2
+            
+            let start = buttonRadious
+            let end = view.superview!.frame.size.width - buttonRadious
+            
+            view.center.x = min(max(originalPosition.x + incX, start), end)
+            let progress: Float = (Float)(view.center.x - start)/(Float)(end - start)
+            
+            self.roundProgressView.setProgress(progress, animated: false)
+        }
+        
+        let layout = LayoutFactory.sharedInstance.getLayout(0, limit: 1)![0]
+        collageView.layout = layout
     }
     
     override func viewDidAppear(animated: Bool) {
