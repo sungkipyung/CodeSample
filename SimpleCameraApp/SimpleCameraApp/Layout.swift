@@ -32,6 +32,8 @@ class Layout {
             updatePS()
         }
     }
+    var cornerRadius:CGFloat!
+    
     var border: CGFloat! {
         didSet {
             updatePS()
@@ -60,6 +62,7 @@ class Layout {
     
     init (
         size: CGSize
+        , cornerRadius: CGFloat
         , border: CGFloat
         , xs: [CGFloat]
         , ys:[CGFloat]
@@ -70,6 +73,7 @@ class Layout {
         , gsChangeHandlers: [GrapPointChangeHandler]) {
         
         self.size = size
+        self.cornerRadius = cornerRadius
         self.border = border
         self.cellCount = cellCount
         self.xs = xs

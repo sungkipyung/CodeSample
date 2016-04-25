@@ -85,8 +85,8 @@ class LayoutFactory: NSObject {
         
         let generatePolygons = { (ps: [CGPoint]) -> [Polygon] in
             let polygons: [Polygon] = [
-                [ps[0], ps[1], ps[2], ps[3], ps[0]],
-                [ps[4], ps[5], ps[6], ps[7], ps[4]]
+                [ps[0], ps[1], ps[2], ps[3]],
+                [ps[4], ps[5], ps[6], ps[7]]
             ]
             return polygons
         }
@@ -105,7 +105,14 @@ class LayoutFactory: NSObject {
                 return (newXS, ys)
             }
         ]
-        let layout = Layout(size: CGSize(width: 0, height: 0), border: border, xs: xs, ys: ys, generatePS: generatePS, cellCount: 2, generatePolygons: generatePolygons, generateGS: generateGS, gsChangeHandlers: gsPointChangeHandlers)
+        let layout = Layout(size: CGSize(width: 0, height: 0),
+                            cornerRadius:0,
+                            border: border,
+                            xs: xs, ys: ys, generatePS: generatePS,
+                            cellCount: 2,
+                            generatePolygons: generatePolygons,
+                            generateGS: generateGS,
+                            gsChangeHandlers: gsPointChangeHandlers)
         
         return layout
     }

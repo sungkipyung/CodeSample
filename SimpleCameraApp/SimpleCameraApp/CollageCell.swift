@@ -39,13 +39,15 @@ class CollageCell: UIView, UIScrollViewDelegate {
             self.lineView.layer.sublayers?.forEach({ (sublayer) in
                 sublayer.removeFromSuperlayer()
             })
-            let line = CAShapeLayer.init()
-            line.path = path
-            line.lineDashPattern = [8, 8]
-            line.lineWidth = 2
-            line.fillColor = UIColor.clearColor().CGColor
-            line.strokeColor = UIColor.whiteColor().CGColor
-            self.lineView.layer.addSublayer(line)
+            if (self.imageView.image == nil) {
+                let line = CAShapeLayer.init()
+                line.path = path
+                line.lineDashPattern = [8, 8]
+                line.lineWidth = 2
+                line.fillColor = UIColor.clearColor().CGColor
+                line.strokeColor = UIColor.whiteColor().CGColor
+                self.lineView.layer.addSublayer(line)
+            }
             
             let frame = CGRectInset(CGPathGetPathBoundingBox(path), CollageCell.BORDER_WIDTH, CollageCell.BORDER_WIDTH)
             

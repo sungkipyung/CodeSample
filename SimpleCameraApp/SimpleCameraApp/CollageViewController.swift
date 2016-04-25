@@ -18,6 +18,10 @@ class CollageViewController: UIViewController {
     @IBOutlet weak var roundControlButton: RadioButton!
     @IBOutlet weak var roundProgressView: UIProgressView!
     
+    @IBOutlet weak var layoutControlView: UIView!
+    private static let MAX_BORDER_WIDTH: CGFloat = 20
+    private static let MAX_CORNOR_RADIUS: CGFloat = 40
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -37,7 +41,7 @@ class CollageViewController: UIViewController {
             view.center.x = min(max(originalPosition.x + incX, start), end)
             
             let progress: Float = (Float)(view.center.x - start)/(Float)(end - start)
-            self.collageView.layout?.border = CGFloat(progress) * 20
+            self.collageView.layout?.border = CGFloat(progress) * CollageViewController.MAX_CORNOR_RADIUS
             self.intervalProgressView.setProgress(progress, animated: false)
             self.collageView.redraw()
         }
@@ -50,8 +54,9 @@ class CollageViewController: UIViewController {
             
             view.center.x = min(max(originalPosition.x + incX, start), end)
             let progress: Float = (Float)(view.center.x - start)/(Float)(end - start)
-            
+            self.collageView.layout?.cornerRadius = CGFloat(progress) * CollageViewController.MAX_CORNOR_RADIUS
             self.roundProgressView.setProgress(progress, animated: false)
+            self.collageView.redraw()
         }
         
         let layout = LayoutFactory.sharedInstance.getLayout(0, limit: 1)![0]
@@ -71,6 +76,14 @@ class CollageViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func onTouchFrameControlButton(sender: AnyObject) {
+        layoutControlView.hidden = !layoutControlView.hidden
+        if (layoutControlView.hidden) {
+            collageView.drawGrapButtons = false
+        } else {
+            collageView.drawGrapButtons = true
+        }
+    }
 
     /*
     // MARK: - Navigation

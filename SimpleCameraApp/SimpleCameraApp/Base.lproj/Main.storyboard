@@ -330,6 +330,9 @@
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="40"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="프레임 조절" image="ic_zoom_out_map"/>
+                                        <connections>
+                                            <action selector="onTouchFrameControlButton:" destination="HLN-mE-vpw" eventType="touchUpInside" id="8lS-ca-SBR"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nwu-It-7b7">
                                         <rect key="frame" x="160" y="0.0" width="160" height="40"/>
@@ -383,7 +386,7 @@
                                             <constraint firstAttribute="height" constant="288" id="LH0-SA-Fxb"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jo4-8Z-txf" userLabel="LayoutControlView">
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jo4-8Z-txf" userLabel="LayoutControlView">
                                         <rect key="frame" x="0.0" y="444" width="320" height="40"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sn0-sE-3uM" userLabel="layoutIntervalControlView">
@@ -483,6 +486,7 @@
                         <outlet property="collageView" destination="uPW-Bc-tgE" id="JWu-Vr-ViD"/>
                         <outlet property="intervalControlButton" destination="Ha4-fx-pqD" id="d8e-uk-Sfk"/>
                         <outlet property="intervalProgressView" destination="DuT-NK-fyg" id="KYZ-lb-n8K"/>
+                        <outlet property="layoutControlView" destination="Jo4-8Z-txf" id="P6k-F3-hAC"/>
                         <outlet property="roundControlButton" destination="a9H-eM-CR4" id="4N7-na-Nmy"/>
                         <outlet property="roundProgressView" destination="OrH-zI-neB" id="ZOK-QL-jgW"/>
                     </connections>
