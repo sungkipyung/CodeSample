@@ -20,92 +20,79 @@ import UIKit
     intersection of two function
     Points ref intersection
  */
-typealias UnitPolygon = [NSValue]
+typealias GeneratePS = (xs:[CGFloat], ys:[CGFloat], border: CGFloat, size: CGSize) -> [CGPoint]
+typealias Polygon = [CGPoint]
+typealias GeneratePolygons = (ps: [CGPoint]) -> [Polygon]
+typealias GenerateGS = (xs: [CGFloat], ys: [CGFloat], size: CGSize) -> [CGPoint]
+typealias GrapPointChangeHandler = (newUnitGrapPoint: CGPoint, xs: [CGFloat], ys: [CGFloat]) -> ([CGFloat], [CGFloat])
 
-protocol Layout {
-    func layout() -> [UnitPolygon]
-    func numberOfCells() -> Int
-    func getGrapPoints() -> [NSValue]
-    mutating func changeGrapPoints(index:Int, unitPoint:CGPoint) -> ([CGFloat], [CGFloat])
-//    mutating func changeGrapPoints(index:Int, oldUnitPoint:CGPoint, incX: CGFloat, incY: CGFloat) -> (xs:[CGFloat], ys:[CGFloat])
-}
-// input : variable vector
-// output : unit polygon points reference variable vector
-
-// MARK: Define AxisLayout Type
-//typealias AxisLayoutPolygons = [CGFloat] -> [UnitPolygon]
-//typealias AxisLayoutGrapPoints = [CGFloat] -> [NSValue]
-//typealias AxisLayoutGrapButtonPointChange = (CGPoint, [CGFloat]) -> [CGFloat]
-
-//struct AxisLayout {
-//    let cellCount: Int
-//    
-//    // xs, ys로 분리하는게 좀 더 이해하기 좋을 것 같습니다.
-//    var vs: [CGFloat]
-//    
-//    let originalVS:[CGFloat]
-//    var grapPoints: AxisLayoutGrapPoints
-//    var grapPointsChangeHandlers:[AxisLayoutGrapButtonPointChange]
-//    let points:AxisLayoutPolygons
-//}
-
-//extension AxisLayout : Layout {
-//    func layout() -> [UnitPolygon] {
-//        return self.points(self.vs)
-//    }
-//    func getGrapPoints() -> [NSValue] {
-//        return self.grapPoints(self.vs)
-//    }
-//    func numberOfCells() -> Int {
-//        return cellCount
-//    }
-//    mutating func changeGrapPoints(index:Int, unitPoint:CGPoint) -> ([CGFloat], [CGFloat]) {
-//        return self.grapPointsChangeHandlers[index](unitPoint, self.vs)
-//    }
-//}
-// MARK: End define AxisLayout Type
-
-//typealias LayoutPolygons = (xs:[CGFloat], ys:[CGFloat]) -> [UnitPolygon]
-typealias LayoutPoints = (xs:[CGFloat], ys:[CGFloat]) -> [NSValue]
-typealias LayoutPolygons = (ps:[NSValue]) -> [UnitPolygon]
-typealias LayoutGrapPoints = (xs:[CGFloat], ys:[CGFloat]) -> [NSValue]
-typealias LayoutGrapPointsChangeHandler = (newUnitGrapPoint:CGPoint, xs:[CGFloat], ys:[CGFloat]) -> (xs:[CGFloat], ys:[CGFloat])
-//typealias LayoutGrapPointsChangeHandler = (oldUnitGrapPoint: CGPoint, incX: CGFloat, incY: CGFloat, xs:[CGFloat], ys:[CGFloat]) -> (xs:[CGFloat], ys:[CGFloat])
-typealias LayoutGrapPointsChangeHandlers = [LayoutGrapPointsChangeHandler]
-
-struct NormalLayout {
-    var xs: [CGFloat]
-    var ys: [CGFloat]
-    let cellCount: Int
-    // grap points
-    var gs: LayoutGrapPoints
-    var grapPointsChangeHandlers:LayoutGrapPointsChangeHandlers
-    // points
-    var ps:LayoutPoints
-    var polygons:LayoutPolygons
+class Layout {
+    var size: CGSize! {
+        didSet {
+            updatePS()
+        }
+    }
+    var border: CGFloat! {
+        didSet {
+            updatePS()
+        }
+    }
+    var xs: [CGFloat]! {
+        didSet {
+            updatePS()
+        }
+    }
+    var ys: [CGFloat]! {
+        didSet {
+            updatePS()
+        }
+    }
     
-//    private var original_xs: [CGFloat]
-//    private var original_ys: [CGFloat]
-}
+    private var ps: [CGPoint]!
+    
+    let generatePS: GeneratePS!
 
-extension NormalLayout : Layout {
-    func layout() -> [UnitPolygon] {
-        let ps = self.ps(xs: xs, ys: ys)
-        return self.polygons(ps: ps)
+    let cellCount: Int
+    let generatePolygons:GeneratePolygons!
+    // grap points
+    let generateGS:GenerateGS
+    let gsChangeHandlers: [GrapPointChangeHandler]
+    
+    init (
+        size: CGSize
+        , border: CGFloat
+        , xs: [CGFloat]
+        , ys:[CGFloat]
+        , generatePS: GeneratePS
+        , cellCount: Int
+        , generatePolygons: GeneratePolygons
+        , generateGS: GenerateGS
+        , gsChangeHandlers: [GrapPointChangeHandler]) {
+        
+        self.size = size
+        self.border = border
+        self.cellCount = cellCount
+        self.xs = xs
+        self.ys = ys
+        self.generatePS = generatePS
+        self.generatePolygons = generatePolygons
+        self.generateGS = generateGS
+        self.gsChangeHandlers = gsChangeHandlers
+        updatePS()
     }
-    func numberOfCells() -> Int {
-        return cellCount
+    private func updatePS() {
+        self.ps = self.generatePS(xs:xs, ys:ys, border: border, size: size)
     }
-    func getGrapPoints() -> [NSValue] {
-        return self.gs(xs: xs, ys: ys)
+
+    func layout() -> [Polygon] {
+        return self.generatePolygons(ps:self.ps)
+    }
+    func grapPoints() -> [CGPoint] {
+        return self.generateGS(xs: xs, ys: ys, size: size)
     }
     func changeGrapPoints(index: Int, unitPoint: CGPoint) -> ([CGFloat], [CGFloat]) {
-        return self.grapPointsChangeHandlers[index](newUnitGrapPoint: unitPoint, xs: xs, ys: ys)
+        return self.gsChangeHandlers[index](newUnitGrapPoint: unitPoint, xs: xs, ys: ys)
     }
-}
-
-struct PointLayout {
-    let cellCount: Int
 }
 
 // MARK: Utilities

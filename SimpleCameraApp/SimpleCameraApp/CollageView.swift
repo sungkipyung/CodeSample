@@ -13,63 +13,51 @@ import UIKit
  */
 
 class CollageView: UIView {
+    var collageCells: [CollageCell]!
+    var cellGrapButtons: [LayoutGripView]!
+    
     // layout
-    var layout: Layout? {
+    var layout: Layout! {
         didSet(newLayout) {
             let layout: Layout = self.layout!
-            let collageCells = createCollageCells(layout.numberOfCells())
+            layout.size = self.bounds.size
+            let collageCells = createCollageCells(layout.cellCount)
             
             // add cells
             for collageCell in collageCells {
                 self.addSubview(collageCell)
             }
+            self.collageCells = collageCells
             
-            let grapPoints = layout.getGrapPoints()
+            let grapPoints = layout.grapPoints()
             
             var cellGrapButtons:[LayoutGripView] = []
             
             weak var weakSelf = self
             
-            if var normalLayout = layout as? NormalLayout {
-                for (index, grapPoint) in grapPoints.enumerate() {
-                    let button: LayoutGripView = LayoutGripView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 20, height: 20)))
-                    
-                    button.center = CollageView.scalePoint(grapPoint.CGPointValue(), frame:self.bounds)
-                    button.backgroundColor = UIColor.orangeColor()
-                    
-                    button.onChangeLocation = {(view:LayoutGripView, originalPosition: CGPoint, incX: CGFloat, incY: CGFloat) -> (Void) in
+            for (index, grapPoint) in grapPoints.enumerate() {
+                let button: LayoutGripView = LayoutGripView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 20, height: 20)))
+                button.center = grapPoint
+                button.backgroundColor = UIColor.orangeColor()
+                
+                button.onChangeLocation = {(view:LayoutGripView, originalPosition: CGPoint, incX: CGFloat, incY: CGFloat) -> (Void) in
+                    if let s_self = weakSelf {
                         let unitX = (originalPosition.x + incX) / self.frame.size.width
                         let unitY = (originalPosition.y + incY) / self.frame.size.height
                         
-                        let xyArrayTubple: ([CGFloat], [CGFloat]) = normalLayout.changeGrapPoints(index, unitPoint: CGPoint(x: unitX, y: unitY))
-                        normalLayout.xs = xyArrayTubple.0
-                        normalLayout.ys = xyArrayTubple.1
-                        //                    axisLayout.vs = normalLayout.changeGrapPoints(index, unitPoint: CGPointMake(origin.x / self.frame.size.width, origin.y / self.frame.size.height))
-                        weakSelf?.applyCellPath(normalLayout, collageCells:collageCells, cellGrapButtons: cellGrapButtons)
+                        let xyArrayTubple: ([CGFloat], [CGFloat]) = layout.changeGrapPoints(index, unitPoint: CGPoint(x: unitX, y: unitY))
+                        layout.xs = xyArrayTubple.0
+                        layout.ys = xyArrayTubple.1
+                        s_self.applyCellPath()
                     }
-                    
-                    cellGrapButtons.append(button)
-                    self.addSubview(button)
                 }
+                
+                cellGrapButtons.append(button)
+                self.addSubview(button)
             }
-            //        if var axisLayout = layout as? AxisLayout {
-            //            for (index, grapPoint) in grapPoints.enumerate() {
-            //                let button: LayoutGripView = LayoutGripView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 20, height: 20)))
-            //
-            //                button.center = CollageView.scalePoint(grapPoint.CGPointValue(), frame:self.bounds)
-            //                button.backgroundColor = UIColor.orangeColor()
-            //
-            //                button.onChangeLocation = {(view:LayoutGripView, origin: CGPoint) -> (Void) in
-            //                    axisLayout.vs = axisLayout.changeGrapPoints(index, unitPoint: CGPointMake(origin.x / self.frame.size.width, origin.y / self.frame.size.height))
-            //                    weakSelf?.applyCellPath(axisLayout, collageCells:collageCells, cellGrapButtons: cellGrapButtons)
-            //                }
-            //                
-            //                cellGrapButtons.append(button)
-            //                self.addSubview(button)
-            //            }
-            //        }
+            self.cellGrapButtons = cellGrapButtons
             
-            applyCellPath(layout, collageCells:collageCells, cellGrapButtons: cellGrapButtons)
+            applyCellPath()
         }
     }
     // selected images
@@ -98,10 +86,18 @@ class CollageView: UIView {
         
     }
     
-    private func applyCellPath(layout:Layout, collageCells:[CollageCell], cellGrapButtons:[LayoutGripView]) {
-        let polygons: [UnitPolygon] = layout.layout()
-        let collageCellPaths = CollageView.generateCollageCellPath(polygons, view: self)
-        let grapButtonPoints = layout.getGrapPoints()
+    func redraw() {
+        applyCellPath()
+    }
+    
+    private func applyCellPath() {
+        let layout = self.layout!
+        let collageCells = self.collageCells
+        let cellGrapButtons = self.cellGrapButtons
+        
+        let polygons: [Polygon] = layout.layout()
+        let collageCellPaths = CollageView.generateCollageCellPath(polygons)
+        let grapButtonPoints = layout.grapPoints()
 //
         // add cells
         for (index, collageCell) in collageCells.enumerate() {
@@ -109,7 +105,7 @@ class CollageView: UIView {
         }
         
         for (index, grapButton) in cellGrapButtons.enumerate() {
-            grapButton.center = CollageView.scalePoint(grapButtonPoints[index].CGPointValue(), frame:self.bounds)
+            grapButton.center = grapButtonPoints[index]
         }
     }
     
@@ -133,13 +129,13 @@ class CollageView: UIView {
     }
     
     // MARK: Static
-    private static func generateCollageCellPath(polygons: [UnitPolygon], view:UIView) -> Array<UIBezierPath> {
+    private static func generateCollageCellPath(polygons: [Polygon]) -> Array<UIBezierPath> {
         var collageCellPaths: Array<UIBezierPath> = []
         for polygon in polygons {
             let path: UIBezierPath = UIBezierPath.init()
             
             for (index, value) in polygon.enumerate() {
-                let newPoint = CollageView.scalePoint(value.CGPointValue(), frame:view.bounds)
+                let newPoint = value
                 
                 if (index == 0) {
                     path.moveToPoint(newPoint)
@@ -152,27 +148,6 @@ class CollageView: UIView {
         }
         
         return collageCellPaths
-    }
-    
-    private static func frameFromUnitPolygon(frame:CGRect, unitPolygon:UnitPolygon) -> CGRect {
-        var minX = CGFloat.max
-        var minY = CGFloat.max
-        var maxX = CGFloat.min
-        var maxY = CGFloat.min
-        
-        unitPolygon.forEach { (value) in
-            let point = value.CGPointValue()
-            minX = min(minX, point.x)
-            minY = min(minY, point.y)
-            
-            maxX = max(maxX, point.x)
-            maxY = max(maxY, point.y)
-        }
-        
-        let width = frame.size.width
-        let height = frame.size.height
-        
-        return CGRect(x: minX * width, y: minY * height, width: (maxX - minX) * width, height: (maxY - minY) * height)
     }
     
     private static func scalePoint(point: CGPoint, frame:CGRect) -> CGPoint {

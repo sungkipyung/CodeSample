@@ -37,8 +37,9 @@ class CollageViewController: UIViewController {
             view.center.x = min(max(originalPosition.x + incX, start), end)
             
             let progress: Float = (Float)(view.center.x - start)/(Float)(end - start)
-            
+            self.collageView.layout?.border = CGFloat(progress) * 20
             self.intervalProgressView.setProgress(progress, animated: false)
+            self.collageView.redraw()
         }
         
         roundControlButton.onChangeLocation = { (view: RadioButton, originalPosition: CGPoint, incX: CGFloat, incY: CGFloat) -> (Void) in

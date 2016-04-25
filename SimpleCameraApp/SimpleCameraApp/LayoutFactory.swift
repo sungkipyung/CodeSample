@@ -8,6 +8,34 @@
 
 import UIKit
 
+
+extension CGPoint {
+    func midOfPoint(other: CGPoint) -> CGPoint{
+        return CGPoint(x: 0.5 * (x + other.x), y: 0.5 * (y + other.y))
+    }
+}
+func applyBoder(p: CGPoint, midPoint: CGPoint, border: CGFloat) -> CGPoint {
+    var newP:CGPoint = CGPoint(x: 0, y: 0)
+    
+    if p.x < midPoint.x {
+        let dx = max(midPoint.x - p.x - border, 0)
+        newP.x = midPoint.x - dx
+    } else {
+        let dx = max(p.x - midPoint.x - border, 0)
+        newP.x = midPoint.x + dx
+    }
+    
+    if (p.y < midPoint.y) {
+        let dy = max(midPoint.y - p.y - border, 0)
+        newP.y = midPoint.y - dy
+    } else {
+        let dy = max(p.y - midPoint.y - border, 0)
+        newP.y = midPoint.y + dy
+    }
+    
+    return newP
+
+}
 class LayoutFactory: NSObject {
     static let sharedInstance = LayoutFactory()
     
@@ -18,162 +46,68 @@ class LayoutFactory: NSObject {
         var layoutArray: [Layout] = []
         
         layoutArray.append(normalLayout())
-        layoutArray.append(axisLayout())
         
         self.layouts = layoutArray
     }
     
-    private func normalLayout() -> NormalLayout {
-        let xs: [CGFloat] = [0.0, 1.0]
-        let ys: [CGFloat] = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
-        let cellCount = 3
-        let gs:LayoutGrapPoints = { (xs, ys) -> [NSValue] in
-            var newGS:[NSValue] = []
-            newGS.append(PointObj((xs[0] + xs[1]) / 2, y: (ys[1] + ys[2]) / 2))
-            newGS.append(PointObj((xs[0] + xs[1]) / 2, y: (ys[3] + ys[4]) / 2))
-            return newGS
+    private func normalLayout() -> Layout {
+        
+        let xs: [CGFloat] = [0.0, 0.5, 1.0]
+        let ys: [CGFloat] = [0.0, 1.0]
+        
+        let generatePS = { (xs: [CGFloat], ys : [CGFloat], border: CGFloat, size: CGSize) -> [CGPoint] in
+            let w = size.width
+            let h = size.height
+            let b = border
+            let hb = border * 0.5
+            
+            let p0 = CGPoint(x:xs[0] * w + b, y:ys[0] * h + b)
+            var p1 = CGPoint(x:xs[1] * w - hb, y:ys[0] * h + b)
+            var p2 = CGPoint(x:xs[1] * w - hb, y:ys[1] * h - b)
+            let p3 = CGPoint(x:xs[0] * w + b, y:ys[1] * h - b)
+            
+            var p4 = CGPoint(x:xs[1] * w + hb, y:ys[0] * h + b)
+            let p5 = CGPoint(x:xs[2] * w - b, y:ys[0] * h + b)
+            let p6 = CGPoint(x:xs[2] * w - b, y:ys[1] * h - b)
+            var p7 = CGPoint(x:xs[1] * w + hb, y:ys[1] * h - b)
+            
+            
+            p1.x = min(max(p0.x, p1.x), p5.x)
+            p2.x = min(max(p3.x, p2.x), p6.x)
+            
+            p4.x = max(min(p4.x, p5.x), p0.x)
+            p7.x = max(min(p7.x, p6.x), p3.x)
+            
+            return [
+                p0, p1, p2, p3, p4, p5, p6, p7
+            ]
         }
-        let grapPointsChangeHandlers:LayoutGrapPointsChangeHandlers = [
-            // g0 changed
-            // LayoutGrapPointsChangeHandler
-            { (newUnitGrapPoint:CGPoint, xs: [CGFloat], ys: [CGFloat]) -> (xs: [CGFloat], ys: [CGFloat]) in
-                var newYS = Array(ys)
-                let gs:[NSValue] = gs(xs: xs, ys: ys)
-                
-                // 0 < newUnitGrapPoint.y < gs[1].CGPointValue().y
-                let newUnitGrapPointY = min(max(newUnitGrapPoint.y, 0), gs[1].CGPointValue().y)
-                
-                newYS[1] = newUnitGrapPointY - 0.1
-                newYS[2] = newUnitGrapPointY + 0.1
-                
-                return (xs:xs, ys:newYS)
-            },
-            // g1 changed
-            { (newUnitGrapPoint:CGPoint, xs: [CGFloat], ys: [CGFloat]) -> (xs: [CGFloat], ys: [CGFloat]) in
-                var newYS: [CGFloat] = Array(ys)
-                let gs:[NSValue] = gs(xs: xs, ys: ys)
-                
-                // gs[0].CGPointValue().y < newUnitGrapPoint.y < 1
-                let newUnitGrapPointY = min(max(newUnitGrapPoint.y, gs[0].CGPointValue().y), 1)
-                
-                newYS[3] = newUnitGrapPointY - 0.1
-                newYS[4] = newUnitGrapPointY + 0.1
-                
-                return (xs:xs, ys:newYS)
+        
+        let generatePolygons = { (ps: [CGPoint]) -> [Polygon] in
+            let polygons: [Polygon] = [
+                [ps[0], ps[1], ps[2], ps[3], ps[0]],
+                [ps[4], ps[5], ps[6], ps[7], ps[4]]
+            ]
+            return polygons
+        }
+        
+        let generateGS = { (xs: [CGFloat], ys: [CGFloat], size: CGSize) -> [CGPoint] in
+            return [
+                CGPoint(x: size.width * xs[1], y: 0.5 * size.height) // g0
+            ]
+        }
+        
+        let border: CGFloat = 0
+        let gsPointChangeHandlers: [GrapPointChangeHandler] = [
+            { (newUnitGrapPoint: CGPoint, xs: [CGFloat], ys: [CGFloat]) -> ([CGFloat], [CGFloat]) in
+                var newXS: [CGFloat] = Array(xs)
+                newXS[1] = min(max(newUnitGrapPoint.x, xs[0]), xs[2])
+                return (newXS, ys)
             }
         ]
-        let ps:LayoutPoints = { (xs, ys) -> [NSValue] in
-            var newPS:[NSValue] = []
-            newPS.append(PointObj(xs[0], y: ys[0])) // p0
-            newPS.append(PointObj(xs[1], y: ys[0])) // p1
-            newPS.append(PointObj(xs[1], y: ys[2])) // p2
-            newPS.append(PointObj(xs[0], y: ys[1])) // p3
-            
-            newPS.append(PointObj(xs[0], y: ys[1])) // p4
-            newPS.append(PointObj(xs[1], y: ys[2])) // p5
-            newPS.append(PointObj(xs[1], y: ys[4])) // p6
-            newPS.append(PointObj(xs[0], y: ys[3])) // p7
-            
-            newPS.append(PointObj(xs[0], y: ys[3])) // p8
-            newPS.append(PointObj(xs[1], y: ys[4])) // p9
-            newPS.append(PointObj(xs[1], y: ys[5])) // p10
-            newPS.append(PointObj(xs[0], y: ys[5])) // p11
-            
-            return newPS
-        }
-        let polygons:LayoutPolygons = { (ps) -> [UnitPolygon] in
-            var newPolygons: [UnitPolygon] = []
-            
-            // p0 -> p1 -> p2 -> p3 -> p0
-            newPolygons.append([ps[0], ps[1], ps[2], ps[3], ps[0]])
-            // p5 -> p6 -> p7 -> p8 -> p5
-            newPolygons.append([ps[4], ps[5], ps[6], ps[7], ps[4]])
-            // p8 -> p9 -> p10 -> p11 -> p8
-            newPolygons.append([ps[8], ps[9], ps[10], ps[11], ps[8]])
-            
-            return newPolygons
-        }
-//
-        let normalLayout = NormalLayout(xs: xs, ys: ys, cellCount: cellCount, gs: gs, grapPointsChangeHandlers: grapPointsChangeHandlers, ps: ps, polygons: polygons)
-        return normalLayout
-    }
-    
-    private func axisLayout() -> NormalLayout {
-        let xs: [CGFloat] = [0, 0.2, 0.4, 0.6, 0.8, 1]
-        let ys: [CGFloat] = [0, 0.2, 0.4, 0.6, 0.8, 1]
-        let cellCount = 9
+        let layout = Layout(size: CGSize(width: 0, height: 0), border: border, xs: xs, ys: ys, generatePS: generatePS, cellCount: 2, generatePolygons: generatePolygons, generateGS: generateGS, gsChangeHandlers: gsPointChangeHandlers)
         
-        let gs:LayoutGrapPoints = { (xs, ys) -> [NSValue] in
-            var newGS:[NSValue] = []
-            newGS.append(PointObj((xs[0] + xs[1]) / 2, y: (ys[1] + ys[2]) / 2))
-            newGS.append(PointObj((xs[0] + xs[1]) / 2, y: (ys[3] + ys[4]) / 2))
-            return newGS
-        }
-        
-        
-        let grapPointsChangeHandlers:LayoutGrapPointsChangeHandlers = [
-            // g0 changed
-            // LayoutGrapPointsChangeHandler
-            { (newUnitGrapPoint:CGPoint, xs: [CGFloat], ys: [CGFloat]) -> (xs: [CGFloat], ys: [CGFloat]) in
-                var newYS = Array(ys)
-                let gs:[NSValue] = gs(xs: xs, ys: ys)
-                
-                // 0 < newUnitGrapPoint.y < gs[1].CGPointValue().y
-                let newUnitGrapPointY = min(max(newUnitGrapPoint.y, 0), gs[1].CGPointValue().y)
-                
-                newYS[1] = newUnitGrapPointY - 0.1
-                newYS[2] = newUnitGrapPointY + 0.1
-                
-                return (xs:xs, ys:newYS)
-            },
-            // g1 changed
-            { (newUnitGrapPoint:CGPoint, xs: [CGFloat], ys: [CGFloat]) -> (xs: [CGFloat], ys: [CGFloat]) in
-                var newYS: [CGFloat] = Array(ys)
-                let gs:[NSValue] = gs(xs: xs, ys: ys)
-                
-                // gs[0].CGPointValue().y < newUnitGrapPoint.y < 1
-                let newUnitGrapPointY = min(max(newUnitGrapPoint.y, gs[0].CGPointValue().y), 1)
-                
-                newYS[3] = newUnitGrapPointY - 0.1
-                newYS[4] = newUnitGrapPointY + 0.1
-                
-                return (xs:xs, ys:newYS)
-            }
-        ]
-        let ps:LayoutPoints = { (xs, ys) -> [NSValue] in
-            var newPS:[NSValue] = []
-            newPS.append(PointObj(xs[0], y: ys[0])) // p0
-            newPS.append(PointObj(xs[1], y: ys[0])) // p1
-            newPS.append(PointObj(xs[1], y: ys[2])) // p2
-            newPS.append(PointObj(xs[0], y: ys[1])) // p3
-            
-            newPS.append(PointObj(xs[0], y: ys[1])) // p4
-            newPS.append(PointObj(xs[1], y: ys[2])) // p5
-            newPS.append(PointObj(xs[1], y: ys[4])) // p6
-            newPS.append(PointObj(xs[0], y: ys[3])) // p7
-            
-            newPS.append(PointObj(xs[0], y: ys[3])) // p8
-            newPS.append(PointObj(xs[1], y: ys[4])) // p9
-            newPS.append(PointObj(xs[1], y: ys[5])) // p10
-            newPS.append(PointObj(xs[0], y: ys[5])) // p11
-            
-            return newPS
-        }
-        let polygons:LayoutPolygons = { (ps) -> [UnitPolygon] in
-            var newPolygons: [UnitPolygon] = []
-            
-            // p0 -> p1 -> p2 -> p3 -> p0
-            newPolygons.append([ps[0], ps[1], ps[2], ps[3], ps[0]])
-            // p5 -> p6 -> p7 -> p8 -> p5
-            newPolygons.append([ps[4], ps[5], ps[6], ps[7], ps[4]])
-            // p8 -> p9 -> p10 -> p11 -> p8
-            newPolygons.append([ps[8], ps[9], ps[10], ps[11], ps[8]])
-            
-            return newPolygons
-        }
-        //
-        let normalLayout = NormalLayout(xs: xs, ys: ys, cellCount: cellCount, gs: gs, grapPointsChangeHandlers: grapPointsChangeHandlers, ps: ps, polygons: polygons)
-        return normalLayout
+        return layout
     }
     
     func numberOfLayouts() -> Int {
