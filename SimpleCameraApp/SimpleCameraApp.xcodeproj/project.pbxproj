@@ -33,6 +33,9 @@
 		898B2F281CC611BF00AD764A /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 898B2F231CC611BF00AD764A /* 2.jpg */; };
 		898B2F291CC611BF00AD764A /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 898B2F241CC611BF00AD764A /* 1.jpg */; };
 		898B2F2D1CC634E100AD764A /* CollageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 898B2F2C1CC634E100AD764A /* CollageCell.xib */; };
+		89A8AAEB1CCE21240081FF71 /* bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 89A8AAEA1CCE21240081FF71 /* bubble.png */; };
+		89A8AAED1CCE22790081FF71 /* CollageCellMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A8AAEC1CCE22790081FF71 /* CollageCellMenuView.swift */; };
+		89A8AAEF1CCE22AF0081FF71 /* CollageCellMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89A8AAEE1CCE22AF0081FF71 /* CollageCellMenuView.xib */; };
 		89BFB7CE1CB257CB0011A04A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BFB7CD1CB257CB0011A04A /* AppDelegate.swift */; };
 		89BFB7D31CB257CB0011A04A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 89BFB7D11CB257CB0011A04A /* Main.storyboard */; };
 		89BFB7D81CB257CB0011A04A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 89BFB7D61CB257CB0011A04A /* LaunchScreen.storyboard */; };
@@ -51,6 +54,7 @@
 		89F795781CB38CE60029FD32 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F795771CB38CE60029FD32 /* CameraViewController.swift */; };
 		89F7957B1CB395150029FD32 /* CameraFocusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89F7957A1CB395150029FD32 /* CameraFocusView.xib */; };
 		89F7957D1CB396420029FD32 /* CameraFocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F7957C1CB396420029FD32 /* CameraFocusView.swift */; };
+		89FCAF411CD09E1700D630AA /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89FCAF401CD09E1700D630AA /* CGPoint+Extensions.swift */; };
 		89FF532B1CC8D198002FF0B2 /* c3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 89FF53281CC8D198002FF0B2 /* c3.jpg */; };
 		89FF532C1CC8D198002FF0B2 /* c2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 89FF53291CC8D198002FF0B2 /* c2.jpg */; };
 		89FF532D1CC8D198002FF0B2 /* c1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 89FF532A1CC8D198002FF0B2 /* c1.jpg */; };
@@ -101,6 +105,9 @@
 		898B2F231CC611BF00AD764A /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
 		898B2F241CC611BF00AD764A /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		898B2F2C1CC634E100AD764A /* CollageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollageCell.xib; sourceTree = "<group>"; };
+		89A8AAEA1CCE21240081FF71 /* bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble.png; sourceTree = "<group>"; };
+		89A8AAEC1CCE22790081FF71 /* CollageCellMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollageCellMenuView.swift; sourceTree = "<group>"; };
+		89A8AAEE1CCE22AF0081FF71 /* CollageCellMenuView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollageCellMenuView.xib; sourceTree = "<group>"; };
 		89BFB7CA1CB257CB0011A04A /* SimpleCameraApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleCameraApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		89BFB7CD1CB257CB0011A04A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		89BFB7D21CB257CB0011A04A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -125,6 +132,7 @@
 		89F795771CB38CE60029FD32 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		89F7957A1CB395150029FD32 /* CameraFocusView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraFocusView.xib; sourceTree = "<group>"; };
 		89F7957C1CB396420029FD32 /* CameraFocusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraFocusView.swift; sourceTree = "<group>"; };
+		89FCAF401CD09E1700D630AA /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
 		89FF53281CC8D198002FF0B2 /* c3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = c3.jpg; sourceTree = "<group>"; };
 		89FF53291CC8D198002FF0B2 /* c2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = c2.jpg; sourceTree = "<group>"; };
 		89FF532A1CC8D198002FF0B2 /* c1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = c1.jpg; sourceTree = "<group>"; };
@@ -168,6 +176,7 @@
 				89FF53281CC8D198002FF0B2 /* c3.jpg */,
 				89FF53291CC8D198002FF0B2 /* c2.jpg */,
 				89FF532A1CC8D198002FF0B2 /* c1.jpg */,
+				89A8AAEA1CCE21240081FF71 /* bubble.png */,
 				898B2F1E1CC5F65D00AD764A /* stretched-1920-1200-120548.jpg */,
 				89F795721CB35C060029FD32 /* Icons.xcassets */,
 				898B2EE21CB73F5900AD764A /* sample.jpg */,
@@ -210,6 +219,8 @@
 			children = (
 				898B2F111CBF87C300AD764A /* CollageCell.swift */,
 				898B2F2C1CC634E100AD764A /* CollageCell.xib */,
+				89A8AAEC1CCE22790081FF71 /* CollageCellMenuView.swift */,
+				89A8AAEE1CCE22AF0081FF71 /* CollageCellMenuView.xib */,
 				898B2F0B1CBF7D3200AD764A /* CollageView.swift */,
 				898B2F091CBF6BF600AD764A /* CollageViewController.swift */,
 				898B2F191CC0F1BF00AD764A /* Layout.swift */,
@@ -292,6 +303,7 @@
 				89F795791CB393590029FD32 /* Camera */,
 				898B2EF61CBF618900AD764A /* Collage */,
 				898B2EF31CBCF40A00AD764A /* Edit */,
+				89FCAF3F1CD09D6800D630AA /* Extensions */,
 				898B2EE41CB788BD00AD764A /* View */,
 			);
 			name = Classes;
@@ -318,6 +330,14 @@
 				89F795771CB38CE60029FD32 /* CameraViewController.swift */,
 			);
 			name = Camera;
+			sourceTree = "<group>";
+		};
+		89FCAF3F1CD09D6800D630AA /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				89FCAF401CD09E1700D630AA /* CGPoint+Extensions.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -437,7 +457,9 @@
 				898B2F281CC611BF00AD764A /* 2.jpg in Resources */,
 				89DA462F1CC74E0E00EFD940 /* pattern-reapeat-3.png in Resources */,
 				89DA46331CC74E0E00EFD940 /* pattern-repeat-4.png in Resources */,
+				89A8AAEB1CCE21240081FF71 /* bubble.png in Resources */,
 				89FF532C1CC8D198002FF0B2 /* c2.jpg in Resources */,
+				89A8AAEF1CCE22AF0081FF71 /* CollageCellMenuView.xib in Resources */,
 				89FF532B1CC8D198002FF0B2 /* c3.jpg in Resources */,
 				898B2F1F1CC5F65D00AD764A /* stretched-1920-1200-120548.jpg in Resources */,
 				89BFB7D31CB257CB0011A04A /* Main.storyboard in Resources */,
@@ -477,8 +499,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				89DA46361CC7868700EFD940 /* LayoutFactory.swift in Sources */,
+				89A8AAED1CCE22790081FF71 /* CollageCellMenuView.swift in Sources */,
 				898B2F0A1CBF6BF600AD764A /* CollageViewController.swift in Sources */,
 				898B2EF21CBB956600AD764A /* Camera.swift in Sources */,
+				89FCAF411CD09E1700D630AA /* CGPoint+Extensions.swift in Sources */,
 				898B2F1A1CC0F1BF00AD764A /* Layout.swift in Sources */,
 				898B2EE81CB78F0800AD764A /* ImageDecorationView.swift in Sources */,
 				898B2F181CC0D4FB00AD764A /* LayoutGripView.swift in Sources */,

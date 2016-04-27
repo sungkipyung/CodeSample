@@ -22,6 +22,9 @@
                         <constraint firstAttribute="width" constant="271" id="Lkr-3p-uV5"/>
                         <constraint firstAttribute="height" constant="211" id="eTd-Th-Nv0"/>
                     </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="B4m-Za-31w" appends="YES" id="War-nT-U1f"/>
+                    </connections>
                 </scrollView>
                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pZ6-bR-iux" userLabel="LineView">
                     <rect key="frame" x="0.0" y="0.0" width="385" height="278"/>
@@ -54,5 +57,10 @@
             </connections>
             <point key="canvasLocation" x="237.5" y="369"/>
         </view>
+        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="B4m-Za-31w">
+            <connections>
+                <action selector="onLongPressGesture:" destination="iN0-l3-epB" id="R8A-I3-q6H"/>
+            </connections>
+        </pongPressGestureRecognizer>
     </objects>
 </document>

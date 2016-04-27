@@ -102,4 +102,10 @@ class CollageCell: UIView, UIScrollViewDelegate {
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         return self.imageView
     }
+    
+    @IBAction func onLongPressGesture(sender: UILongPressGestureRecognizer) {
+        if sender.state == UIGestureRecognizerState.Ended {
+            
+        }
+    }
 }

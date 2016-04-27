@@ -101,7 +101,7 @@ class CollageView: UIView {
         let cellGrapButtons = self.cellGrapButtons
         
         let polygons: [Polygon] = layout.layout()
-        let collageCellPaths = CollageView.generateCollageCellPath(polygons, radius:layout.cornerRadius)
+        let collageCellPaths = CollageView.generateCollageCellPath(polygons, curvature:layout.curvature)
         let grapButtonPoints = layout.grapPoints()
 //
         // add cells
@@ -121,10 +121,13 @@ class CollageView: UIView {
             if let cell = UINib(nibName: "CollageCell", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? CollageCell {
                 cell.frame = self.bounds
                 
-                let image = UIImage(named: "c2.jpg")!
-                cell.imageScrollView.contentSize = image.size
+                let image = UIImage(named: "c1.jpg")!
+//                cell.imageScrollView.contentSize = image.size
+                cell.imageScrollView.contentSize = self.bounds.size
+                
                 cell.imageScrollView.frame = cell.bounds
-                cell.imageView.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: image.size)
+//                cell.imageView.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: image.size)
+                cell.imageView.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: self.bounds.size)
                 cell.imageView.image = image
                 collageCells.append(cell)
             }
@@ -134,7 +137,7 @@ class CollageView: UIView {
     }
     
     // MARK: Static
-    private static func generateCollageCellPath(polygons: [Polygon], radius: CGFloat) -> Array<UIBezierPath> {
+    private static func generateCollageCellPath(polygons: [Polygon], curvature: CGFloat) -> Array<UIBezierPath> {
         var collageCellPaths: Array<UIBezierPath> = []
         for polygon in polygons {
             let path: UIBezierPath = UIBezierPath.init()
@@ -146,7 +149,7 @@ class CollageView: UIView {
                     path.moveToPoint(newPoint)
                 }
                 
-                if (radius == 0) {
+                if (curvature == 0) {
                     if (index != 0) {
                         path.addLineToPoint(newPoint)
                     }
@@ -155,8 +158,13 @@ class CollageView: UIView {
                     let from = polygon[index - 1 < 0 ? polygon.count - 1 : index - 1]
                     let via = value
                     let to = polygon[(index + 1) % polygon.count]
-                    let cornerPoint:CornerPoint = CollageView.roundedCorner(from, via: via, to: to, radius: radius)
-                    path.addArcWithCenter(cornerPoint.centerPoint, radius: radius, startAngle: cornerPoint.startAngle, endAngle: cornerPoint.endAngle, clockwise: true)
+                    
+                    let maxRadius = min(from.distanceTo(via), via.distanceTo(to)) / 2
+                    if (maxRadius > 0) {
+                        let radius = curvature * maxRadius
+                        let cornerPoint:CornerPoint = CollageView.roundedCorner(from, via: via, to: to, radius: radius)
+                        path.addArcWithCenter(cornerPoint.centerPoint, radius: radius, startAngle: cornerPoint.startAngle, endAngle: cornerPoint.endAngle, clockwise: true)
+                    }
                 }
             }
             path.closePath()

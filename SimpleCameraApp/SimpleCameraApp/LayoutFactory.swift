@@ -8,12 +8,6 @@
 
 import UIKit
 
-
-extension CGPoint {
-    func midOfPoint(other: CGPoint) -> CGPoint{
-        return CGPoint(x: 0.5 * (x + other.x), y: 0.5 * (y + other.y))
-    }
-}
 func applyBoder(p: CGPoint, midPoint: CGPoint, border: CGFloat) -> CGPoint {
     var newP:CGPoint = CGPoint(x: 0, y: 0)
     
@@ -106,7 +100,7 @@ class LayoutFactory: NSObject {
             }
         ]
         let layout = Layout(size: CGSize(width: 0, height: 0),
-                            cornerRadius:0,
+                            curvature:0,
                             border: border,
                             xs: xs, ys: ys, generatePS: generatePS,
                             cellCount: 2,

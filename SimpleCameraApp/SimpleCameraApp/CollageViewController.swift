@@ -19,8 +19,7 @@ class CollageViewController: UIViewController {
     @IBOutlet weak var roundProgressView: UIProgressView!
     
     @IBOutlet weak var layoutControlView: UIView!
-    private static let MAX_BORDER_WIDTH: CGFloat = 20
-    private static let MAX_CORNOR_RADIUS: CGFloat = 40
+    private static let MAX_BORDER_WIDTH: CGFloat = 10
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +40,7 @@ class CollageViewController: UIViewController {
             view.center.x = min(max(originalPosition.x + incX, start), end)
             
             let progress: Float = (Float)(view.center.x - start)/(Float)(end - start)
-            self.collageView.layout?.border = CGFloat(progress) * CollageViewController.MAX_CORNOR_RADIUS
+            self.collageView.layout?.border = CGFloat(progress) * CollageViewController.MAX_BORDER_WIDTH
             self.intervalProgressView.setProgress(progress, animated: false)
             self.collageView.redraw()
         }
@@ -54,7 +53,7 @@ class CollageViewController: UIViewController {
             
             view.center.x = min(max(originalPosition.x + incX, start), end)
             let progress: Float = (Float)(view.center.x - start)/(Float)(end - start)
-            self.collageView.layout?.cornerRadius = CGFloat(progress) * CollageViewController.MAX_CORNOR_RADIUS
+            self.collageView.layout?.curvature = CGFloat(progress)
             self.roundProgressView.setProgress(progress, animated: false)
             self.collageView.redraw()
         }
