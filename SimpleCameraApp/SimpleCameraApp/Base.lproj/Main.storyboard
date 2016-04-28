@@ -1,87 +1,102 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Home-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController title="Home" id="BYZ-38-t0r" customClass="HomeViewController" customModule="SimpleCameraApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5Uf-zc-o8v"/>
+                        <viewControllerLayoutGuide type="bottom" id="Fvg-Oa-FfH"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" id="YxB-LI-JKa">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YxB-LI-JKa">
                                 <rect key="frame" x="0.0" y="382" width="320" height="186"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="6W2-zm-yK5">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6W2-zm-yK5">
                                         <rect key="frame" x="8" y="8" width="48" height="48"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="48" id="48z-b2-xH8"/>
+                                            <constraint firstAttribute="width" constant="48" id="8iV-kp-nyU"/>
+                                        </constraints>
                                         <state key="normal" image="ic_camera_48pt"/>
                                         <connections>
-                                            <segue destination="Wh9-KQ-eC3" kind="modal" id="aP3-p2-Viu"/>
+                                            <segue destination="Wh9-KQ-eC3" kind="presentation" id="aP3-p2-Viu"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="znG-1x-HEh">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="znG-1x-HEh">
                                         <rect key="frame" x="64" y="8" width="48" height="48"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="48" id="6mU-iZ-e0S"/>
+                                            <constraint firstAttribute="height" constant="48" id="sAk-QX-i7T"/>
+                                        </constraints>
                                         <state key="normal" image="ic_dashboard_48pt"/>
                                         <connections>
-                                            <segue destination="HLN-mE-vpw" kind="modal" id="1kV-fa-scs"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="nu1-6L-ozH">
-                                        <rect key="frame" x="137" y="17" width="94" height="40"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="DragAndDrop"/>
-                                        <connections>
-                                            <segue destination="PGD-g6-TXR" kind="modal" id="O0L-FN-ajW"/>
+                                            <segue destination="HLN-mE-vpw" kind="presentation" id="1kV-fa-scs"/>
                                         </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="6W2-zm-yK5" firstAttribute="leading" secondItem="YxB-LI-JKa" secondAttribute="leading" constant="8" id="6Zs-UH-EWL"/>
+                                    <constraint firstItem="znG-1x-HEh" firstAttribute="top" secondItem="YxB-LI-JKa" secondAttribute="top" constant="8" id="CuR-xI-Wwa"/>
+                                    <constraint firstAttribute="height" constant="186" id="D06-lw-VNQ"/>
+                                    <constraint firstItem="6W2-zm-yK5" firstAttribute="top" secondItem="YxB-LI-JKa" secondAttribute="top" constant="8" id="kIc-uM-e6r"/>
+                                    <constraint firstItem="znG-1x-HEh" firstAttribute="leading" secondItem="6W2-zm-yK5" secondAttribute="trailing" constant="8" id="p0q-P4-HiY"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Fvg-Oa-FfH" firstAttribute="top" secondItem="YxB-LI-JKa" secondAttribute="bottom" id="F9b-yk-svl"/>
+                            <constraint firstAttribute="trailing" secondItem="YxB-LI-JKa" secondAttribute="trailing" id="FoR-9T-4Dl"/>
+                            <constraint firstItem="YxB-LI-JKa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="TVq-xY-Kid"/>
+                        </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="112" y="785.73333333333335"/>
+            <point key="canvasLocation" x="210" y="830"/>
         </scene>
         <!--Camera View Controller-->
         <scene sceneID="bMX-C2-epW">
             <objects>
                 <viewController id="Wh9-KQ-eC3" customClass="CameraViewController" customModule="SimpleCameraApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jhL-7R-uUI"/>
+                        <viewControllerLayoutGuide type="bottom" id="F0v-Hi-mTx"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="1Iu-ua-p0Q">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" id="rRP-Vj-vrY" userLabel="ControlView">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rRP-Vj-vrY" userLabel="ControlView">
                                 <rect key="frame" x="0.0" y="471" width="320" height="97"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="LyS-8o-dkZ">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LyS-8o-dkZ">
                                         <rect key="frame" x="8" y="25" width="48" height="48"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="Button" image="ic_navigate_before_48pt"/>
                                         <connections>
                                             <action selector="onTouchBackButton:" destination="Wh9-KQ-eC3" eventType="touchUpInside" id="aWs-nU-9x5"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="yFE-5Q-7EZ">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yFE-5Q-7EZ">
                                         <rect key="frame" x="288" y="37" width="24" height="24"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="ic_camera_filter_64pt"/>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Uqa-KB-lsv">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uqa-KB-lsv">
                                         <rect key="frame" x="136" y="25" width="48" height="48"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" image="ic_camera_48pt"/>
                                         <connections>
@@ -95,20 +110,17 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" id="Opn-c2-aFb" customClass="CameraPreview" customModule="SimpleCameraApp" customModuleProvider="target">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Opn-c2-aFb" customClass="CameraPreview" customModule="SimpleCameraApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="427" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="zIU-6a-8Qa">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zIU-6a-8Qa">
                                         <rect key="frame" x="136" y="10" width="48" height="24"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" image="ic_timer"/>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1kp-DT-uKE">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1kp-DT-uKE">
                                         <rect key="frame" x="225" y="10" width="48" height="24"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" image="ic_wb_sunny"/>
@@ -116,19 +128,16 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" id="Sge-mN-90b" customClass="CameraPreview" customModule="SimpleCameraApp" customModuleProvider="target">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sge-mN-90b" customClass="CameraPreview" customModule="SimpleCameraApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="427"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="J5u-fZ-dkV">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J5u-fZ-dkV">
                                 <rect key="frame" x="268" y="16" width="36" height="36"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="ic_flash_auto"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="wNn-Sm-quI">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wNn-Sm-quI">
                                 <rect key="frame" x="16" y="16" width="36" height="36"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="ic_cached"/>
                                 <connections>
                                     <action selector="onTouchCameraToggleButton:" destination="Wh9-KQ-eC3" eventType="touchUpInside" id="zdW-Fj-yxh"/>
@@ -148,32 +157,33 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tEG-Bt-V0Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="428.26666666666665" y="483.74666666666661"/>
+            <point key="canvasLocation" x="805" y="655"/>
         </scene>
         <!--Edit View Controller-->
         <scene sceneID="g3p-Z8-7SS">
             <objects>
                 <viewController id="nAp-ti-E33" customClass="EditViewController" customModule="SimpleCameraApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="lvL-bW-PhU"/>
+                        <viewControllerLayoutGuide type="bottom" id="Xh7-i1-Gv3"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="T5R-G1-6hu">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="1WX-eB-BMd">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1WX-eB-BMd">
                                 <rect key="frame" x="0.0" y="524" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <barButtonItem image="ic_text_fields" id="TJw-BT-4c0"/>
                                     <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="Sfr-4r-w9y"/>
                                     <barButtonItem image="ic_crop" id="ecM-nK-FRo"/>
                                 </items>
                             </toolbar>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sample.jpg" id="MG5-cs-V2m">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="sample.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="MG5-cs-V2m">
                                 <rect key="frame" x="0.0" y="118" width="320" height="333"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="TTH-JT-krn">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TTH-JT-krn">
                                 <rect key="frame" x="85" y="269" width="150" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -191,60 +201,179 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kuu-bL-8JQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="674.66666666666663" y="483.74666666666661"/>
+            <point key="canvasLocation" x="2400" y="799.64788732394356"/>
         </scene>
         <!--Collage View Controller-->
         <scene sceneID="bgz-Vs-Duz">
             <objects>
                 <viewController id="HLN-mE-vpw" customClass="CollageViewController" customModule="SimpleCameraApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="s0j-o5-czM"/>
+                        <viewControllerLayoutGuide type="bottom" id="Jak-qz-4H7"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="VaR-oi-6IZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" id="69V-hs-Shs" userLabel="HeaderView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a7a-n4-kPL">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="484"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="GAs-MK-7fB">
+                                    <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uPW-Bc-tgE" customClass="CollageView" customModule="SimpleCameraApp" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="98" width="288" height="288"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="uPW-Bc-tgE" secondAttribute="height" multiplier="1:1" id="HK9-Ps-Z7f"/>
+                                        </constraints>
+                                    </view>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jo4-8Z-txf" userLabel="LayoutControlView">
+                                        <rect key="frame" x="0.0" y="444" width="320" height="40"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sn0-sE-3uM" userLabel="layoutIntervalControlView">
+                                                <rect key="frame" x="0.0" y="0.0" width="160" height="40"/>
+                                                <subviews>
+                                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DuT-NK-fyg" userLabel="intervalProgressView">
+                                                        <rect key="frame" x="20" y="19" width="120" height="2"/>
+                                                    </progressView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ha4-fx-pqD" userLabel="intervalControlButton" customClass="RadioButton" customModule="SimpleCameraApp" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="40" id="JQK-oQ-ZTM"/>
+                                                            <constraint firstAttribute="height" constant="40" id="NRz-RL-ZQn"/>
+                                                        </constraints>
+                                                        <state key="normal" image="ic_radio_button_unchecked"/>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstItem="Ha4-fx-pqD" firstAttribute="leading" secondItem="sn0-sE-3uM" secondAttribute="leading" id="Tlq-HI-xBZ"/>
+                                                    <constraint firstItem="DuT-NK-fyg" firstAttribute="centerY" secondItem="sn0-sE-3uM" secondAttribute="centerY" id="cm3-Wh-DNC"/>
+                                                    <constraint firstItem="Ha4-fx-pqD" firstAttribute="centerY" secondItem="sn0-sE-3uM" secondAttribute="centerY" id="mLJ-ze-nie"/>
+                                                    <constraint firstAttribute="trailing" secondItem="DuT-NK-fyg" secondAttribute="trailing" constant="20" id="sOV-e8-LYu"/>
+                                                    <constraint firstItem="DuT-NK-fyg" firstAttribute="leading" secondItem="sn0-sE-3uM" secondAttribute="leading" constant="20" id="sWa-dz-oug"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bwS-o9-DsN" userLabel="layoutRoundControlView">
+                                                <rect key="frame" x="160" y="0.0" width="160" height="40"/>
+                                                <subviews>
+                                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OrH-zI-neB" userLabel="roundProgressView">
+                                                        <rect key="frame" x="20" y="19" width="120" height="2"/>
+                                                    </progressView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a9H-eM-CR4" userLabel="roundControlButton" customClass="RadioButton" customModule="SimpleCameraApp" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="40" id="9Kk-kr-ENs"/>
+                                                            <constraint firstAttribute="height" constant="40" id="Q8Q-pR-cVe"/>
+                                                        </constraints>
+                                                        <state key="normal" image="ic_radio_button_unchecked"/>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstItem="OrH-zI-neB" firstAttribute="centerY" secondItem="bwS-o9-DsN" secondAttribute="centerY" id="CdM-VB-0e5"/>
+                                                    <constraint firstItem="a9H-eM-CR4" firstAttribute="leading" secondItem="bwS-o9-DsN" secondAttribute="leading" id="D9s-fr-n60"/>
+                                                    <constraint firstItem="OrH-zI-neB" firstAttribute="leading" secondItem="bwS-o9-DsN" secondAttribute="leading" constant="20" id="K4j-7P-Z1a"/>
+                                                    <constraint firstItem="a9H-eM-CR4" firstAttribute="centerY" secondItem="bwS-o9-DsN" secondAttribute="centerY" id="P4I-lE-WBP"/>
+                                                    <constraint firstAttribute="trailing" secondItem="OrH-zI-neB" secondAttribute="trailing" constant="20" id="cea-1k-bP8"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="sn0-sE-3uM" firstAttribute="top" secondItem="Jo4-8Z-txf" secondAttribute="top" id="2Ms-fo-Foa"/>
+                                            <constraint firstAttribute="trailing" secondItem="bwS-o9-DsN" secondAttribute="trailing" id="TAO-lW-ITJ"/>
+                                            <constraint firstAttribute="bottom" secondItem="bwS-o9-DsN" secondAttribute="bottom" id="UHs-z6-Nhy"/>
+                                            <constraint firstItem="sn0-sE-3uM" firstAttribute="width" secondItem="Jo4-8Z-txf" secondAttribute="width" multiplier="0.5" id="Xmj-fa-bno"/>
+                                            <constraint firstItem="bwS-o9-DsN" firstAttribute="leading" secondItem="sn0-sE-3uM" secondAttribute="trailing" id="Zjk-7S-2Ma"/>
+                                            <constraint firstItem="sn0-sE-3uM" firstAttribute="width" secondItem="bwS-o9-DsN" secondAttribute="width" id="ar2-F1-CJc"/>
+                                            <constraint firstAttribute="bottom" secondItem="sn0-sE-3uM" secondAttribute="bottom" id="bxg-bA-xir"/>
+                                            <constraint firstItem="sn0-sE-3uM" firstAttribute="height" secondItem="bwS-o9-DsN" secondAttribute="height" id="cyR-hh-bDC"/>
+                                            <constraint firstAttribute="height" constant="40" id="eSr-UL-xav"/>
+                                            <constraint firstItem="bwS-o9-DsN" firstAttribute="top" secondItem="Jo4-8Z-txf" secondAttribute="top" id="hVX-bL-3bX"/>
+                                            <constraint firstItem="sn0-sE-3uM" firstAttribute="leading" secondItem="Jo4-8Z-txf" secondAttribute="leading" id="xjM-Je-zAj"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Jo4-8Z-txf" secondAttribute="trailing" id="1sO-lY-xVQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="uPW-Bc-tgE" secondAttribute="trailing" constant="16" id="7Xi-Rb-Dt8"/>
+                                    <constraint firstItem="uPW-Bc-tgE" firstAttribute="centerX" secondItem="a7a-n4-kPL" secondAttribute="centerX" id="Pnr-Sc-z8V"/>
+                                    <constraint firstAttribute="bottom" secondItem="Jo4-8Z-txf" secondAttribute="bottom" id="U8D-DQ-x03"/>
+                                    <constraint firstItem="uPW-Bc-tgE" firstAttribute="leading" secondItem="a7a-n4-kPL" secondAttribute="leading" constant="16" id="dln-K7-k7h"/>
+                                    <constraint firstItem="Jo4-8Z-txf" firstAttribute="leading" secondItem="a7a-n4-kPL" secondAttribute="leading" id="iqE-cX-vrU"/>
+                                    <constraint firstItem="uPW-Bc-tgE" firstAttribute="centerY" secondItem="a7a-n4-kPL" secondAttribute="centerY" id="xCE-Bv-EYQ"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="69V-hs-Shs" userLabel="HeaderView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GAs-MK-7fB">
                                         <rect key="frame" x="8" y="4" width="32" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="EEb-Xv-rKw"/>
+                                            <constraint firstAttribute="width" constant="32" id="liy-Vb-XdI"/>
+                                        </constraints>
                                         <state key="normal" image="ic_shuffle"/>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="8TI-YA-kPc">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8TI-YA-kPc">
                                         <rect key="frame" x="280" y="4" width="32" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="32" id="EYE-tI-7AU"/>
+                                            <constraint firstAttribute="height" constant="32" id="df3-vH-mjV"/>
+                                        </constraints>
                                         <state key="normal" image="ic_undo"/>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="GAs-MK-7fB" secondAttribute="bottom" constant="4" id="4hW-bF-Ahz"/>
+                                    <constraint firstItem="8TI-YA-kPc" firstAttribute="top" secondItem="69V-hs-Shs" secondAttribute="top" constant="4" id="64T-aQ-T6n"/>
+                                    <constraint firstAttribute="trailing" secondItem="8TI-YA-kPc" secondAttribute="trailing" constant="8" id="7UL-Lu-4fz"/>
+                                    <constraint firstAttribute="height" constant="40" id="8Kl-s8-Ket"/>
+                                    <constraint firstItem="GAs-MK-7fB" firstAttribute="top" secondItem="69V-hs-Shs" secondAttribute="top" constant="4" id="F2g-eS-b1y"/>
+                                    <constraint firstItem="GAs-MK-7fB" firstAttribute="leading" secondItem="69V-hs-Shs" secondAttribute="leading" constant="8" id="Jhn-8l-rm0"/>
+                                    <constraint firstAttribute="bottom" secondItem="8TI-YA-kPc" secondAttribute="bottom" constant="4" id="SgF-tV-93D"/>
+                                </constraints>
                             </view>
-                            <view contentMode="scaleToFill" id="O6r-Re-TXS" userLabel="LayeredToolbar">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O6r-Re-TXS" userLabel="LayeredToolbar">
                                 <rect key="frame" x="0.0" y="484" width="320" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="aeA-Qw-6qB">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aeA-Qw-6qB">
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="40"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="프레임 조절" image="ic_zoom_out_map"/>
                                         <connections>
                                             <action selector="onTouchFrameControlButton:" destination="HLN-mE-vpw" eventType="touchUpInside" id="8lS-ca-SBR"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="nwu-It-7b7">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nwu-It-7b7">
                                         <rect key="frame" x="160" y="0.0" width="160" height="40"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="배경 선택" image="ic_panorama"/>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="nwu-It-7b7" firstAttribute="top" secondItem="O6r-Re-TXS" secondAttribute="top" id="9sR-vm-Evx"/>
+                                    <constraint firstItem="aeA-Qw-6qB" firstAttribute="height" secondItem="nwu-It-7b7" secondAttribute="height" id="EYb-MK-fPH"/>
+                                    <constraint firstItem="aeA-Qw-6qB" firstAttribute="width" secondItem="nwu-It-7b7" secondAttribute="width" id="QAp-xE-fKX"/>
+                                    <constraint firstAttribute="trailing" secondItem="nwu-It-7b7" secondAttribute="trailing" id="Qse-SA-1hg"/>
+                                    <constraint firstItem="nwu-It-7b7" firstAttribute="leading" secondItem="aeA-Qw-6qB" secondAttribute="trailing" id="TiE-MP-e0M"/>
+                                    <constraint firstAttribute="bottom" secondItem="nwu-It-7b7" secondAttribute="bottom" id="UBc-08-Or8"/>
+                                    <constraint firstItem="aeA-Qw-6qB" firstAttribute="leading" secondItem="O6r-Re-TXS" secondAttribute="leading" id="ZSD-AB-are"/>
+                                    <constraint firstAttribute="bottom" secondItem="aeA-Qw-6qB" secondAttribute="bottom" id="gvR-gA-bm0"/>
+                                    <constraint firstAttribute="height" constant="40" id="vuE-Nu-aHL"/>
+                                    <constraint firstItem="aeA-Qw-6qB" firstAttribute="top" secondItem="O6r-Re-TXS" secondAttribute="top" id="yyh-4h-dp9"/>
+                                    <constraint firstItem="aeA-Qw-6qB" firstAttribute="width" secondItem="O6r-Re-TXS" secondAttribute="width" multiplier="0.5" id="zo9-gQ-13k"/>
+                                </constraints>
                             </view>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="07O-zz-F2s">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="07O-zz-F2s">
                                 <rect key="frame" x="0.0" y="524" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="K2u-u7-v8A"/>
+                                </constraints>
                                 <items>
                                     <barButtonItem image="ic_navigate_before" id="T1q-zw-OLY">
                                         <connections>
@@ -261,60 +390,24 @@
                                     <barButtonItem image="ic_save" id="zWV-sf-Sng"/>
                                 </items>
                             </toolbar>
-                            <view contentMode="scaleToFill" id="a7a-n4-kPL">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="484"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" id="uPW-Bc-tgE" customClass="CollageView" customModule="SimpleCameraApp" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="98" width="288" height="288"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                    <view hidden="YES" contentMode="scaleToFill" id="Jo4-8Z-txf" userLabel="LayoutControlView">
-                                        <rect key="frame" x="0.0" y="444" width="320" height="40"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <view contentMode="scaleToFill" id="sn0-sE-3uM" userLabel="layoutIntervalControlView">
-                                                <rect key="frame" x="0.0" y="0.0" width="160" height="40"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <subviews>
-                                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" id="DuT-NK-fyg" userLabel="intervalProgressView">
-                                                        <rect key="frame" x="20" y="19" width="120" height="2"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    </progressView>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Ha4-fx-pqD" userLabel="intervalControlButton" customClass="RadioButton" customModule="SimpleCameraApp" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" image="ic_radio_button_unchecked"/>
-                                                    </button>
-                                                </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </view>
-                                            <view contentMode="scaleToFill" id="bwS-o9-DsN" userLabel="layoutRoundControlView">
-                                                <rect key="frame" x="160" y="0.0" width="160" height="40"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <subviews>
-                                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" id="OrH-zI-neB" userLabel="roundProgressView">
-                                                        <rect key="frame" x="20" y="19" width="120" height="2"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    </progressView>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="a9H-eM-CR4" userLabel="roundControlButton" customClass="RadioButton" customModule="SimpleCameraApp" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" image="ic_radio_button_unchecked"/>
-                                                    </button>
-                                                </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </view>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="69V-hs-Shs" firstAttribute="leading" secondItem="VaR-oi-6IZ" secondAttribute="leading" id="2vm-XG-Ok1"/>
+                            <constraint firstAttribute="trailing" secondItem="07O-zz-F2s" secondAttribute="trailing" id="AxF-r5-aQp"/>
+                            <constraint firstItem="O6r-Re-TXS" firstAttribute="leading" secondItem="VaR-oi-6IZ" secondAttribute="leading" id="BSK-nd-PqD"/>
+                            <constraint firstItem="Jak-qz-4H7" firstAttribute="top" secondItem="07O-zz-F2s" secondAttribute="bottom" id="DGa-4x-6KY"/>
+                            <constraint firstAttribute="trailing" secondItem="69V-hs-Shs" secondAttribute="trailing" id="YNz-tO-QTU"/>
+                            <constraint firstItem="69V-hs-Shs" firstAttribute="top" secondItem="s0j-o5-czM" secondAttribute="bottom" id="aLW-br-CO0"/>
+                            <constraint firstItem="07O-zz-F2s" firstAttribute="top" secondItem="O6r-Re-TXS" secondAttribute="bottom" id="cOc-7S-6Zu"/>
+                            <constraint firstAttribute="trailing" secondItem="O6r-Re-TXS" secondAttribute="trailing" id="cWz-e0-gIr"/>
+                            <constraint firstItem="07O-zz-F2s" firstAttribute="leading" secondItem="VaR-oi-6IZ" secondAttribute="leading" id="n5U-bT-9k6"/>
+                            <constraint firstItem="O6r-Re-TXS" firstAttribute="top" secondItem="a7a-n4-kPL" secondAttribute="bottom" id="sdg-kC-8Th"/>
+                            <constraint firstItem="a7a-n4-kPL" firstAttribute="top" secondItem="s0j-o5-czM" secondAttribute="bottom" id="tm6-Dh-mDV"/>
+                            <constraint firstItem="a7a-n4-kPL" firstAttribute="leading" secondItem="VaR-oi-6IZ" secondAttribute="leading" id="xV6-K8-LJT"/>
+                            <constraint firstAttribute="trailing" secondItem="a7a-n4-kPL" secondAttribute="trailing" id="y6h-wO-Kim"/>
+                        </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
@@ -329,93 +422,10 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HNG-0V-ql2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="526" y="1448"/>
-        </scene>
-        <!--Drag And Drop View Controller-->
-        <scene sceneID="VQW-wu-62c">
-            <objects>
-                <viewController id="PGD-g6-TXR" customClass="DragAndDropViewController" customModule="SimpleCameraApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="frW-JO-s8Z">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" id="S5H-42-6Vc" customClass="CellView" customModule="SimpleCameraApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="20" width="160" height="284"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="c1.jpg" id="kem-WV-ffu">
-                                        <rect key="frame" x="36" y="74" width="78" height="79"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="fHL-6D-CKr" appends="YES" id="paA-j0-g8f"/>
-                                </connections>
-                            </view>
-                            <view contentMode="scaleToFill" id="yqp-Ho-Qwl" customClass="CellView" customModule="SimpleCameraApp" customModuleProvider="target">
-                                <rect key="frame" x="160" y="304" width="160" height="264"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="YVj-ad-KIy" appends="YES" id="RJa-vh-4WN"/>
-                                </connections>
-                            </view>
-                            <view contentMode="scaleToFill" id="RBg-84-Hbb" customClass="CellView" customModule="SimpleCameraApp" customModuleProvider="target">
-                                <rect key="frame" x="160" y="20" width="160" height="284"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="UDO-6d-dr6" appends="YES" id="LYU-Rq-1jl"/>
-                                </connections>
-                            </view>
-                            <view contentMode="scaleToFill" id="ERM-j8-0Pt" customClass="CellView" customModule="SimpleCameraApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="304" width="160" height="264"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.98431372549999996" green="0.62352941179999999" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="iq3-Iq-Q3P" appends="YES" id="KxD-MF-x2K"/>
-                                </connections>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                    <connections>
-                        <outlet property="imageView" destination="kem-WV-ffu" id="bkr-Yj-PcM"/>
-                        <outlet property="view1" destination="S5H-42-6Vc" id="G9l-AL-2Se"/>
-                        <outlet property="view2" destination="RBg-84-Hbb" id="MOj-6f-fUb"/>
-                        <outlet property="view3" destination="ERM-j8-0Pt" id="isZ-R3-cPm"/>
-                        <outlet property="view4" destination="yqp-Ho-Qwl" id="Xt3-O6-YsF"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="m0m-nQ-yN3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="fHL-6D-CKr" userLabel="View1_Long Press Gesture Recognizer">
-                    <connections>
-                        <action selector="cellLongPressed:" destination="PGD-g6-TXR" id="XMl-zC-Pcz"/>
-                    </connections>
-                </pongPressGestureRecognizer>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="UDO-6d-dr6" userLabel="View2_Long Press Gesture Recognizer">
-                    <connections>
-                        <action selector="cellLongPressed:" destination="PGD-g6-TXR" id="6P8-4z-a7s"/>
-                    </connections>
-                </pongPressGestureRecognizer>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="iq3-Iq-Q3P" userLabel="View3_Long Press Gesture Recognizer">
-                    <connections>
-                        <action selector="cellLongPressed:" destination="PGD-g6-TXR" id="3lI-CM-UEk"/>
-                    </connections>
-                </pongPressGestureRecognizer>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="YVj-ad-KIy" userLabel="View4_Long Press Gesture Recognizer">
-                    <connections>
-                        <action selector="cellLongPressed:" destination="PGD-g6-TXR" id="nX5-rd-ugv"/>
-                    </connections>
-                </pongPressGestureRecognizer>
-            </objects>
-            <point key="canvasLocation" x="112" y="1448.4000000000001"/>
+            <point key="canvasLocation" x="805" y="1270"/>
         </scene>
     </scenes>
     <resources>
-        <image name="c1.jpg" width="2560" height="1600"/>
         <image name="ic_cached" width="24" height="24"/>
         <image name="ic_camera_48pt" width="48" height="48"/>
         <image name="ic_camera_filter_64pt" width="64" height="64"/>

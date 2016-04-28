@@ -136,7 +136,11 @@ class LayoutFactory: NSObject {
     
     func getLayout(index:Int, limit: Int) -> [Layout]? {
         if let result:ArraySlice<Layout> = layouts[index..<limit] {
-            return Array(result)
+            var copyResult: [Layout] = []
+            result.forEach({ (layout) in
+                copyResult.append(layout.copy() as! Layout)
+            })
+            return Array(copyResult)
         }
         return nil
     }

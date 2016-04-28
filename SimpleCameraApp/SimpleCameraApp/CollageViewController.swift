@@ -59,6 +59,9 @@ class CollageViewController: UIViewController {
         }
         
         let layout = LayoutFactory.sharedInstance.getLayout(0, limit: 1)![0]
+        let width = UIScreen.mainScreen().bounds.size.width - 32
+        collageView.frame.size.width = width
+        collageView.frame.size.height = width
         collageView.layout = layout
     }
     

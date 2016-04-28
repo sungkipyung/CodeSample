@@ -29,8 +29,10 @@ struct Polygon {
 typealias GeneratePolygons = (ps: [CGPoint]) -> [Polygon]
 typealias GenerateGS = (xs: [CGFloat], ys: [CGFloat], size: CGSize) -> [CGPoint]
 typealias GrapPointChangeHandler = (newUnitGrapPoint: CGPoint, xs: [CGFloat], ys: [CGFloat]) -> ([CGFloat], [CGFloat])
-
-class Layout {
+protocol Copy {
+    func copy() -> AnyObject
+}
+class Layout : Copy {
     var size: CGSize! {
         didSet {
             updatePS()
@@ -64,7 +66,7 @@ class Layout {
     let generateGS:GenerateGS
     let gsChangeHandlers: [GrapPointChangeHandler]
     
-    init (
+    required init (
         size: CGSize
         , curvature: CGFloat
         , border: CGFloat
@@ -100,6 +102,10 @@ class Layout {
     }
     func changeGrapPoints(index: Int, unitPoint: CGPoint) -> ([CGFloat], [CGFloat]) {
         return self.gsChangeHandlers[index](newUnitGrapPoint: unitPoint, xs: xs, ys: ys)
+    }
+    
+    func copy() -> AnyObject {
+        return Layout(size: size, curvature: curvature, border: border, xs: Array(xs), ys: Array(ys), generatePS: generatePS, cellCount: cellCount, generatePolygons: generatePolygons, generateGS: generateGS, gsChangeHandlers: gsChangeHandlers)
     }
 }
 
