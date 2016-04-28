@@ -79,8 +79,14 @@ class CollageViewController: UIViewController {
         layoutControlView.hidden = !layoutControlView.hidden
         if (layoutControlView.hidden) {
             collageView.drawGrapButtons = false
+            self.collageView.swappable = true
         } else {
             collageView.drawGrapButtons = true
+            collageView.cellGrapButtons.forEach({ (button) in
+                collageView.bringSubviewToFront(button)
+            })
+            
+            self.collageView.swappable = false
         }
     }
 

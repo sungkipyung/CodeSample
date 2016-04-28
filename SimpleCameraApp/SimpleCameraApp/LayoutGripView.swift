@@ -46,7 +46,6 @@ class LayoutGripView: UIView {
             let deltaX = loc.x - self.touchOffset!.x
             let deltaY = loc.y - self.touchOffset!.y
             self.onChangeLocation?(view: self, originalPosition:self.originalPosition!, incX: deltaX, incY: deltaY)
-//            self.onChangeLocation?(view: self, origin: CGPoint(x: self.originalPosition!.x + deltaX, y: self.originalPosition!.y + deltaY))
         }
     }
     

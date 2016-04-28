@@ -35,6 +35,7 @@ extension CollageCell {
 class CollageView: UIView {
     var collageCells: [CollageCell]!
     var cellGrapButtons: [LayoutGripView]!
+    var swappable: Bool = true
     
     var drawGrapButtons: Bool! = false {
         didSet {
@@ -136,7 +137,7 @@ class CollageView: UIView {
             if let cell = UINib(nibName: "CollageCell", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? CollageCell {
                 cell.frame = self.bounds
                 
-                let image = UIImage(named: "c1.jpg")!
+                let image = UIImage(named: "c\(count % 2 + 1).jpg")!
 //                cell.imageScrollView.contentSize = image.size
                 cell.imageScrollView.contentSize = self.bounds.size
                 
@@ -160,6 +161,10 @@ class CollageView: UIView {
     
     // MARK: Objc
     @objc private func collageCellLongPressed(sender: UILongPressGestureRecognizer) {
+        if (self.swappable == false) {
+            return
+        }
+        
         switch sender.state {
         case .Began:
             self.offset = sender.locationInView(self)
@@ -192,14 +197,15 @@ class CollageView: UIView {
             })
             break
         case .Ended, .Cancelled, .Failed:
-            // TODO : Swap Operation or rollback selectedCell's Frame
             UIView.animateWithDuration(0.5, animations: {
+                //Swap Operation
                 if let target = self.targetViewForSwap {
-                    let a = target.frame
-                    let b = self.selectedCollageCellFrame
+                    let indexA = self.collageCells.indexOf(target)!
+                    let indexB = self.collageCells.indexOf(self.selectedCollageCell)!
                     
-                    self.selectedCollageCell.frame = a
-                    target.frame = b
+                    swap(&self.collageCells[indexA], &self.collageCells[indexB]);
+                    
+                    self.applyCellPath()
                 } else {
                     // Rollback Position
                     self.selectedCollageCell.frame = self.selectedCollageCellFrame

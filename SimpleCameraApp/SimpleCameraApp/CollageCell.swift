@@ -9,35 +9,14 @@
 import UIKit
 
 class CollageCell: UIView, UIScrollViewDelegate {
-//
-//    @IBOutlet weak var marginTopConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var marginLeftConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var marginRightConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var marginBottomConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var contentView: UIView!
+
     @IBOutlet weak var cameraPreview: CameraPreview!
     @IBOutlet weak var imageScrollView: UIScrollView!
-    
-//    @IBOutlet weak var imageScrollViewOriginX: NSLayoutConstraint!
-//    @IBOutlet weak var imageScrollViewOriginY: NSLayoutConstraint!
-//    
-//    @IBOutlet weak var imageScrollViewWidth: NSLayoutConstraint!
-//    @IBOutlet weak var imageScrollViewHeight: NSLayoutConstraint!
-//    
+
     weak var imageView: UIImageView!
+    
     @IBOutlet weak var lineView: UIView!
     private static let BORDER_WIDTH:CGFloat = 0
-    
-//    func setImageScrollViewFrame(frame: CGRect) {
-//        self.imageScrollViewOriginX.constant = frame.origin.x
-//        self.imageScrollViewOriginY.constant = frame.origin.y
-//        self.imageScrollViewWidth.constant = frame.size.width
-//        self.imageScrollViewHeight.constant = frame.size.height
-//    }
-//    
-//    func imageScrollViewFrame() -> CGRect {
-//        return self.imageScrollView.frame
-//    }
     
     var shapeLayerPath: UIBezierPath? {
         didSet (newLayer) {
@@ -60,12 +39,6 @@ class CollageCell: UIView, UIScrollViewDelegate {
                 line.strokeColor = UIColor.whiteColor().CGColor
                 self.lineView.layer.addSublayer(line)
             }
-            
-            var frame = CGRectInset(CGPathGetPathBoundingBox(path), CollageCell.BORDER_WIDTH, CollageCell.BORDER_WIDTH)
-            frame.origin.x = frame.origin.x == CGFloat.infinity ? 0 : frame.origin.x
-            frame.origin.y = frame.origin.y == CGFloat.infinity ? 0 : frame.origin.y
-//            self.frame = frame
-//            setImageScrollViewFrame(frame);
         }
     }
     func pointInside(point: CGPoint) -> Bool {
@@ -106,8 +79,6 @@ class CollageCell: UIView, UIScrollViewDelegate {
     
     override func awakeFromNib() {
         self.imageScrollView.delegate = self
-//        self.imageScrollView.frame = CGRectInset(self.bounds, CollageCell.BORDER_WIDTH, CollageCell.BORDER_WIDTH)
-//        
         let imageView = UIImageView(frame: self.bounds)
         imageView.contentMode = UIViewContentMode.ScaleAspectFill
         self.imageScrollView.addSubview(imageView)

@@ -216,15 +216,12 @@
 			children = (
 				898B2F111CBF87C300AD764A /* CollageCell.swift */,
 				898B2F2C1CC634E100AD764A /* CollageCell.xib */,
-				89A8AAEC1CCE22790081FF71 /* CollageCellMenuView.swift */,
-				89A8AAEE1CCE22AF0081FF71 /* CollageCellMenuView.xib */,
 				898B2F0B1CBF7D3200AD764A /* CollageView.swift */,
 				898B2F091CBF6BF600AD764A /* CollageViewController.swift */,
 				898B2F191CC0F1BF00AD764A /* Layout.swift */,
 				89DA46351CC7868700EFD940 /* LayoutFactory.swift */,
 				898B2F171CC0D4FB00AD764A /* LayoutGripView.swift */,
 				898B2F1B1CC4744600AD764A /* MyPlayground.playground */,
-				898B2F151CC0917C00AD764A /* OneDimentionalFunction.swift */,
 				897DE8531CC9E73200EF85E6 /* RadioButton.swift */,
 			);
 			name = Collage;
@@ -301,7 +298,10 @@
 				898B2EF61CBF618900AD764A /* Collage */,
 				898B2EF31CBCF40A00AD764A /* Edit */,
 				89FCAF3F1CD09D6800D630AA /* Extensions */,
+				898B2F151CC0917C00AD764A /* OneDimentionalFunction.swift */,
 				89FCAF421CD1A3DC00D630AA /* DragAndDropViewController.swift */,
+				89A8AAEC1CCE22790081FF71 /* CollageCellMenuView.swift */,
+				89A8AAEE1CCE22AF0081FF71 /* CollageCellMenuView.xib */,
 				89FCAF441CD1BEFF00D630AA /* CellView.swift */,
 			);
 			name = Classes;
