@@ -55,6 +55,8 @@
 		89F7957B1CB395150029FD32 /* CameraFocusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89F7957A1CB395150029FD32 /* CameraFocusView.xib */; };
 		89F7957D1CB396420029FD32 /* CameraFocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F7957C1CB396420029FD32 /* CameraFocusView.swift */; };
 		89FCAF411CD09E1700D630AA /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89FCAF401CD09E1700D630AA /* CGPoint+Extensions.swift */; };
+		89FCAF431CD1A3DC00D630AA /* DragAndDropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89FCAF421CD1A3DC00D630AA /* DragAndDropViewController.swift */; };
+		89FCAF451CD1BEFF00D630AA /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89FCAF441CD1BEFF00D630AA /* CellView.swift */; };
 		89FF532B1CC8D198002FF0B2 /* c3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 89FF53281CC8D198002FF0B2 /* c3.jpg */; };
 		89FF532C1CC8D198002FF0B2 /* c2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 89FF53291CC8D198002FF0B2 /* c2.jpg */; };
 		89FF532D1CC8D198002FF0B2 /* c1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 89FF532A1CC8D198002FF0B2 /* c1.jpg */; };
@@ -133,6 +135,8 @@
 		89F7957A1CB395150029FD32 /* CameraFocusView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraFocusView.xib; sourceTree = "<group>"; };
 		89F7957C1CB396420029FD32 /* CameraFocusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraFocusView.swift; sourceTree = "<group>"; };
 		89FCAF401CD09E1700D630AA /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
+		89FCAF421CD1A3DC00D630AA /* DragAndDropViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragAndDropViewController.swift; sourceTree = "<group>"; };
+		89FCAF441CD1BEFF00D630AA /* CellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		89FF53281CC8D198002FF0B2 /* c3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = c3.jpg; sourceTree = "<group>"; };
 		89FF53291CC8D198002FF0B2 /* c2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = c2.jpg; sourceTree = "<group>"; };
 		89FF532A1CC8D198002FF0B2 /* c1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = c1.jpg; sourceTree = "<group>"; };
@@ -187,13 +191,6 @@
 				898B2F031CBF67C700AD764A /* ico_multi_05@2x.png */,
 			);
 			name = images;
-			sourceTree = "<group>";
-		};
-		898B2EE41CB788BD00AD764A /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = View;
 			sourceTree = "<group>";
 		};
 		898B2EF01CBB90C800AD764A /* Libraries */ = {
@@ -304,7 +301,8 @@
 				898B2EF61CBF618900AD764A /* Collage */,
 				898B2EF31CBCF40A00AD764A /* Edit */,
 				89FCAF3F1CD09D6800D630AA /* Extensions */,
-				898B2EE41CB788BD00AD764A /* View */,
+				89FCAF421CD1A3DC00D630AA /* DragAndDropViewController.swift */,
+				89FCAF441CD1BEFF00D630AA /* CellView.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -408,6 +406,7 @@
 				TargetAttributes = {
 					89BFB7C91CB257CB0011A04A = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = GST65JV9LK;
 					};
 					89BFB7DD1CB257CB0011A04A = {
 						CreatedOnToolsVersion = 7.3;
@@ -498,6 +497,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89FCAF431CD1A3DC00D630AA /* DragAndDropViewController.swift in Sources */,
 				89DA46361CC7868700EFD940 /* LayoutFactory.swift in Sources */,
 				89A8AAED1CCE22790081FF71 /* CollageCellMenuView.swift in Sources */,
 				898B2F0A1CBF6BF600AD764A /* CollageViewController.swift in Sources */,
@@ -513,6 +513,7 @@
 				898B2F0C1CBF7D3200AD764A /* CollageView.swift in Sources */,
 				898B2F121CBF87C300AD764A /* CollageCell.swift in Sources */,
 				898B2F161CC0917C00AD764A /* OneDimentionalFunction.swift in Sources */,
+				89FCAF451CD1BEFF00D630AA /* CellView.swift in Sources */,
 				89BFB7CE1CB257CB0011A04A /* AppDelegate.swift in Sources */,
 				89F7956E1CB356580029FD32 /* HomeViewController.swift in Sources */,
 				89F795781CB38CE60029FD32 /* CameraViewController.swift in Sources */,
@@ -658,11 +659,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = SimpleCameraApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wendies.hothead.SimpleCameraApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -671,11 +675,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = SimpleCameraApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wendies.hothead.SimpleCameraApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
