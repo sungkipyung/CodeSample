@@ -17,6 +17,20 @@ struct CornerPoint {
     let startAngle: CGFloat!
     let endAngle: CGFloat!
 }
+extension CollageCell {
+    func showShadow() {
+        self.layer.shadowOffset = CGSizeMake(-15, 20)
+        self.layer.shadowRadius = 5
+        self.layer.shadowOpacity = 0.5
+    }
+    
+    func hideShadow() {
+        self.layer.shadowOffset = CGSizeMake(0, 0)
+        self.layer.shadowRadius = 0
+        self.layer.shadowOpacity = 0
+    }
+    
+}
 
 class CollageView: UIView {
     var collageCells: [CollageCell]!
@@ -107,6 +121,7 @@ class CollageView: UIView {
         // add cells
         for (index, collageCell) in collageCells.enumerate() {
             collageCell.shapeLayerPath = collageCellPaths[index]
+            collageCell.frame = CGRect(origin: polygons[index].origin, size: collageCellPaths[index].bounds.size)
         }
         
         for (index, grapButton) in cellGrapButtons.enumerate() {
@@ -125,15 +140,80 @@ class CollageView: UIView {
 //                cell.imageScrollView.contentSize = image.size
                 cell.imageScrollView.contentSize = self.bounds.size
                 
-                cell.imageScrollView.frame = cell.bounds
-//                cell.imageView.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: image.size)
+//                cell.imageScrollView.frame = cell.bounds
                 cell.imageView.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: self.bounds.size)
                 cell.imageView.image = image
+                
+                let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(collageCellLongPressed))
+                cell.addGestureRecognizer(longPressGesture)
                 collageCells.append(cell)
             }
             count += 1
         }
         return collageCells
+    }
+    
+    var selectedCollageCell: CollageCell!
+    var offset: CGPoint!
+    var selectedCollageCellFrame: CGRect!
+    var targetViewForSwap: CollageCell?
+    
+    // MARK: Objc
+    @objc private func collageCellLongPressed(sender: UILongPressGestureRecognizer) {
+        switch sender.state {
+        case .Began:
+            self.offset = sender.locationInView(self)
+            self.selectedCollageCell = sender.view as! CollageCell
+            
+            self.targetViewForSwap = nil
+            self.selectedCollageCellFrame = self.selectedCollageCell.frame
+            
+            UIView.animateWithDuration(0.2, animations: {
+                let shrinkedFrame = CGRectInset(self.selectedCollageCellFrame, 10, 10)
+                self.selectedCollageCell.frame = shrinkedFrame
+                self.selectedCollageCell.showShadow()
+            })
+            break
+        case .Changed:
+            let cursor = sender.locationInView(self)
+            let db = cursor - offset
+            self.selectedCollageCell.frame.origin = selectedCollageCellFrame.origin + db
+            self.targetViewForSwap = nil
+            self.collageCells.forEach({ (cell) in
+                if cell == self.selectedCollageCell {
+                    return
+                }
+                if cell.pointInside(self.convertPoint(cursor, toView: cell)) {
+                    cell.alpha = 0.5
+                    self.targetViewForSwap = cell
+                } else {
+                    cell.alpha = 1
+                }
+            })
+            break
+        case .Ended, .Cancelled, .Failed:
+            // TODO : Swap Operation or rollback selectedCell's Frame
+            UIView.animateWithDuration(0.5, animations: {
+                if let target = self.targetViewForSwap {
+                    let a = target.frame
+                    let b = self.selectedCollageCellFrame
+                    
+                    self.selectedCollageCell.frame = a
+                    target.frame = b
+                } else {
+                    // Rollback Position
+                    self.selectedCollageCell.frame = self.selectedCollageCellFrame
+                }
+                }, completion: { (complete) in
+                    self.selectedCollageCell.hideShadow()
+                    self.collageCells.forEach({ (view) in
+                        view.alpha = 1
+                    })
+            })
+            break
+        default:
+            NSLog("default operation")
+        }
     }
     
     // MARK: Static
@@ -142,7 +222,7 @@ class CollageView: UIView {
         for polygon in polygons {
             let path: UIBezierPath = UIBezierPath.init()
             
-            for (index, value) in polygon.enumerate() {
+            for (index, value) in polygon.points.enumerate() {
                 let newPoint = value
                 
                 if (index == 0) {
@@ -155,9 +235,9 @@ class CollageView: UIView {
                     }
                 }
                  else {
-                    let from = polygon[index - 1 < 0 ? polygon.count - 1 : index - 1]
+                    let from = polygon.points[index - 1 < 0 ? polygon.points.count - 1 : index - 1]
                     let via = value
-                    let to = polygon[(index + 1) % polygon.count]
+                    let to = polygon.points[(index + 1) % polygon.points.count]
                     
                     let maxRadius = min(from.distanceTo(via), via.distanceTo(to)) / 2
                     if (maxRadius > 0) {

@@ -28,10 +28,6 @@ class DragAndDropViewController: UIViewController {
         super.viewDidLoad()
         self.views = [view1, view2, view3, view4]
         
-//        self.views.forEach { (view) in
-//            view.translatesAutoresizingMaskIntoConstraints = false
-//        }
-        
         let top: CGFloat = 20
         let width = self.view.bounds.size.width / 2
         let height = self.view.bounds.size.height / 2
@@ -107,14 +103,16 @@ class DragAndDropViewController: UIViewController {
         case .Changed:
             let cursor = sender.locationInView(self.view)
             let dp = cursor - offset
-            self.selectedView.frame.origin.x = originalFrame.origin.x + dp.x
-            self.selectedView.frame.origin.y = originalFrame.origin.y + dp.y
+            self.selectedView.frame.origin = originalFrame.origin + dp
+//            self.selectedView.frame.origin.x = originalFrame.origin.x + dp.x
+//            self.selectedView.frame.origin.y = originalFrame.origin.y + dp.y
+//            
             
-            
+            self.targetForSwapView = nil
             self.views.forEach({ (view) in
 //                let point = view.convertPoint(cursor, toView: view)
                 if (view == self.selectedView) {
-                    return ;
+                    return
                 }
                 if CGRectContainsPoint(view.frame, cursor) {
                     view.alpha = 0.5

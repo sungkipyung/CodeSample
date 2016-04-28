@@ -78,9 +78,12 @@ class LayoutFactory: NSObject {
         }
         
         let generatePolygons = { (ps: [CGPoint]) -> [Polygon] in
+            
+            let polygon1 = LayoutFactory.generatePolygon([ps[0], ps[1], ps[2], ps[3]])
+            let polygon2 = LayoutFactory.generatePolygon([ps[4], ps[5], ps[6], ps[7]])
+            
             let polygons: [Polygon] = [
-                [ps[0], ps[1], ps[2], ps[3]],
-                [ps[4], ps[5], ps[6], ps[7]]
+                polygon1, polygon2
             ]
             return polygons
         }
@@ -113,6 +116,22 @@ class LayoutFactory: NSObject {
     
     func numberOfLayouts() -> Int {
         return 0;
+    }
+    
+    static func generatePolygon(points: [CGPoint]) -> Polygon {
+        var mutablePoints = Array(points)
+        var minX = CGFloat.max
+        var minY = CGFloat.max
+        
+        points.forEach({ (p) in
+            minX = min(p.x, minX)
+            minY = min(p.y, minY)
+        })
+        for (index, _) in mutablePoints.enumerate() {
+            mutablePoints[index].x -= minX
+            mutablePoints[index].y -= minY
+        }
+        return Polygon(origin: CGPoint(x:minX, y:minY), points: mutablePoints)
     }
     
     func getLayout(index:Int, limit: Int) -> [Layout]? {

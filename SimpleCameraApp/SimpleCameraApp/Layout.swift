@@ -21,7 +21,11 @@ import UIKit
     Points ref intersection
  */
 typealias GeneratePS = (xs:[CGFloat], ys:[CGFloat], border: CGFloat, size: CGSize) -> [CGPoint]
-typealias Polygon = [CGPoint]
+//typealias Polygon = [CGPoint]
+struct Polygon {
+    let origin: CGPoint
+    let points: [CGPoint]
+}
 typealias GeneratePolygons = (ps: [CGPoint]) -> [Polygon]
 typealias GenerateGS = (xs: [CGFloat], ys: [CGFloat], size: CGSize) -> [CGPoint]
 typealias GrapPointChangeHandler = (newUnitGrapPoint: CGPoint, xs: [CGFloat], ys: [CGFloat]) -> ([CGFloat], [CGFloat])
