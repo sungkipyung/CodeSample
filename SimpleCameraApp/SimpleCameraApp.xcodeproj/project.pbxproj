@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		892B76651CD8665A00959571 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892B76641CD8665A00959571 /* BubbleView.swift */; };
+		892B76671CD8666E00959571 /* BubbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 892B76661CD8666E00959571 /* BubbleView.xib */; };
+		892B766B1CD8705600959571 /* bubble2.png in Resources */ = {isa = PBXBuildFile; fileRef = 892B766A1CD8705600959571 /* bubble2.png */; };
 		897DE8541CC9E73200EF85E6 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897DE8531CC9E73200EF85E6 /* RadioButton.swift */; };
 		898B2EDE1CB6683F00AD764A /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898B2EDD1CB6683F00AD764A /* EditViewController.swift */; };
 		898B2EE31CB73F5900AD764A /* sample.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 898B2EE21CB73F5900AD764A /* sample.jpg */; };
@@ -78,6 +81,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		892B76641CD8665A00959571 /* BubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
+		892B76661CD8666E00959571 /* BubbleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BubbleView.xib; sourceTree = "<group>"; };
+		892B766A1CD8705600959571 /* bubble2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble2.png; sourceTree = "<group>"; };
 		897DE8531CC9E73200EF85E6 /* RadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		898B2EDD1CB6683F00AD764A /* EditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		898B2EE21CB73F5900AD764A /* sample.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample.jpg; sourceTree = "<group>"; };
@@ -177,6 +183,7 @@
 				89FF53291CC8D198002FF0B2 /* c2.jpg */,
 				89FF532A1CC8D198002FF0B2 /* c1.jpg */,
 				89A8AAEA1CCE21240081FF71 /* bubble.png */,
+				892B766A1CD8705600959571 /* bubble2.png */,
 				898B2F1E1CC5F65D00AD764A /* stretched-1920-1200-120548.jpg */,
 				89F795721CB35C060029FD32 /* Icons.xcassets */,
 				898B2EE21CB73F5900AD764A /* sample.jpg */,
@@ -219,6 +226,8 @@
 				898B2F171CC0D4FB00AD764A /* LayoutGripView.swift */,
 				898B2F1B1CC4744600AD764A /* MyPlayground.playground */,
 				897DE8531CC9E73200EF85E6 /* RadioButton.swift */,
+				892B76641CD8665A00959571 /* BubbleView.swift */,
+				892B76661CD8666E00959571 /* BubbleView.xib */,
 			);
 			name = Collage;
 			sourceTree = "<group>";
@@ -458,12 +467,14 @@
 				89BFB7D31CB257CB0011A04A /* Main.storyboard in Resources */,
 				898B2F041CBF67C700AD764A /* ico_multi_01@2x.png in Resources */,
 				898B2F051CBF67C700AD764A /* ico_multi_02@2x.png in Resources */,
+				892B76671CD8666E00959571 /* BubbleView.xib in Resources */,
 				898B2F071CBF67C700AD764A /* ico_multi_04@2x.png in Resources */,
 				898B2EE61CB7890D00AD764A /* ImageDecorationView.xib in Resources */,
 				898B2F261CC611BF00AD764A /* 5.jpg in Resources */,
 				89DA46341CC74E0E00EFD940 /* pattern-repeat-6.png in Resources */,
 				89DA46301CC74E0E00EFD940 /* pattern-reapeat-5.png in Resources */,
 				898B2F2D1CC634E100AD764A /* CollageCell.xib in Resources */,
+				892B766B1CD8705600959571 /* bubble2.png in Resources */,
 				89FF532D1CC8D198002FF0B2 /* c1.jpg in Resources */,
 				898B2EE31CB73F5900AD764A /* sample.jpg in Resources */,
 				898B2F251CC611BF00AD764A /* 4.jpg in Resources */,
@@ -505,6 +516,7 @@
 				898B2EED1CBB903E00AD764A /* CameraPreview.swift in Sources */,
 				898B2F0C1CBF7D3200AD764A /* CollageView.swift in Sources */,
 				898B2F121CBF87C300AD764A /* CollageCell.swift in Sources */,
+				892B76651CD8665A00959571 /* BubbleView.swift in Sources */,
 				898B2F161CC0917C00AD764A /* OneDimentionalFunction.swift in Sources */,
 				89BFB7CE1CB257CB0011A04A /* AppDelegate.swift in Sources */,
 				89F7956E1CB356580029FD32 /* HomeViewController.swift in Sources */,

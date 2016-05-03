@@ -26,12 +26,15 @@ struct Polygon {
     let origin: CGPoint
     let points: [CGPoint]
 }
+
 typealias GeneratePolygons = (ps: [CGPoint]) -> [Polygon]
 typealias GenerateGS = (xs: [CGFloat], ys: [CGFloat], size: CGSize) -> [CGPoint]
 typealias GrapPointChangeHandler = (newUnitGrapPoint: CGPoint, xs: [CGFloat], ys: [CGFloat]) -> ([CGFloat], [CGFloat])
+
 protocol Copy {
     func copy() -> AnyObject
 }
+
 class Layout : Copy {
     var size: CGSize! {
         didSet {

@@ -173,9 +173,12 @@ class CollageView: UIView {
             self.targetViewForSwap = nil
             self.selectedCollageCellFrame = self.selectedCollageCell.frame
             
+            let shrinkedFrame = CGRectInset(self.selectedCollageCellFrame, 10, 10)
+            let center = self.selectedCollageCell.center
+            self.selectedCollageCell.frame.size = shrinkedFrame.size
+            self.selectedCollageCell.center = center
+            
             UIView.animateWithDuration(0.2, animations: {
-                let shrinkedFrame = CGRectInset(self.selectedCollageCellFrame, 10, 10)
-                self.selectedCollageCell.frame = shrinkedFrame
                 self.selectedCollageCell.showShadow()
             })
             break
@@ -226,7 +229,7 @@ class CollageView: UIView {
     private static func generateCollageCellPath(polygons: [Polygon], curvature: CGFloat) -> Array<UIBezierPath> {
         var collageCellPaths: Array<UIBezierPath> = []
         for polygon in polygons {
-            let path: UIBezierPath = UIBezierPath.init()
+            let path = UIBezierPath.init()
             
             for (index, value) in polygon.points.enumerate() {
                 let newPoint = value
@@ -248,7 +251,7 @@ class CollageView: UIView {
                     let maxRadius = min(from.distanceTo(via), via.distanceTo(to)) / 2
                     if (maxRadius > 0) {
                         let radius = curvature * maxRadius
-                        let cornerPoint:CornerPoint = CollageView.roundedCorner(from, via: via, to: to, radius: radius)
+                        let cornerPoint = CollageView.roundedCorner(from, via: via, to: to, radius: radius)
                         path.addArcWithCenter(cornerPoint.centerPoint, radius: radius, startAngle: cornerPoint.startAngle, endAngle: cornerPoint.endAngle, clockwise: true)
                     }
                 }

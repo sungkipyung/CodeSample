@@ -7,29 +7,6 @@
 //
 
 import UIKit
-
-func applyBoder(p: CGPoint, midPoint: CGPoint, border: CGFloat) -> CGPoint {
-    var newP:CGPoint = CGPoint(x: 0, y: 0)
-    
-    if p.x < midPoint.x {
-        let dx = max(midPoint.x - p.x - border, 0)
-        newP.x = midPoint.x - dx
-    } else {
-        let dx = max(p.x - midPoint.x - border, 0)
-        newP.x = midPoint.x + dx
-    }
-    
-    if (p.y < midPoint.y) {
-        let dy = max(midPoint.y - p.y - border, 0)
-        newP.y = midPoint.y - dy
-    } else {
-        let dy = max(p.y - midPoint.y - border, 0)
-        newP.y = midPoint.y + dy
-    }
-    
-    return newP
-
-}
 class LayoutFactory: NSObject {
     static let sharedInstance = LayoutFactory()
     
@@ -39,13 +16,12 @@ class LayoutFactory: NSObject {
         super.init()
         var layoutArray: [Layout] = []
         
-        layoutArray.append(normalLayout())
+        layoutArray.append(twoCell_1())
         
         self.layouts = layoutArray
     }
     
-    private func normalLayout() -> Layout {
-        
+    private func twoCell_1() -> Layout {
         let xs: [CGFloat] = [0.0, 0.5, 1.0]
         let ys: [CGFloat] = [0.0, 1.0]
         
@@ -113,7 +89,7 @@ class LayoutFactory: NSObject {
         
         return layout
     }
-    
+
     func numberOfLayouts() -> Int {
         return 0;
     }

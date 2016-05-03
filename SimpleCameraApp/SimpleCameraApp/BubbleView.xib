@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BubbleView" customModule="SimpleCameraApp" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="zxW-7Q-M7q" id="f8i-ts-WLQ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view alpha="0.69999999999999996" contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="148" height="165"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zxW-7Q-M7q" userLabel="contentView">
+                    <rect key="frame" x="16" y="16" width="116" height="133"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aaF-tw-T96">
+                            <rect key="frame" x="8" y="8" width="100" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="24" id="ndr-IW-Szb"/>
+                            </constraints>
+                            <inset key="titleEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="포토엘범" image="ic_photo_library"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ecP-IB-dCP">
+                            <rect key="frame" x="8" y="40" width="100" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="24" id="d85-Tr-8nr"/>
+                            </constraints>
+                            <inset key="titleEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="카메라" image="ic_photo_camera"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tkJ-0v-tbF">
+                            <rect key="frame" x="8" y="72" width="100" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="24" id="goF-PR-qsU"/>
+                            </constraints>
+                            <inset key="titleEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="회전/반전" image="ic_cached"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9cA-tV-eeN">
+                            <rect key="frame" x="8" y="104" width="100" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="24" id="qh4-cO-FR3"/>
+                            </constraints>
+                            <inset key="titleEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="사진삭제" image="ic_delete"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="9cA-tV-eeN" firstAttribute="leading" secondItem="zxW-7Q-M7q" secondAttribute="leading" constant="8" id="5g2-4d-bs4"/>
+                        <constraint firstAttribute="trailing" secondItem="aaF-tw-T96" secondAttribute="trailing" constant="8" id="9Wg-2i-1Mt"/>
+                        <constraint firstItem="tkJ-0v-tbF" firstAttribute="top" secondItem="ecP-IB-dCP" secondAttribute="bottom" constant="8" id="Au8-8R-yUl"/>
+                        <constraint firstItem="ecP-IB-dCP" firstAttribute="top" secondItem="aaF-tw-T96" secondAttribute="bottom" constant="8" id="DvV-fT-7YJ"/>
+                        <constraint firstAttribute="trailing" secondItem="tkJ-0v-tbF" secondAttribute="trailing" constant="8" id="GCh-gZ-EqZ"/>
+                        <constraint firstAttribute="trailing" secondItem="ecP-IB-dCP" secondAttribute="trailing" constant="8" id="PfU-Hp-k6N"/>
+                        <constraint firstItem="tkJ-0v-tbF" firstAttribute="leading" secondItem="zxW-7Q-M7q" secondAttribute="leading" constant="8" id="Psp-Iw-Q0f"/>
+                        <constraint firstItem="tkJ-0v-tbF" firstAttribute="leading" secondItem="zxW-7Q-M7q" secondAttribute="leading" constant="8" id="UZn-zf-XHw"/>
+                        <constraint firstItem="9cA-tV-eeN" firstAttribute="top" secondItem="tkJ-0v-tbF" secondAttribute="bottom" constant="8" id="YZR-DT-sz1"/>
+                        <constraint firstItem="ecP-IB-dCP" firstAttribute="leading" secondItem="zxW-7Q-M7q" secondAttribute="leading" constant="8" id="Zja-D5-mTs"/>
+                        <constraint firstAttribute="trailing" secondItem="9cA-tV-eeN" secondAttribute="trailing" constant="8" id="hvf-Sg-l2I"/>
+                        <constraint firstItem="aaF-tw-T96" firstAttribute="leading" secondItem="zxW-7Q-M7q" secondAttribute="leading" constant="8" id="pb9-jC-77f"/>
+                        <constraint firstItem="aaF-tw-T96" firstAttribute="top" secondItem="zxW-7Q-M7q" secondAttribute="top" constant="8" id="vaq-La-xjv"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="zxW-7Q-M7q" secondAttribute="trailing" constant="16" id="EAQ-7W-X5E"/>
+                <constraint firstItem="zxW-7Q-M7q" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="HSP-zH-fLd"/>
+                <constraint firstItem="zxW-7Q-M7q" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="a6a-6t-IUt"/>
+                <constraint firstAttribute="bottom" secondItem="zxW-7Q-M7q" secondAttribute="bottom" constant="16" id="meh-dK-dUS"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="138" y="222.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_cached" width="24" height="24"/>
+        <image name="ic_delete" width="24" height="24"/>
+        <image name="ic_photo_camera" width="24" height="24"/>
+        <image name="ic_photo_library" width="24" height="24"/>
+    </resources>
+</document>

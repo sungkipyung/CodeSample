@@ -8,6 +8,7 @@
 
 import UIKit
 
+@IBDesignable
 class CollageCell: UIView, UIScrollViewDelegate {
 
     @IBOutlet weak var cameraPreview: CameraPreview!
@@ -21,6 +22,12 @@ class CollageCell: UIView, UIScrollViewDelegate {
     var shapeLayerPath: UIBezierPath? {
         didSet (newLayer) {
             let shapeLayerPath = self.shapeLayerPath!
+            
+//            shapeLayerPath.applyTransform(CGAffineTransformMakeScale(0.9, 0.9))
+//            let tx = self.frame.size.width * 0.1
+//            let ty = self.frame.size.height * 0.1
+//            shapeLayerPath.applyTransform(CGAffineTransformMakeTranslation(tx, ty))
+            
             let path = shapeLayerPath.CGPath
             
             let mask: CAShapeLayer = CAShapeLayer()

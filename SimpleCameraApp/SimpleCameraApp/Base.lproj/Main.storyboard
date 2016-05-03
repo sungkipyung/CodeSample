@@ -292,6 +292,10 @@
                                             <constraint firstItem="sn0-sE-3uM" firstAttribute="leading" secondItem="Jo4-8Z-txf" secondAttribute="leading" id="xjM-Je-zAj"/>
                                         </constraints>
                                     </view>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y87-rp-6So" customClass="BubbleView" customModule="SimpleCameraApp" customModuleProvider="target">
+                                        <rect key="frame" x="67" y="41" width="186" height="182"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -342,6 +346,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aeA-Qw-6qB">
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="40"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="프레임 조절" image="ic_zoom_out_map"/>
                                         <connections>
                                             <action selector="onTouchFrameControlButton:" destination="HLN-mE-vpw" eventType="touchUpInside" id="8lS-ca-SBR"/>
@@ -349,6 +354,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nwu-It-7b7">
                                         <rect key="frame" x="160" y="0.0" width="160" height="40"/>
+                                        <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="배경 선택" image="ic_panorama"/>
                                     </button>
                                 </subviews>
@@ -424,11 +430,107 @@
             </objects>
             <point key="canvasLocation" x="805" y="1270"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="EsG-QK-cZo">
+            <objects>
+                <viewController id="t60-HO-8AN" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="eJy-yx-BFX"/>
+                        <viewControllerLayoutGuide type="bottom" id="Iit-S1-0Tl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="eGw-gU-SLU">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dBr-gU-inx">
+                                <rect key="frame" x="0.0" y="484" width="320" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="k0w-Rv-T1f"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem title="Item" id="nzs-MG-UmX"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Vp2-GX-Kja"/>
+                                    <barButtonItem title="Item" id="OlD-Mo-kcV"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="HdC-M3-cKE"/>
+                                    <barButtonItem title="Item" id="5Ny-nm-qKQ"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ZaG-ky-tVW"/>
+                                    <barButtonItem title="Item" id="epn-aS-EaP"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Rmr-0x-Bh6"/>
+                                    <barButtonItem title="Item" id="gBF-hD-i4G"/>
+                                </items>
+                            </toolbar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="McW-Ja-4bK">
+                                <rect key="frame" x="0.0" y="528" width="320" height="40"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ozc-M9-soO">
+                                        <rect key="frame" x="8" y="8" width="24" height="24"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="24" id="hs2-S8-ZEN"/>
+                                            <constraint firstAttribute="width" constant="24" id="ueW-Qh-B76"/>
+                                        </constraints>
+                                        <state key="normal" image="ic_close"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OON-uS-Wuv">
+                                        <rect key="frame" x="288" y="8" width="24" height="24"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="24" id="7c3-Aj-KIc"/>
+                                            <constraint firstAttribute="height" constant="24" id="le2-p2-BF4"/>
+                                        </constraints>
+                                        <state key="normal" title="Button" image="ic_check"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <constraints>
+                                    <constraint firstItem="ozc-M9-soO" firstAttribute="centerY" secondItem="McW-Ja-4bK" secondAttribute="centerY" id="BID-Xa-2wc"/>
+                                    <constraint firstItem="OON-uS-Wuv" firstAttribute="centerY" secondItem="McW-Ja-4bK" secondAttribute="centerY" id="IdS-hU-xW0"/>
+                                    <constraint firstAttribute="height" constant="40" id="VuO-p0-hSY"/>
+                                    <constraint firstItem="ozc-M9-soO" firstAttribute="leading" secondItem="McW-Ja-4bK" secondAttribute="leading" constant="8" id="lHc-Ta-07J"/>
+                                    <constraint firstAttribute="trailing" secondItem="OON-uS-Wuv" secondAttribute="trailing" constant="8" id="qKE-2Z-CkP"/>
+                                </constraints>
+                            </view>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uy6-Pl-bTW">
+                                <rect key="frame" x="0.0" y="424" width="320" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="L0L-Ix-AEY"/>
+                                </constraints>
+                            </scrollView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P7q-al-jfX">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="424"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="McW-Ja-4bK" firstAttribute="leading" secondItem="eGw-gU-SLU" secondAttribute="leading" id="3ml-bF-dIU"/>
+                            <constraint firstItem="McW-Ja-4bK" firstAttribute="top" secondItem="dBr-gU-inx" secondAttribute="bottom" id="Dbd-6M-iTh"/>
+                            <constraint firstAttribute="trailing" secondItem="dBr-gU-inx" secondAttribute="trailing" id="T15-nv-4oY"/>
+                            <constraint firstItem="dBr-gU-inx" firstAttribute="top" secondItem="uy6-Pl-bTW" secondAttribute="bottom" id="Tx5-7E-GKa"/>
+                            <constraint firstAttribute="trailing" secondItem="McW-Ja-4bK" secondAttribute="trailing" id="UBe-U4-WS1"/>
+                            <constraint firstItem="uy6-Pl-bTW" firstAttribute="leading" secondItem="eGw-gU-SLU" secondAttribute="leading" id="UKJ-jZ-4jJ"/>
+                            <constraint firstItem="dBr-gU-inx" firstAttribute="leading" secondItem="eGw-gU-SLU" secondAttribute="leading" id="XAO-vf-KaP"/>
+                            <constraint firstItem="P7q-al-jfX" firstAttribute="leading" secondItem="eGw-gU-SLU" secondAttribute="leading" id="cjE-wU-pxG"/>
+                            <constraint firstAttribute="bottom" secondItem="McW-Ja-4bK" secondAttribute="bottom" id="j5I-3D-VWJ"/>
+                            <constraint firstAttribute="trailing" secondItem="P7q-al-jfX" secondAttribute="trailing" id="jHE-Wv-naa"/>
+                            <constraint firstItem="uy6-Pl-bTW" firstAttribute="top" secondItem="P7q-al-jfX" secondAttribute="bottom" id="p2h-rK-YJd"/>
+                            <constraint firstAttribute="trailing" secondItem="uy6-Pl-bTW" secondAttribute="trailing" id="woe-Xg-7Wo"/>
+                            <constraint firstItem="P7q-al-jfX" firstAttribute="top" secondItem="eGw-gU-SLU" secondAttribute="top" id="wvc-S7-2ex"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="O2D-l7-SuG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1219" y="1270"/>
+        </scene>
     </scenes>
     <resources>
         <image name="ic_cached" width="24" height="24"/>
         <image name="ic_camera_48pt" width="48" height="48"/>
         <image name="ic_camera_filter_64pt" width="64" height="64"/>
+        <image name="ic_check" width="24" height="24"/>
+        <image name="ic_close" width="24" height="24"/>
         <image name="ic_crop" width="24" height="24"/>
         <image name="ic_dashboard_48pt" width="48" height="48"/>
         <image name="ic_filter_vintage" width="24" height="24"/>
