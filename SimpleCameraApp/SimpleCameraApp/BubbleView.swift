@@ -8,10 +8,18 @@
 
 import UIKit
 
+protocol BubbleViewDelegate {
+    func bubbleViewRotationButtonTouched(bubbleView: BubbleView, sender:AnyObject)
+}
+
 @IBDesignable
 class BubbleView: UIView {
     @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var bubbleImage: UIImageView!
+    
+    weak var selectedCollageCell: CollageCell?
+    
+    var delegate: BubbleViewDelegate?
+    
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -31,19 +39,17 @@ class BubbleView: UIView {
         print("initWithCoder")
         load()
     }
+    
     override func awakeFromNib() {
         print("awakeFromNib")
-//        bubbleImage.image = UIImage(named: "bubble.png")
-        let image = UIImage(named: "bubble2.png")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-        bubbleImage.image = image.resizableImageWithCapInsets(UIEdgeInsetsMake(35, 22, 10, 10), resizingMode: UIImageResizingMode.Stretch)
-        bubbleImage.tintColor = UIColor.yellowColor()
-        bubbleImage.clearsContextBeforeDrawing = true
-        bubbleImage.clipsToBounds = true
-        bubbleImage.contentMode = UIViewContentMode.ScaleAspectFill
     }
     
     func load() {
         let bubbleView = NSBundle(forClass: self.dynamicType).loadNibNamed("BubbleView", owner: self, options: nil).first as! UIView
         self.addSubview(bubbleView)
+    }
+    
+    @IBAction func touchRotationButton(sender: AnyObject) {
+        self.delegate?.bubbleViewRotationButtonTouched(self, sender: sender)
     }
 }

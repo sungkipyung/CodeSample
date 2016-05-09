@@ -19,14 +19,19 @@ class CollageCell: UIView, UIScrollViewDelegate {
     @IBOutlet weak var lineView: UIView!
     private static let BORDER_WIDTH:CGFloat = 0
     
-    var shapeLayerPath: UIBezierPath? {
+    var polygon: Polygon! {
+        didSet {
+            if let p = polygon  {
+                let path = p.path()
+                self.frame = CGRect(origin: p.origin, size: path.bounds.size)
+                self.shapeLayerPath = path
+            }
+        }
+    }
+    
+    private var shapeLayerPath: UIBezierPath? {
         didSet (newLayer) {
             let shapeLayerPath = self.shapeLayerPath!
-            
-//            shapeLayerPath.applyTransform(CGAffineTransformMakeScale(0.9, 0.9))
-//            let tx = self.frame.size.width * 0.1
-//            let ty = self.frame.size.height * 0.1
-//            shapeLayerPath.applyTransform(CGAffineTransformMakeTranslation(tx, ty))
             
             let path = shapeLayerPath.CGPath
             
@@ -48,6 +53,7 @@ class CollageCell: UIView, UIScrollViewDelegate {
             }
         }
     }
+    
     func pointInside(point: CGPoint) -> Bool {
         if let path:UIBezierPath =  self.shapeLayerPath {
             return path.containsPoint(point)
@@ -59,12 +65,6 @@ class CollageCell: UIView, UIScrollViewDelegate {
             return path.containsPoint(point)
         } else {
             return super.pointInside(point, withEvent: event)
-        }
-    }
-    
-    override var frame: CGRect {
-        didSet {
-            // update subview's bounds
         }
     }
     
@@ -102,6 +102,6 @@ class CollageCell: UIView, UIScrollViewDelegate {
     }
     
     @IBAction func imageScrollViewTapped(sender: AnyObject) {
-        self.superview?.bringSubviewToFront(self)
+//        self.superview?.bringSubviewToFront(self)
     }
 }

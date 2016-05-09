@@ -53,7 +53,7 @@ class CollageView: UIView {
             }
             let layout: Layout = self.layout!
             layout.size = self.bounds.size
-            let collageCells = createCollageCells(layout.cellCount)
+            let collageCells = createCollageCells(layout)
             
             // add cells
             for collageCell in collageCells {
@@ -115,14 +115,13 @@ class CollageView: UIView {
         let collageCells = self.collageCells
         let cellGrapButtons = self.cellGrapButtons
         
-        let polygons: [Polygon] = layout.layout()
-        let collageCellPaths = CollageView.generateCollageCellPath(polygons, curvature:layout.curvature)
+        let polygons: [Polygon] = layout.polygons()
         let grapButtonPoints = layout.grapPoints()
 //
         // add cells
         for (index, collageCell) in collageCells.enumerate() {
-            collageCell.shapeLayerPath = collageCellPaths[index]
-            collageCell.frame = CGRect(origin: polygons[index].origin, size: collageCellPaths[index].bounds.size)
+            collageCell.polygon = polygons[index]
+//            collageCell.frame = CGRect(origin: polygons[index].origin, size: collageCellPaths[index].bounds.size)
         }
         
         for (index, grapButton) in cellGrapButtons.enumerate() {
@@ -130,14 +129,18 @@ class CollageView: UIView {
         }
     }
     
-    private func createCollageCells(numberOfCells:Int) -> [CollageCell] {
+    private func createCollageCells(layout:Layout) -> [CollageCell] {
         var collageCells: [CollageCell] = []
-        var count = 0
-        while (count < numberOfCells) {
+        var index = 0
+        let polygons = layout.polygons()
+        
+        while (index < layout.cellCount) {
             if let cell = UINib(nibName: "CollageCell", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? CollageCell {
                 cell.frame = self.bounds
                 
-                let image = UIImage(named: "c\(count % 2 + 1).jpg")!
+                cell.polygon = polygons[index]
+                
+                let image = UIImage(named: "c\(index % 2 + 1).jpg")!
 //                cell.imageScrollView.contentSize = image.size
                 cell.imageScrollView.contentSize = self.bounds.size
                 
@@ -149,14 +152,13 @@ class CollageView: UIView {
                 cell.addGestureRecognizer(longPressGesture)
                 collageCells.append(cell)
             }
-            count += 1
+            index += 1
         }
         return collageCells
     }
     
     var selectedCollageCell: CollageCell!
     var offset: CGPoint!
-    var selectedCollageCellFrame: CGRect!
     var targetViewForSwap: CollageCell?
     
     // MARK: Objc
@@ -169,23 +171,22 @@ class CollageView: UIView {
         case .Began:
             self.offset = sender.locationInView(self)
             self.selectedCollageCell = sender.view as! CollageCell
+            self.selectedCollageCell.superview?.bringSubviewToFront(self.selectedCollageCell)
             
             self.targetViewForSwap = nil
-            self.selectedCollageCellFrame = self.selectedCollageCell.frame
-            
-            let shrinkedFrame = CGRectInset(self.selectedCollageCellFrame, 10, 10)
-            let center = self.selectedCollageCell.center
-            self.selectedCollageCell.frame.size = shrinkedFrame.size
-            self.selectedCollageCell.center = center
             
             UIView.animateWithDuration(0.2, animations: {
+                self.selectedCollageCell.transform = CGAffineTransformMakeScale(0.9, 0.9)
                 self.selectedCollageCell.showShadow()
             })
             break
         case .Changed:
             let cursor = sender.locationInView(self)
             let db = cursor - offset
-            self.selectedCollageCell.frame.origin = selectedCollageCellFrame.origin + db
+            
+            self.selectedCollageCell.transform = CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation(db.x, db.y))
+            
+            
             self.targetViewForSwap = nil
             self.collageCells.forEach({ (cell) in
                 if cell == self.selectedCollageCell {
@@ -200,18 +201,19 @@ class CollageView: UIView {
             })
             break
         case .Ended, .Cancelled, .Failed:
+            
             UIView.animateWithDuration(0.5, animations: {
                 //Swap Operation
                 if let target = self.targetViewForSwap {
                     let indexA = self.collageCells.indexOf(target)!
                     let indexB = self.collageCells.indexOf(self.selectedCollageCell)!
-                    
+                    self.selectedCollageCell.transform = CGAffineTransformIdentity
                     swap(&self.collageCells[indexA], &self.collageCells[indexB]);
                     
                     self.applyCellPath()
                 } else {
                     // Rollback Position
-                    self.selectedCollageCell.frame = self.selectedCollageCellFrame
+                    self.selectedCollageCell.transform = CGAffineTransformIdentity
                 }
                 }, completion: { (complete) in
                     self.selectedCollageCell.hideShadow()
@@ -225,80 +227,6 @@ class CollageView: UIView {
         }
     }
     
-    // MARK: Static
-    private static func generateCollageCellPath(polygons: [Polygon], curvature: CGFloat) -> Array<UIBezierPath> {
-        var collageCellPaths: Array<UIBezierPath> = []
-        for polygon in polygons {
-            let path = UIBezierPath.init()
-            
-            for (index, value) in polygon.points.enumerate() {
-                let newPoint = value
-                
-                if (index == 0) {
-                    path.moveToPoint(newPoint)
-                }
-                
-                if (curvature == 0) {
-                    if (index != 0) {
-                        path.addLineToPoint(newPoint)
-                    }
-                }
-                 else {
-                    let from = polygon.points[index - 1 < 0 ? polygon.points.count - 1 : index - 1]
-                    let via = value
-                    let to = polygon.points[(index + 1) % polygon.points.count]
-                    
-                    let maxRadius = min(from.distanceTo(via), via.distanceTo(to)) / 2
-                    if (maxRadius > 0) {
-                        let radius = curvature * maxRadius
-                        let cornerPoint = CollageView.roundedCorner(from, via: via, to: to, radius: radius)
-                        path.addArcWithCenter(cornerPoint.centerPoint, radius: radius, startAngle: cornerPoint.startAngle, endAngle: cornerPoint.endAngle, clockwise: true)
-                    }
-                }
-            }
-            path.closePath()
-            
-            collageCellPaths.append(path)
-        }
-        
-        return collageCellPaths
-    }
-    
-    private static func roundedCorner(from: CGPoint, via: CGPoint, to: CGPoint, radius: CGFloat) -> CornerPoint {
-        let fromAngle = atan2f(Float(via.y - from.y), Float(via.x - from.x))
-        let toAngle = atan2f(Float(to.y - via.y), Float(to.x - via.x))
-        
-        let fromOffset: CGVector = CGVector(dx: CGFloat(-sinf(fromAngle)) * radius, dy: CGFloat(cosf(fromAngle)) * radius)
-        let toOffset: CGVector = CGVector(dx: CGFloat(-sinf(toAngle)) * radius, dy: CGFloat(cosf(toAngle)) * radius)
-        
-        let x1 = from.x + fromOffset.dx
-        let y1 = from.y + fromOffset.dy
-        
-        let x2 = via.x + fromOffset.dx
-        let y2 = via.y + fromOffset.dy
-        
-        let x3 = via.x + toOffset.dx
-        let y3 = via.y +  toOffset.dy
-        
-        let x4 = to.x + toOffset.dx
-        let y4 = to.y + toOffset.dy
-        
-        let intersectionX = ((x1*y2-y1*x2)*(x3-x4) - (x1-x2)*(x3*y4-y3*x4)) / ((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4));
-        let intersectionY = ((x1*y2-y1*x2)*(y3-y4) - (y1-y2)*(x3*y4-y3*x4)) / ((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4));
-        
-        let intersection = CGPointMake(intersectionX, intersectionY);
-        
-        let pi = Float(M_PI_2)
-        let corner = CornerPoint(centerPoint: intersection, startAngle: CGFloat(fromAngle - pi), endAngle: CGFloat(toAngle - pi))
-        
-        return corner;
-        
-    }
-    
-    private static func scalePoint(point: CGPoint, frame:CGRect) -> CGPoint {
-        return CGPointMake(point.x * frame.size.width, point.y * frame.size.height)
-    }
-    
     /*
      // Only override drawRect: if you perform custom drawing.
      // An empty implementation adversely affects performance during animation.
@@ -306,12 +234,4 @@ class CollageView: UIView {
      // Drawing code
      }
      */
-    
-    
-    //    let controlPoint = centerOfPoints(scalePoint(pointArray[index-1].CGPointValue()), point2: newPoint)
-    //    path.addQuadCurveToPoint(newPoint, controlPoint: controlPoint)
-//    func centerOfPoints(point1: CGPoint, point2: CGPoint) -> CGPoint {
-//        return CGPoint(x:(point1.x + point2.x) / 2, y:(point1.y + point2.y))
-//    }
-    
 }

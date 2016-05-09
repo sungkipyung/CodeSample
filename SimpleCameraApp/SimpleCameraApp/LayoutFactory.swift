@@ -107,7 +107,7 @@ class LayoutFactory: NSObject {
             mutablePoints[index].x -= minX
             mutablePoints[index].y -= minY
         }
-        return Polygon(origin: CGPoint(x:minX, y:minY), points: mutablePoints)
+        return Polygon(origin: CGPoint(x:minX, y:minY), points: mutablePoints, curvature: 0)
     }
     
     func getLayout(index:Int, limit: Int) -> [Layout]? {

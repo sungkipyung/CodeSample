@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CollageViewController: UIViewController {
+class CollageViewController: UIViewController, BubbleViewDelegate {
 
     @IBOutlet weak var collageView: CollageView!
     
@@ -20,9 +20,12 @@ class CollageViewController: UIViewController {
     
     @IBOutlet weak var layoutControlView: UIView!
     private static let MAX_BORDER_WIDTH: CGFloat = 10
+    @IBOutlet weak var bubbleView: BubbleView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.bubbleView.delegate = self
 
         UIGraphicsBeginImageContext(self.collageView.frame.size);
         UIImage(named: "pattern-repeat-4.png")?.drawInRect(self.collageView.bounds)
@@ -100,10 +103,22 @@ class CollageViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+//        super.prepareForSegue(segue, sender: sender)
+        
+        let destVC = segue.destinationViewController
+        destVC.transitioningDelegate = self
+        destVC.modalPresentationStyle = UIModalPresentationStyle.Custom
     }
-    */
+     */
 
     @IBAction func onTouchBackButton(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    // MARK: - BubbleViewDelegate
+    func bubbleViewRotationButtonTouched(bubbleView: BubbleView, sender:AnyObject) {
+//        self.performSegueWithIdentifier("rotationPhotoVCSegue", sender: self)
+        
+//        self.storyboard?.instantiateViewControllerWithIdentifier(<#T##identifier: String##String#>)
     }
 }

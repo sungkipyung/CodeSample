@@ -23,8 +23,75 @@ import UIKit
 typealias GeneratePS = (xs:[CGFloat], ys:[CGFloat], border: CGFloat, size: CGSize) -> [CGPoint]
 //typealias Polygon = [CGPoint]
 struct Polygon {
-    let origin: CGPoint
-    let points: [CGPoint]
+    var origin: CGPoint
+    var points: [CGPoint]
+    var curvature: CGFloat
+}
+
+extension Polygon {
+    func path() -> UIBezierPath {
+        let path = UIBezierPath()
+        
+        for (index, value) in self.points.enumerate() {
+            let newPoint = value
+            
+            if (index == 0) {
+                path.moveToPoint(newPoint)
+            }
+            
+            if (curvature == 0) {
+                if (index != 0) {
+                    path.addLineToPoint(newPoint)
+                }
+            }
+            else {
+                let from = self.points[index - 1 < 0 ? self.points.count - 1 : index - 1]
+                let via = value
+                let to = self.points[(index + 1) % self.points.count]
+                
+                let maxRadius = min(from.distanceTo(via), via.distanceTo(to)) / 2
+                if (maxRadius > 0) {
+                    let radius = self.curvature * maxRadius
+                    let cornerPoint = self.roundedCorner(from, via: via, to: to, radius: radius)
+                    path.addArcWithCenter(cornerPoint.centerPoint, radius: radius, startAngle: cornerPoint.startAngle, endAngle: cornerPoint.endAngle, clockwise: true)
+                }
+            }
+        }
+        path.closePath()
+        
+        return path
+    }
+    
+    private func roundedCorner(from: CGPoint, via: CGPoint, to: CGPoint, radius: CGFloat) -> CornerPoint {
+        let fromAngle = atan2f(Float(via.y - from.y), Float(via.x - from.x))
+        let toAngle = atan2f(Float(to.y - via.y), Float(to.x - via.x))
+        
+        let fromOffset: CGVector = CGVector(dx: CGFloat(-sinf(fromAngle)) * radius, dy: CGFloat(cosf(fromAngle)) * radius)
+        let toOffset: CGVector = CGVector(dx: CGFloat(-sinf(toAngle)) * radius, dy: CGFloat(cosf(toAngle)) * radius)
+        
+        let x1 = from.x + fromOffset.dx
+        let y1 = from.y + fromOffset.dy
+        
+        let x2 = via.x + fromOffset.dx
+        let y2 = via.y + fromOffset.dy
+        
+        let x3 = via.x + toOffset.dx
+        let y3 = via.y +  toOffset.dy
+        
+        let x4 = to.x + toOffset.dx
+        let y4 = to.y + toOffset.dy
+        
+        let intersectionX = ((x1*y2-y1*x2)*(x3-x4) - (x1-x2)*(x3*y4-y3*x4)) / ((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4));
+        let intersectionY = ((x1*y2-y1*x2)*(y3-y4) - (y1-y2)*(x3*y4-y3*x4)) / ((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4));
+        
+        let intersection = CGPointMake(intersectionX, intersectionY);
+        
+        let pi = Float(M_PI_2)
+        let corner = CornerPoint(centerPoint: intersection, startAngle: CGFloat(fromAngle - pi), endAngle: CGFloat(toAngle - pi))
+        
+        return corner;
+        
+    }
 }
 
 typealias GeneratePolygons = (ps: [CGPoint]) -> [Polygon]
@@ -97,8 +164,13 @@ class Layout : Copy {
         self.ps = self.generatePS(xs:xs, ys:ys, border: border, size: size)
     }
 
-    func layout() -> [Polygon] {
-        return self.generatePolygons(ps:self.ps)
+    func polygons() -> [Polygon] {
+        var polygons = self.generatePolygons(ps:self.ps)
+        
+        for (index, _) in polygons.enumerate() {
+            polygons[index].curvature = self.curvature
+        }
+        return polygons
     }
     func grapPoints() -> [CGPoint] {
         return self.generateGS(xs: xs, ys: ys, size: size)
