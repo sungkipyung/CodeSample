@@ -67,14 +67,6 @@ class CollageViewController: UIViewController, BubbleViewDelegate {
         collageView.frame.size.height = width
         collageView.layout = layout
     }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -110,15 +102,18 @@ class CollageViewController: UIViewController, BubbleViewDelegate {
         destVC.modalPresentationStyle = UIModalPresentationStyle.Custom
     }
      */
-
-    @IBAction func onTouchBackButton(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    
+    @IBAction func exitFromRotationPhotoViewController(segue : UIStoryboardSegue) {
+        // RotationPhotoViewControllerUnwindSegue
     }
     
     // MARK: - BubbleViewDelegate
     func bubbleViewRotationButtonTouched(bubbleView: BubbleView, sender:AnyObject) {
-//        self.performSegueWithIdentifier("rotationPhotoVCSegue", sender: self)
-        
-//        self.storyboard?.instantiateViewControllerWithIdentifier(<#T##identifier: String##String#>)
+        // RotationPhotoViewControllerSegue
+        self.performSegueWithIdentifier("RotationPhotoViewControllerSegue", sender: self)
+    }
+    
+    @IBAction func onTouchBackButton(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 }

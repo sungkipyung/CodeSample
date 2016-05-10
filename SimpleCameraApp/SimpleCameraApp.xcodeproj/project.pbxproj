@@ -12,6 +12,7 @@
 		892B766B1CD8705600959571 /* bubble2.png in Resources */ = {isa = PBXBuildFile; fileRef = 892B766A1CD8705600959571 /* bubble2.png */; };
 		892B766D1CD87ADA00959571 /* RotationPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892B766C1CD87ADA00959571 /* RotationPhotoViewController.swift */; };
 		897DE8541CC9E73200EF85E6 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897DE8531CC9E73200EF85E6 /* RadioButton.swift */; };
+		89873E511CE1E5BF0097A593 /* RotationPhotoViewControllerSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89873E501CE1E5BF0097A593 /* RotationPhotoViewControllerSegue.swift */; };
 		898B2EDE1CB6683F00AD764A /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898B2EDD1CB6683F00AD764A /* EditViewController.swift */; };
 		898B2EE31CB73F5900AD764A /* sample.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 898B2EE21CB73F5900AD764A /* sample.jpg */; };
 		898B2EE61CB7890D00AD764A /* ImageDecorationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 898B2EE51CB7890D00AD764A /* ImageDecorationView.xib */; };
@@ -89,6 +90,7 @@
 		892B766A1CD8705600959571 /* bubble2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble2.png; sourceTree = "<group>"; };
 		892B766C1CD87ADA00959571 /* RotationPhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationPhotoViewController.swift; sourceTree = "<group>"; };
 		897DE8531CC9E73200EF85E6 /* RadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
+		89873E501CE1E5BF0097A593 /* RotationPhotoViewControllerSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationPhotoViewControllerSegue.swift; sourceTree = "<group>"; };
 		898B2EDD1CB6683F00AD764A /* EditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		898B2EE21CB73F5900AD764A /* sample.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample.jpg; sourceTree = "<group>"; };
 		898B2EE51CB7890D00AD764A /* ImageDecorationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageDecorationView.xib; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				892B766C1CD87ADA00959571 /* RotationPhotoViewController.swift */,
 				89A6F9A01CE0907D00FB1CA9 /* RulerCell.xib */,
 				89A6F9A21CE0936500FB1CA9 /* RulerCell.swift */,
+				89873E501CE1E5BF0097A593 /* RotationPhotoViewControllerSegue.swift */,
 			);
 			name = Edit;
 			sourceTree = "<group>";
@@ -226,6 +229,8 @@
 		898B2EF61CBF618900AD764A /* Collage */ = {
 			isa = PBXGroup;
 			children = (
+				892B76641CD8665A00959571 /* BubbleView.swift */,
+				892B76661CD8666E00959571 /* BubbleView.xib */,
 				898B2F111CBF87C300AD764A /* CollageCell.swift */,
 				898B2F2C1CC634E100AD764A /* CollageCell.xib */,
 				898B2F0B1CBF7D3200AD764A /* CollageView.swift */,
@@ -235,8 +240,6 @@
 				898B2F171CC0D4FB00AD764A /* LayoutGripView.swift */,
 				898B2F1B1CC4744600AD764A /* MyPlayground.playground */,
 				897DE8531CC9E73200EF85E6 /* RadioButton.swift */,
-				892B76641CD8665A00959571 /* BubbleView.swift */,
-				892B76661CD8666E00959571 /* BubbleView.xib */,
 			);
 			name = Collage;
 			sourceTree = "<group>";
@@ -533,6 +536,7 @@
 				89BFB7CE1CB257CB0011A04A /* AppDelegate.swift in Sources */,
 				89F7956E1CB356580029FD32 /* HomeViewController.swift in Sources */,
 				89F795781CB38CE60029FD32 /* CameraViewController.swift in Sources */,
+				89873E511CE1E5BF0097A593 /* RotationPhotoViewControllerSegue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
