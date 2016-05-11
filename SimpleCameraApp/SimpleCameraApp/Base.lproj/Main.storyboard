@@ -201,7 +201,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kuu-bL-8JQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2400" y="799.64788732394356"/>
+            <point key="canvasLocation" x="1606" y="660"/>
         </scene>
         <!--Collage View Controller-->
         <scene sceneID="bgz-Vs-Duz">
@@ -292,7 +292,7 @@
                                             <constraint firstAttribute="width" secondItem="uPW-Bc-tgE" secondAttribute="height" multiplier="1:1" id="HK9-Ps-Z7f"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y87-rp-6So" customClass="BubbleView" customModule="SimpleCameraApp" customModuleProvider="target">
+                                    <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y87-rp-6So" customClass="BubbleView" customModule="SimpleCameraApp" customModuleProvider="target">
                                         <rect key="frame" x="62" y="50" width="186" height="162"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
@@ -414,6 +414,9 @@
                             <constraint firstItem="a7a-n4-kPL" firstAttribute="leading" secondItem="VaR-oi-6IZ" secondAttribute="leading" id="xV6-K8-LJT"/>
                             <constraint firstAttribute="trailing" secondItem="a7a-n4-kPL" secondAttribute="trailing" id="y6h-wO-Kim"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="hec-B7-Tvn" appends="YES" id="BPA-5a-w3N"/>
+                        </connections>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
@@ -429,8 +432,13 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HNG-0V-ql2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="hec-B7-Tvn">
+                    <connections>
+                        <action selector="onTapGesture:" destination="HLN-mE-vpw" id="q8I-RM-zWl"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="816" y="1285"/>
+            <point key="canvasLocation" x="805" y="1285"/>
         </scene>
         <!--RotationPhotoViewController-->
         <scene sceneID="EsG-QK-cZo">

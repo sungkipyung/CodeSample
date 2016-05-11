@@ -11,9 +11,21 @@ import UIKit
 class RotationPhotoViewControllerSegue: UIStoryboardSegue {
     override func perform() {
         
-        let srcVC = self.sourceViewController // collage
-        let destVC = self.destinationViewController // RotationPhotoViewController
+        let srcVC = self.sourceViewController as! CollageViewController // collage
+        let destVC = self.destinationViewController as! RotationPhotoViewController // RotationPhotoViewController
         
-        srcVC.presentViewController(destVC, animated: false, completion: nil)
+        let containerView = srcVC.view.superview
+        
+        containerView?.addSubview(destVC.view)
+//        destVC.view.hidden = true
+        
+        UIView.animateWithDuration(2.0, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 4.0, options: UIViewAnimationOptions(rawValue: 0), animations: {
+//            srcVC.view.hidden = true
+//            destVC.view.hidden = false
+            containerView?.bringSubviewToFront(destVC.view)
+            }) { (complete) in
+                destVC.view .removeFromSuperview()
+                srcVC.presentViewController(destVC, animated: false, completion: nil)
+        }
     }
 }

@@ -8,13 +8,17 @@
 
 import UIKit
 
-@IBDesignable
+protocol CollageCellDelegate {
+    func collageCellDidSelect(cell: CollageCell)
+}
+
 class CollageCell: UIView, UIScrollViewDelegate {
 
     @IBOutlet weak var cameraPreview: CameraPreview!
     @IBOutlet weak var imageScrollView: UIScrollView!
 
     weak var imageView: UIImageView!
+    var delegate: CollageCellDelegate?
     
     @IBOutlet weak var lineView: UIView!
     private static let BORDER_WIDTH:CGFloat = 0
@@ -60,6 +64,7 @@ class CollageCell: UIView, UIScrollViewDelegate {
         }
         return false
     }
+    
     override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
         if let path:UIBezierPath =  self.shapeLayerPath {
             return path.containsPoint(point)
@@ -102,6 +107,6 @@ class CollageCell: UIView, UIScrollViewDelegate {
     }
     
     @IBAction func imageScrollViewTapped(sender: AnyObject) {
-//        self.superview?.bringSubviewToFront(self)
+        delegate?.collageCellDidSelect(self)
     }
 }

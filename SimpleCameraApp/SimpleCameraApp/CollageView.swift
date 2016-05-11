@@ -29,10 +29,14 @@ extension CollageCell {
         self.layer.shadowRadius = 0
         self.layer.shadowOpacity = 0
     }
-    
 }
 
-class CollageView: UIView {
+protocol CollageViewDelegate {
+    func collageCellSelected(collageView:CollageView, selectedCell:CollageCell)
+}
+
+class CollageView: UIView, CollageCellDelegate {
+    var delegate: CollageViewDelegate?
     var collageCells: [CollageCell]!
     var cellGrapButtons: [LayoutGripView]!
     var swappable: Bool = true
@@ -150,6 +154,7 @@ class CollageView: UIView {
                 
                 let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(collageCellLongPressed))
                 cell.addGestureRecognizer(longPressGesture)
+                cell.delegate = self
                 collageCells.append(cell)
             }
             index += 1
@@ -226,7 +231,11 @@ class CollageView: UIView {
             NSLog("default operation")
         }
     }
-    
+    // MARK: - CollageCellDelegate
+    func collageCellDidSelect(cell: CollageCell) {
+        // TODO: highlight selected cell
+        delegate?.collageCellSelected(self, selectedCell: cell)
+    }
     /*
      // Only override drawRect: if you perform custom drawing.
      // An empty implementation adversely affects performance during animation.

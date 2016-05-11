@@ -31,12 +31,11 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.rulerCollectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: 45, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-        self.rulerCollectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: 45, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
     }
 
     override func didReceiveMemoryWarning() {

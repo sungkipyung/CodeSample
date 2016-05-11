@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SimpleCameraApp/CollageCell.swift"
-            timestampString = "484473413.694333"
+            timestampString = "484630314.540153"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132">
+            startingLineNumber = "137"
+            endingLineNumber = "137">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

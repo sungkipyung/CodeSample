@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CollageViewController: UIViewController, BubbleViewDelegate {
+class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDelegate {
 
     @IBOutlet weak var collageView: CollageView!
     
@@ -66,6 +66,16 @@ class CollageViewController: UIViewController, BubbleViewDelegate {
         collageView.frame.size.width = width
         collageView.frame.size.height = width
         collageView.layout = layout
+        collageView.delegate = self
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.layoutControlView.addObserver(self, forKeyPath: "hidden", options: NSKeyValueObservingOptions.New, context: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.layoutControlView.removeObserver(self, forKeyPath: "hidden")
     }
 
     override func didReceiveMemoryWarning() {
@@ -73,19 +83,38 @@ class CollageViewController: UIViewController, BubbleViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        
+        if let view = object as? UIView {
+            if view == self.layoutControlView {
+                updateLayoutcontrolView()
+            }
+        }
+    }
+    
     @IBAction func onTouchFrameControlButton(sender: AnyObject) {
         layoutControlView.hidden = !layoutControlView.hidden
-        if (layoutControlView.hidden) {
-            collageView.drawGrapButtons = false
-            self.collageView.swappable = true
-        } else {
-            collageView.drawGrapButtons = true
-            collageView.cellGrapButtons.forEach({ (button) in
-                collageView.bringSubviewToFront(button)
-            })
-            
-            self.collageView.swappable = false
+        clearBubbleView()
+    }
+    
+    @IBAction func onTapGesture(sender: UITapGestureRecognizer) {
+        if self.view == sender.view {
+            layoutControlView.hidden = true
+            clearBubbleView()
         }
+    }
+    // MARK: -CollageViewDelegate
+    func collageCellSelected(collageView: CollageView, selectedCell: CollageCell) {
+        self.bubbleView.selectedCollageCell = selectedCell
+        self.bubbleView.hidden = false
+        
+        let axisView = self.bubbleView.superview!
+        
+        // transfer coordinate collageView to axisView
+        let point = axisView.convertPoint(selectedCell.center, fromView:selectedCell.superview)
+        self.bubbleView.center = point
+        
+        // bubbleView's tail will be located at selectedCollageCell's center
     }
 
     /*
@@ -115,5 +144,24 @@ class CollageViewController: UIViewController, BubbleViewDelegate {
     
     @IBAction func onTouchBackButton(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    // MARK: - private
+    private func clearBubbleView() {
+        self.bubbleView.selectedCollageCell = nil
+        self.bubbleView.hidden = true
+    }
+    
+    private func updateLayoutcontrolView() {
+        if (layoutControlView.hidden) {
+            collageView.drawGrapButtons = false
+            self.collageView.swappable = true
+        } else {
+            collageView.drawGrapButtons = true
+            collageView.cellGrapButtons.forEach({ (button) in
+                collageView.bringSubviewToFront(button)
+            })
+            self.collageView.swappable = false
+        }
     }
 }
