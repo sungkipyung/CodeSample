@@ -26,11 +26,8 @@ class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDe
         super.viewDidLoad()
         
         self.bubbleView.delegate = self
-
-        UIGraphicsBeginImageContext(self.collageView.frame.size);
-        UIImage(named: "pattern-repeat-4.png")?.drawInRect(self.collageView.bounds)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
+        
+        let image = UIImage(named: "pattern-repeat-4.png")!
         self.collageView.backgroundColor = UIColor(patternImage: image)
         // Do any additional setup after loading the view.
         
