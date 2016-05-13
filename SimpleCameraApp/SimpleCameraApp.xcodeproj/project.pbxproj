@@ -13,6 +13,7 @@
 		892B766D1CD87ADA00959571 /* RotationPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892B766C1CD87ADA00959571 /* RotationPhotoViewController.swift */; };
 		897DE8541CC9E73200EF85E6 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897DE8531CC9E73200EF85E6 /* RadioButton.swift */; };
 		897E66361CE48BFD00A1A3DB /* CollageCellZoomInAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897E66351CE48BFD00A1A3DB /* CollageCellZoomInAnimationController.swift */; };
+		897E66381CE5961700A1A3DB /* CollageCellZoomOutAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897E66371CE5961700A1A3DB /* CollageCellZoomOutAnimationController.swift */; };
 		898B2EDE1CB6683F00AD764A /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898B2EDD1CB6683F00AD764A /* EditViewController.swift */; };
 		898B2EE31CB73F5900AD764A /* sample.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 898B2EE21CB73F5900AD764A /* sample.jpg */; };
 		898B2EE61CB7890D00AD764A /* ImageDecorationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 898B2EE51CB7890D00AD764A /* ImageDecorationView.xib */; };
@@ -91,6 +92,7 @@
 		892B766C1CD87ADA00959571 /* RotationPhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationPhotoViewController.swift; sourceTree = "<group>"; };
 		897DE8531CC9E73200EF85E6 /* RadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		897E66351CE48BFD00A1A3DB /* CollageCellZoomInAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollageCellZoomInAnimationController.swift; sourceTree = "<group>"; };
+		897E66371CE5961700A1A3DB /* CollageCellZoomOutAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollageCellZoomOutAnimationController.swift; sourceTree = "<group>"; };
 		898B2EDD1CB6683F00AD764A /* EditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		898B2EE21CB73F5900AD764A /* sample.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample.jpg; sourceTree = "<group>"; };
 		898B2EE51CB7890D00AD764A /* ImageDecorationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageDecorationView.xib; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 				89A6F9A01CE0907D00FB1CA9 /* RulerCell.xib */,
 				89A6F9A21CE0936500FB1CA9 /* RulerCell.swift */,
 				897E66351CE48BFD00A1A3DB /* CollageCellZoomInAnimationController.swift */,
+				897E66371CE5961700A1A3DB /* CollageCellZoomOutAnimationController.swift */,
 			);
 			name = Edit;
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 				898B2EF21CBB956600AD764A /* Camera.swift in Sources */,
 				89FCAF411CD09E1700D630AA /* CGPoint+Extensions.swift in Sources */,
 				898B2F1A1CC0F1BF00AD764A /* Layout.swift in Sources */,
+				897E66381CE5961700A1A3DB /* CollageCellZoomOutAnimationController.swift in Sources */,
 				898B2EE81CB78F0800AD764A /* ImageDecorationView.swift in Sources */,
 				892B766D1CD87ADA00959571 /* RotationPhotoViewController.swift in Sources */,
 				898B2F181CC0D4FB00AD764A /* LayoutGripView.swift in Sources */,

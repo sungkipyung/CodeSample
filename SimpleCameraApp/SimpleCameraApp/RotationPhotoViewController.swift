@@ -82,6 +82,7 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     @IBAction func touchCloseButton(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
     @IBAction func touchClearButton(sender: AnyObject) {
         clearRotation(true)
     }

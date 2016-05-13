@@ -21,7 +21,9 @@ class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDe
     @IBOutlet weak var layoutControlView: UIView!
     private static let MAX_BORDER_WIDTH: CGFloat = 10
     @IBOutlet weak var bubbleView: BubbleView!
+    
     private let collageCellZoomInAnimationController = CollageCellZoomInAnimationController()
+    private let collageCellZoomOutAnimationController = CollageCellZoomOutAnimationController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -133,8 +135,16 @@ class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDe
         return collageCellZoomInAnimationController
     }
     
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return nil
+//        return collageCellZoomOutAnimationController
+    }
+    
     @IBAction func exitFromRotationPhotoViewController(segue : UIStoryboardSegue) {
         // RotationPhotoViewControllerUnwindSegue
+        let destVC = segue.destinationViewController
+        destVC.transitioningDelegate = self
+        destVC.modalPresentationStyle = UIModalPresentationStyle.Custom
     }
     
     // MARK: - BubbleViewDelegate
