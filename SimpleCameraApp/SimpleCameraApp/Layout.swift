@@ -29,6 +29,15 @@ struct Polygon {
 }
 
 extension Polygon {
+    func copy() -> Polygon {
+        var copyPoints = Array<CGPoint>()
+        self.points.forEach { (point) in
+            copyPoints.append(point)
+        }
+        let copyObj = Polygon(origin: origin, points: copyPoints, curvature: self.curvature)
+        return copyObj
+    }
+    
     func path() -> UIBezierPath {
         let path = UIBezierPath()
         

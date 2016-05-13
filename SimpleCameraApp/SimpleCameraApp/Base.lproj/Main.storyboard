@@ -504,28 +504,8 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P7q-al-jfX">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="434"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g6T-wR-wie">
-                                        <rect key="frame" x="40" y="153" width="240" height="128"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="128" id="0kb-V1-8sx"/>
-                                            <constraint firstAttribute="width" constant="240" id="ane-o6-JHa"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="g6T-wR-wie" firstAttribute="centerY" secondItem="P7q-al-jfX" secondAttribute="centerY" id="2qV-CJ-9LG"/>
-                                    <constraint firstItem="g6T-wR-wie" firstAttribute="centerX" secondItem="P7q-al-jfX" secondAttribute="centerX" id="C5O-gM-Ssa"/>
-                                </constraints>
                             </view>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qsT-Yv-ZeR">
-                                <rect key="frame" x="160" y="402" width="0.0" height="0.0"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="GtI-oN-Rej">
                                 <rect key="frame" x="0.0" y="434" width="320" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -540,7 +520,7 @@
                                 </collectionViewFlowLayout>
                                 <cells/>
                             </collectionView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GhS-s6-rrc">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GhS-s6-rrc">
                                 <rect key="frame" x="159" y="434" width="3" height="29"/>
                                 <color key="backgroundColor" red="0.98431372549999996" green="0.62352941179999999" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -548,8 +528,14 @@
                                     <constraint firstAttribute="height" constant="29" id="lqA-La-G2c"/>
                                 </constraints>
                             </view>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qsT-Yv-ZeR">
+                                <rect key="frame" x="160" y="402" width="0.0" height="0.0"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="GtI-oN-Rej" firstAttribute="top" secondItem="qsT-Yv-ZeR" secondAttribute="bottom" constant="32" id="12C-IH-Xxb"/>
                             <constraint firstItem="McW-Ja-4bK" firstAttribute="leading" secondItem="eGw-gU-SLU" secondAttribute="leading" id="3ml-bF-dIU"/>
@@ -574,9 +560,10 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="contentView" destination="P7q-al-jfX" id="NC6-i0-ZOo"/>
+                        <outlet property="controlBottom" destination="j5I-3D-VWJ" id="Tzy-RY-xOG"/>
+                        <outlet property="cursorView" destination="GhS-s6-rrc" id="jgg-VN-c64"/>
                         <outlet property="degreeLabel" destination="qsT-Yv-ZeR" id="TVE-fd-OJQ"/>
                         <outlet property="rulerCollectionView" destination="GtI-oN-Rej" id="UmY-qx-LLH"/>
-                        <outlet property="targetView" destination="g6T-wR-wie" id="ETx-Az-3jp"/>
                         <segue destination="fdm-7G-vq5" kind="unwind" identifier="RotationPhotoViewControllerUnwindSegue" unwindAction="exitFromRotationPhotoViewController:" id="LBv-HW-Dzp"/>
                     </connections>
                 </viewController>

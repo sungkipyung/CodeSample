@@ -12,30 +12,52 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var degreeLabel: UILabel!
     
-    
-    @IBOutlet weak var targetView: UIView!
+    internal weak private(set) var targetView: CollageCell!
 
+    @IBOutlet weak var cursorView: UIView!
     @IBOutlet weak var rulerCollectionView: UICollectionView!
+    @IBOutlet weak var controlBottom: NSLayoutConstraint!
+    private let CELL_WIDTH: CGFloat = 50
+    private let CELL_COUNT: CGFloat = 91
+    private var ignoreRotation: Bool = true
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let cell = UINib(nibName: "CollageCell", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? CollageCell {
+            cell.hidden = true
+            self.contentView.addSubview(cell)
+            cell.clipsToBounds = false
+            self.targetView = cell
+            self.targetView.userInteractionEnabled = true
+        }
         
         self.rulerCollectionView.delegate = self
         self.rulerCollectionView.dataSource = self
         let nib = UINib(nibName: "RulerCell", bundle: NSBundle.mainBundle())
         self.rulerCollectionView.registerNib(nib, forCellWithReuseIdentifier: "rulerCell")
         self.rulerCollectionView.decelerationRate = UIScrollViewDecelerationRateNormal
-        let hw = self.view.bounds.size.width / 2 - 25
+        let hw = self.view.bounds.size.width / 2 - CELL_WIDTH / 2
         self.rulerCollectionView.contentInset = UIEdgeInsets(top: 0, left: hw, bottom: 0, right: hw)
         // Do any additional setup after loading the view.
+        self.ignoreRotation = true
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.rulerCollectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: 45, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
+        
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        self.rulerCollectionView.hidden = true
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(100 * NSEC_PER_MSEC)), dispatch_get_main_queue()) {
+            UIView.animateWithDuration(0.1, animations: {
+                self.rulerCollectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: 45, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
+                }) { (complete) in
+                    self.rulerCollectionView.hidden = false
+                    self.ignoreRotation = false
+                    self.cursorView.hidden = false
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -87,12 +109,14 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1 * NSEC_PER_SEC)), dispatch_get_main_queue()) {
-            self.degreeLabel.hidden = true
+//            self.degreeLabel.hidden = true
         }
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        
+        if self.ignoreRotation {
+            return
+        }
         let cells = self.rulerCollectionView.visibleCells().filter { (cell) -> Bool in
             let cellFrame = cell.frame
             let cellFrameInSuperView = self.rulerCollectionView.convertRect(cellFrame, toView: self.rulerCollectionView.superview!)
@@ -118,7 +142,7 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
             
             let degreeString = String(format: "%.1f°", CGFloat(degree))
             let radian = degree / 180.0 * CGFloat(M_PI)
-            targetView.transform = CGAffineTransformMakeRotation(radian)
+            targetView.imageView.transform = CGAffineTransformMakeRotation(radian)
             self.degreeLabel.text = degreeString
             self.degreeLabel.hidden = false
         }
