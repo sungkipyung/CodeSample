@@ -51,13 +51,16 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
         self.rulerCollectionView.hidden = true
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(100 * NSEC_PER_MSEC)), dispatch_get_main_queue()) {
             UIView.animateWithDuration(0.1, animations: {
-                self.rulerCollectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: 45, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
+                self.clearRotation(false)
                 }) { (complete) in
                     self.rulerCollectionView.hidden = false
                     self.ignoreRotation = false
                     self.cursorView.hidden = false
             }
         }
+    }
+    private func clearRotation(animated: Bool) {
+        self.rulerCollectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: 45, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: animated)
     }
 
     override func didReceiveMemoryWarning() {
@@ -78,6 +81,9 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
 
     @IBAction func touchCloseButton(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    @IBAction func touchClearButton(sender: AnyObject) {
+        clearRotation(true)
     }
     
     // MARK: - UICollectionViewDelegate

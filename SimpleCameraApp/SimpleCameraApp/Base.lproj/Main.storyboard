@@ -452,23 +452,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dBr-gU-inx">
-                                <rect key="frame" x="0.0" y="484" width="320" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="k0w-Rv-T1f"/>
-                                </constraints>
-                                <items>
-                                    <barButtonItem title="clear" id="nzs-MG-UmX"/>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Vp2-GX-Kja"/>
-                                    <barButtonItem title="left" id="OlD-Mo-kcV"/>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="HdC-M3-cKE"/>
-                                    <barButtonItem title="right" id="5Ny-nm-qKQ"/>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ZaG-ky-tVW"/>
-                                    <barButtonItem title="hM" id="epn-aS-EaP"/>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Rmr-0x-Bh6"/>
-                                    <barButtonItem title="vM" id="gBF-hD-i4G"/>
-                                </items>
-                            </toolbar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="McW-Ja-4bK">
                                 <rect key="frame" x="0.0" y="528" width="320" height="40"/>
                                 <subviews>
@@ -534,6 +517,27 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dBr-gU-inx">
+                                <rect key="frame" x="0.0" y="484" width="320" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="k0w-Rv-T1f"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem title="clear" id="nzs-MG-UmX">
+                                        <connections>
+                                            <action selector="touchClearButton:" destination="t60-HO-8AN" id="ddp-y9-lwh"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Vp2-GX-Kja"/>
+                                    <barButtonItem title="left" id="OlD-Mo-kcV"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="HdC-M3-cKE"/>
+                                    <barButtonItem title="right" id="5Ny-nm-qKQ"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ZaG-ky-tVW"/>
+                                    <barButtonItem title="hM" id="epn-aS-EaP"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Rmr-0x-Bh6"/>
+                                    <barButtonItem title="vM" id="gBF-hD-i4G"/>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
