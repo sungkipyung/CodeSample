@@ -23,13 +23,17 @@ class CollageCellZoomInAnimationController: NSObject, UIViewControllerAnimatedTr
             let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) else {
                 return
         }
+        
+        
         let collageVC = fromVC as! CollageViewController
         let rotationPhotoVC = toVC as! RotationPhotoViewController
         let selectedCollageCell = collageVC.bubbleView.selectedCollageCell!
+        rotationPhotoVC.view.layoutIfNeeded()
         
         let initialFrame = selectedCollageCell.superview!.convertRect(selectedCollageCell.frame, toView: collageVC.view)
         
-        let finalPoint = CGPoint(x:rotationPhotoVC.view.center.x, y:(rotationPhotoVC.view.frame.size.height - 134) / 2)
+//        let finalPoint = CGPoint(x:rotationPhotoVC.view.center.x, y:(rotationPhotoVC.view.frame.size.height - 134) / 2)
+        let finalPoint = rotationPhotoVC.imageScrollView.center
         
         let snapshot = collageVC.bubbleView.selectedCollageCell!.snapshotViewAfterScreenUpdates(true)
         snapshot.frame = initialFrame
@@ -39,6 +43,8 @@ class CollageCellZoomInAnimationController: NSObject, UIViewControllerAnimatedTr
         toVC.view.hidden = true
         
         let duration = transitionDuration(transitionContext)
+        
+        rotationPhotoVC.imageScrollView.hidden = true
         
         UIView.animateKeyframesWithDuration(duration, delay: 0, options: .CalculationModeCubic, animations: {
             UIView.addKeyframeWithRelativeStartTime(0.0, relativeDuration: 1/3, animations: {
@@ -59,19 +65,20 @@ class CollageCellZoomInAnimationController: NSObject, UIViewControllerAnimatedTr
             
             containerView.addSubview(toVC.view)
             
-            rotationPhotoVC.targetView.frame = snapshot.bounds
+            let imageView = UIImageView(image: selectedCollageCell.imageView.image)
+            imageView.contentMode = UIViewContentMode.ScaleAspectFill
+            rotationPhotoVC.imageScrollView.addSubview(imageView)
+            rotationPhotoVC.imageView = imageView
             
-            rotationPhotoVC.targetView.imageScrollView.contentSize = selectedCollageCell.imageScrollView.contentSize
-            rotationPhotoVC.targetView.imageScrollView.contentOffset = selectedCollageCell.imageScrollView.contentOffset
-            rotationPhotoVC.targetView.imageScrollView.zoomScale = selectedCollageCell.imageScrollView.zoomScale
-            rotationPhotoVC.targetView.imageView.image = selectedCollageCell.imageView.image
-            rotationPhotoVC.targetView.imageView.frame = selectedCollageCell.imageView.bounds
-            rotationPhotoVC.targetView.imageView.contentMode = selectedCollageCell.imageView.contentMode
-            rotationPhotoVC.targetView.polygon = selectedCollageCell.polygon.copy()
+            rotationPhotoVC.imageScrollView.contentSize = selectedCollageCell.imageView.bounds.size
+            rotationPhotoVC.imageScrollView.contentOffset = selectedCollageCell.imageScrollView.contentOffset
+            rotationPhotoVC.imageScrollView.zoomScale = selectedCollageCell.imageScrollView.zoomScale
             
-            rotationPhotoVC.targetView.center = snapshot.center
-            
-            rotationPhotoVC.targetView.hidden = false
+            let polygon = selectedCollageCell.polygon.copy()
+            rotationPhotoVC.shapeLayerPath = polygon.path()
+            rotationPhotoVC.imageScrollView.hidden = false
+            rotationPhotoVC.imageScrollViewWidth.constant = selectedCollageCell.frame.size.width
+            rotationPhotoVC.imageScrollViewHeight.constant = selectedCollageCell.frame.size.height
             
             snapshot.removeFromSuperview()
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled())

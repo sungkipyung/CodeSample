@@ -10,29 +10,28 @@ import UIKit
 
 class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var maskView: UIView!
     @IBOutlet weak var degreeLabel: UILabel!
-    
-    internal weak private(set) var targetView: CollageCell!
-
     @IBOutlet weak var cursorView: UIView!
     @IBOutlet weak var rulerCollectionView: UICollectionView!
     @IBOutlet weak var controlBottom: NSLayoutConstraint!
+    
+    
+    @IBOutlet weak var imageScrollView: UIScrollView!
+    @IBOutlet weak var imageScrollViewWidth: NSLayoutConstraint!
+    @IBOutlet weak var imageScrollViewHeight: NSLayoutConstraint!
+    
+    var shapeLayerPath: UIBezierPath?
+    weak var imageView: UIImageView?
+    
     private let CELL_WIDTH: CGFloat = 50
     private let CELL_COUNT: Int = 19
     private let CELL_MID_INDEX: Int = 9
     private var ignoreRotation: Bool = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let cell = UINib(nibName: "CollageCell", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? CollageCell {
-            cell.hidden = true
-            self.contentView.addSubview(cell)
-            cell.clipsToBounds = false
-            self.targetView = cell
-            self.targetView.userInteractionEnabled = true
-        }
         
-        self.rulerCollectionView.delegate = self
-        self.rulerCollectionView.dataSource = self
         let nib = UINib(nibName: "RulerCell", bundle: NSBundle.mainBundle())
         self.rulerCollectionView.registerNib(nib, forCellWithReuseIdentifier: "rulerCell")
         self.rulerCollectionView.decelerationRate = UIScrollViewDecelerationRateNormal
@@ -44,11 +43,27 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        self.view.layoutIfNeeded()
+        if let innerPath = self.shapeLayerPath {
+            let mask: CAShapeLayer = CAShapeLayer()
+            mask.frame = self.contentView.bounds
+            
+            let path = UIBezierPath(rect: self.contentView.bounds)
+            innerPath.applyTransform(CGAffineTransformMakeTranslation(self.imageScrollView.frame.origin.x, self.imageScrollView.frame.origin.y))
+            path.appendPath(innerPath)
+            
+            mask.path = path.CGPath
+            mask.fillRule = kCAFillRuleEvenOdd
+            
+            self.maskView.layer.mask = mask
+            self.maskView.hidden = false
+            self.maskView.alpha = 1.0
+        }
+        
         self.rulerCollectionView.hidden = true
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(100 * NSEC_PER_MSEC)), dispatch_get_main_queue()) {
             UIView.animateWithDuration(0.1, animations: {
@@ -60,6 +75,8 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
             }
         }
     }
+    
+    
     private func clearRotation(animated: Bool) {
         self.rulerCollectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: CELL_MID_INDEX, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: animated)
     }
@@ -123,8 +140,9 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        self.maskView.alpha = 1.0
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1 * NSEC_PER_SEC)), dispatch_get_main_queue()) {
-//            self.degreeLabel.hidden = true
+            self.degreeLabel.hidden = true
         }
     }
     
@@ -132,6 +150,8 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
         if self.ignoreRotation {
             return
         }
+        
+        self.maskView.alpha = 0.5
         let cells = self.rulerCollectionView.visibleCells().filter { (cell) -> Bool in
             let cellFrame = cell.frame
             let cellFrameInSuperView = self.rulerCollectionView.convertRect(cellFrame, toView: self.rulerCollectionView.superview!)
@@ -154,19 +174,16 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
             
             let indexPath = self.rulerCollectionView.indexPathForCell(cell)!
 
-            let degree = CGFloat(self.degree(indexPath)) + floatPoint
+            // 소수점 1번째 자리 까지 유효함
+            let degree = floor(10 * (CGFloat(self.degree(indexPath)) + floatPoint)) / 10
             
             let radian = degree / 180.0 * CGFloat(M_PI)
-            print("degree : \(degree)")
-            targetView.imageView.transform = CGAffineTransformMakeRotation(radian)
+            
+            if let imageView = self.imageView {
+                imageView.transform = CGAffineTransformMakeRotation(radian)
+            }
             self.degreeLabel.text = String(format: "%.1f°", CGFloat(degree))
             self.degreeLabel.hidden = false
-        }
-        
-        if (scrollView.decelerating) {
-            
-        } else {
-            
         }
     }
 }

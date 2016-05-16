@@ -11,21 +11,21 @@
             <rect key="frame" x="0.0" y="0.0" width="385" height="278"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7nL-t0-RXq" userLabel="CameraPreview" customClass="CameraPreview" customModule="SimpleCameraApp" customModuleProvider="target">
+                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7nL-t0-RXq" userLabel="CameraPreview" customClass="CameraPreview" customModule="SimpleCameraApp" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="385" height="278"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
-                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pZ6-bR-iux" userLabel="LineView">
-                    <rect key="frame" x="0.0" y="0.0" width="385" height="278"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </view>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.80000000000000004" maximumZoomScale="1.2" translatesAutoresizingMaskIntoConstraints="NO" id="zJE-vB-J9K">
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" minimumZoomScale="0.80000000000000004" maximumZoomScale="1.2" translatesAutoresizingMaskIntoConstraints="NO" id="zJE-vB-J9K">
                     <rect key="frame" x="0.0" y="0.0" width="385" height="278"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="mDZ-S8-mMZ" appends="YES" id="BkO-pV-AuH"/>
                     </connections>
                 </scrollView>
+                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pZ6-bR-iux" userLabel="LineView">
+                    <rect key="frame" x="0.0" y="0.0" width="385" height="278"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>

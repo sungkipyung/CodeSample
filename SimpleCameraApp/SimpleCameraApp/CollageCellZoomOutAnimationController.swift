@@ -33,14 +33,15 @@ class CollageCellZoomOutAnimationController: NSObject, UIViewControllerAnimatedT
         }
 //
 //        let initialFrame = selectedCollageCell.superview!.convertRect(selectedCollageCell.frame, toView: collageVC.view)
-        let initailFrame = rotationPhotoVC.targetView.superview!.convertRect(rotationPhotoVC.targetView.frame, toView: rotationPhotoVC.targetView.superview!)
+        let fromView = rotationPhotoVC.imageScrollView
+        let initailFrame = fromView.superview!.convertRect(fromView.frame, toView: fromView.superview!)
         
         let finalPoint = selectedCollageCell.superview!.convertPoint(selectedCollageCell.center, toView: collageVC.view)
 //        
 //        let finalPoint = CGPoint(x:rotationPhotoVC.view.center.x, y:(rotationPhotoVC.view.frame.size.height - 134) / 2)
 //        
 //        let snapshot = collageVC.bubbleView.selectedCollageCell!.snapshotViewAfterScreenUpdates(true)
-        let snapshot = rotationPhotoVC.targetView.snapshotViewAfterScreenUpdates(true)
+        let snapshot = fromView.snapshotViewAfterScreenUpdates(true)
         
 //        snapshot.frame = initialFrame
 //        snapshot.layer.masksToBounds = true

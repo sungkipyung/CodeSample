@@ -19,6 +19,7 @@ class CollageCell: UIView, UIScrollViewDelegate {
 
     weak var imageView: UIImageView!
     var delegate: CollageCellDelegate?
+    var enableMask: Bool? = true
     
     @IBOutlet weak var lineView: UIView!
     private static let BORDER_WIDTH:CGFloat = 0
@@ -28,20 +29,24 @@ class CollageCell: UIView, UIScrollViewDelegate {
             if let p = polygon  {
                 let path = p.path()
                 self.frame = CGRect(origin: p.origin, size: path.bounds.size)
+                self.imageScrollView.frame = self.bounds
+                self.cameraPreview.frame = self.bounds
                 self.shapeLayerPath = path
             }
         }
     }
     
-    private var shapeLayerPath: UIBezierPath? {
+    internal private(set) var shapeLayerPath : UIBezierPath? {
         didSet (newLayer) {
             let shapeLayerPath = self.shapeLayerPath!
             
             let path = shapeLayerPath.CGPath
             
-            let mask: CAShapeLayer = CAShapeLayer()
-            mask.path = path
-            self.layer.mask = mask
+            if self.enableMask! {
+                let mask: CAShapeLayer = CAShapeLayer()
+                mask.path = path
+                self.layer.mask = mask
+            }
             
             self.lineView.layer.sublayers?.forEach({ (sublayer) in
                 sublayer.removeFromSuperlayer()
@@ -103,7 +108,7 @@ class CollageCell: UIView, UIScrollViewDelegate {
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         super.touchesBegan(touches, withEvent: event)
-        self.superview?.bringSubviewToFront(self)
+//        self.superview?.bringSubviewToFront(self)
     }
     
     @IBAction func imageScrollViewTapped(sender: AnyObject) {
