@@ -18,7 +18,8 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     @IBOutlet weak var rulerCollectionView: UICollectionView!
     @IBOutlet weak var controlBottom: NSLayoutConstraint!
     private let CELL_WIDTH: CGFloat = 50
-    private let CELL_COUNT: CGFloat = 91
+    private let CELL_COUNT: Int = 19
+    private let CELL_MID_INDEX: Int = 9
     private var ignoreRotation: Bool = true
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,7 +61,7 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
         }
     }
     private func clearRotation(animated: Bool) {
-        self.rulerCollectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: 45, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: animated)
+        self.rulerCollectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: CELL_MID_INDEX, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: animated)
     }
 
     override func didReceiveMemoryWarning() {
@@ -93,25 +94,32 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 91
+        return CELL_COUNT
     }
     
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell: RulerCell = collectionView.dequeueReusableCellWithReuseIdentifier("rulerCell", forIndexPath: indexPath) as! RulerCell
         
-        cell.degreeLabel.text = "\(indexPath.row - 45)°"
+        cell.degreeLabel.text = degreeString(indexPath)
         
         cell.showLeft = true
         cell.showRight = true
         
         if (indexPath.row == 0) {
             cell.showLeft = false
-        } else if (indexPath.row == 90) {
+        } else if (indexPath.row == CELL_COUNT - 1) {
             cell.showRight = false
         }
         
         return cell
+    }
+    func degreeString(indexPath: NSIndexPath) -> String {
+        return "\(degree(indexPath))°"
+    }
+    
+    func degree(indexPath: NSIndexPath) -> Int {
+        return (indexPath.row - CELL_MID_INDEX) * 5
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
@@ -142,15 +150,16 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
             let value = self.rulerCollectionView.center.x - start
             
             // - 0.5 ~ 0.5
-            let floatPoint = value / (end - start) - 0.5
+            let floatPoint = 5 * (value / (end - start) - 0.5)
             
             let indexPath = self.rulerCollectionView.indexPathForCell(cell)!
-            let degree = CGFloat(indexPath.row - 45) + floatPoint
+
+            let degree = CGFloat(self.degree(indexPath)) + floatPoint
             
-            let degreeString = String(format: "%.1f°", CGFloat(degree))
             let radian = degree / 180.0 * CGFloat(M_PI)
+            print("degree : \(degree)")
             targetView.imageView.transform = CGAffineTransformMakeRotation(radian)
-            self.degreeLabel.text = degreeString
+            self.degreeLabel.text = String(format: "%.1f°", CGFloat(degree))
             self.degreeLabel.hidden = false
         }
         

@@ -18,14 +18,19 @@ class CollageCellZoomOutAnimationController: NSObject, UIViewControllerAnimatedT
     // This method can only  be a nop if the transition is interactive and not a percentDriven interactive transition.
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
         
-        guard let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) ,
+        guard
+            let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) ,
             let containerView = transitionContext.containerView(),
             let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) else {
                 return
         }
-        let collageVC = toVC as! CollageViewController
-        let rotationPhotoVC = fromVC as! RotationPhotoViewController
-        let selectedCollageCell = collageVC.bubbleView.selectedCollageCell!
+        
+        guard
+            let collageVC = toVC as? CollageViewController,
+            let rotationPhotoVC = fromVC as? RotationPhotoViewController,
+            let selectedCollageCell = collageVC.bubbleView.selectedCollageCell else {
+                return
+        }
 //
 //        let initialFrame = selectedCollageCell.superview!.convertRect(selectedCollageCell.frame, toView: collageVC.view)
         let initailFrame = rotationPhotoVC.targetView.superview!.convertRect(rotationPhotoVC.targetView.frame, toView: rotationPhotoVC.targetView.superview!)
