@@ -20,13 +20,16 @@ class ImageScrollViewSampleVCViewController: UIViewController {
     @IBOutlet weak var scrollViewRatioLabel: UILabel!
     @IBOutlet weak var scrollViewRatioButton: RadioButton!
     
+    @IBOutlet weak var scrollViewWidth: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewHeight: NSLayoutConstraint!
+    
     override func loadView() {
         super.loadView()
         
 //        let image = UIImage(named: "stretched-1920-1200-120548.jpg")
         let image = UIImage(named: "1400_2149.jpg")
         let imageView = UIImageView(image: image)
-        imageView.contentMode = UIViewContentMode.ScaleAspectFill
+        imageView.contentMode = UIViewContentMode.ScaleToFill
         imageView.clipsToBounds = true
 //        imageView.frame.size = CGSizeMake(500, 500)
         imageView.sizeToFit()
@@ -72,8 +75,11 @@ class ImageScrollViewSampleVCViewController: UIViewController {
             // 1 : 1 = 50 : 50 = (100, 100)
             // 100 : 100
             // 0.1 : 0.9 = (0.1/ 0.5 * 100, 0.9 / 0.5 * 100)
-            self.scrollview.frame.size = CGSize(width: scr_p / 0.5 * 100, height: scr_ip / 0.5 * 100)
-            
+            self.scrollViewWidth.constant = scr_p / 0.5 * 100
+            self.scrollViewHeight.constant = scr_ip / 0.5 * 100
+
+            print("scrollView : \(self.scrollview.frame)")
+            self.view.layoutIfNeeded()
             self.applyContentSize()
         }
     }
@@ -88,26 +94,27 @@ class ImageScrollViewSampleVCViewController: UIViewController {
         
         
         var contentSize: CGSize!
-        if (h < w) {
-            // case 1
-            if (sh > sw) {
-                contentSize = CGSize(width: sh * w / h, height: sh)
-            } else {
-                contentSize = CGSize(width: sw, height: sw * h / w)
-            }
+        
+        if (sw > sh && w < h) {
+            contentSize = CGSize(width: sw, height: sw * h / w)
+        } else if (sw < sh && w > h) {
+            contentSize = CGSize(width: sh * w / h, height: sh)
         } else {
-            if (sh > sw) {
+            contentSize = CGSize(width: sw, height: sw * h / w)
+            if (contentSize.width < sw || contentSize.height < sh) {
                 contentSize = CGSize(width: sh * w / h, height: sh)
-            } else {
-                contentSize = CGSize(width: sw, height: sw * h / w)
             }
         }
         
-        print("contentSize : \(contentSize.width / contentSize.height)")
-//        print("imageRatio : \(1920 / 1200.0)")
+        let ratio = contentSize.width / contentSize.height
+
+        print("contentSize : \(ratio)")
         print("imageRatio : \(1400 / 2149.0)")
-        self.imageView.frame.size = contentSize
+        // 보정
+        print("containerRatio : \(contentSize.width / contentSize.height)")
+        
         self.scrollview.contentSize = contentSize
+        self.imageView.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: contentSize)
     }
     
     override func viewDidLoad() {

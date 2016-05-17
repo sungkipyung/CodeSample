@@ -746,9 +746,11 @@
                         <outlet property="imageViewRatioButton" destination="Kyt-Su-TVn" id="x71-Yc-wrc"/>
                         <outlet property="imageViewRatioLabel" destination="uoD-EN-MWg" id="EKb-11-4gH"/>
                         <outlet property="imageViewRatioProgress" destination="3bs-KP-1x8" id="nOe-3v-Sbg"/>
+                        <outlet property="scrollViewHeight" destination="4JE-AR-2gT" id="GcW-jA-cCp"/>
                         <outlet property="scrollViewRatioButton" destination="ubV-Wu-gk3" id="cZO-m2-Jw3"/>
                         <outlet property="scrollViewRatioLabel" destination="NXN-l3-tfq" id="dIt-cQ-91f"/>
                         <outlet property="scrollViewRatioProgress" destination="l1r-YE-vBE" id="sso-pE-GPk"/>
+                        <outlet property="scrollViewWidth" destination="e17-EN-nLx" id="LZL-kZ-dWt"/>
                         <outlet property="scrollview" destination="hQ7-hQ-GOP" id="20b-rk-eu6"/>
                     </connections>
                 </viewController>
