@@ -11,6 +11,8 @@
 		892B76671CD8666E00959571 /* BubbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 892B76661CD8666E00959571 /* BubbleView.xib */; };
 		892B766B1CD8705600959571 /* bubble2.png in Resources */ = {isa = PBXBuildFile; fileRef = 892B766A1CD8705600959571 /* bubble2.png */; };
 		892B766D1CD87ADA00959571 /* RotationPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892B766C1CD87ADA00959571 /* RotationPhotoViewController.swift */; };
+		896F561A1CEAA92E00FFD8CA /* ImageScrollViewSampleVCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 896F56191CEAA92E00FFD8CA /* ImageScrollViewSampleVCViewController.swift */; };
+		896F561C1CEAC53900FFD8CA /* 1400_2149.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 896F561B1CEAC53900FFD8CA /* 1400_2149.jpg */; };
 		897DE8541CC9E73200EF85E6 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897DE8531CC9E73200EF85E6 /* RadioButton.swift */; };
 		897E66361CE48BFD00A1A3DB /* CollageCellZoomInAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897E66351CE48BFD00A1A3DB /* CollageCellZoomInAnimationController.swift */; };
 		897E66381CE5961700A1A3DB /* CollageCellZoomOutAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897E66371CE5961700A1A3DB /* CollageCellZoomOutAnimationController.swift */; };
@@ -90,6 +92,8 @@
 		892B76661CD8666E00959571 /* BubbleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BubbleView.xib; sourceTree = "<group>"; };
 		892B766A1CD8705600959571 /* bubble2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble2.png; sourceTree = "<group>"; };
 		892B766C1CD87ADA00959571 /* RotationPhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationPhotoViewController.swift; sourceTree = "<group>"; };
+		896F56191CEAA92E00FFD8CA /* ImageScrollViewSampleVCViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageScrollViewSampleVCViewController.swift; sourceTree = "<group>"; };
+		896F561B1CEAC53900FFD8CA /* 1400_2149.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1400_2149.jpg; sourceTree = "<group>"; };
 		897DE8531CC9E73200EF85E6 /* RadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		897E66351CE48BFD00A1A3DB /* CollageCellZoomInAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollageCellZoomInAnimationController.swift; sourceTree = "<group>"; };
 		897E66371CE5961700A1A3DB /* CollageCellZoomOutAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollageCellZoomOutAnimationController.swift; sourceTree = "<group>"; };
@@ -195,6 +199,7 @@
 				89A8AAEA1CCE21240081FF71 /* bubble.png */,
 				892B766A1CD8705600959571 /* bubble2.png */,
 				898B2F1E1CC5F65D00AD764A /* stretched-1920-1200-120548.jpg */,
+				896F561B1CEAC53900FFD8CA /* 1400_2149.jpg */,
 				89F795721CB35C060029FD32 /* Icons.xcassets */,
 				898B2EE21CB73F5900AD764A /* sample.jpg */,
 				898B2EFF1CBF67C700AD764A /* ico_multi_01@2x.png */,
@@ -321,6 +326,7 @@
 				898B2EF61CBF618900AD764A /* Collage */,
 				898B2EF31CBCF40A00AD764A /* Edit */,
 				89FCAF3F1CD09D6800D630AA /* Extensions */,
+				896F56191CEAA92E00FFD8CA /* ImageScrollViewSampleVCViewController.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -485,6 +491,7 @@
 				898B2F051CBF67C700AD764A /* ico_multi_02@2x.png in Resources */,
 				892B76671CD8666E00959571 /* BubbleView.xib in Resources */,
 				898B2F071CBF67C700AD764A /* ico_multi_04@2x.png in Resources */,
+				896F561C1CEAC53900FFD8CA /* 1400_2149.jpg in Resources */,
 				898B2EE61CB7890D00AD764A /* ImageDecorationView.xib in Resources */,
 				898B2F261CC611BF00AD764A /* 5.jpg in Resources */,
 				89DA46341CC74E0E00EFD940 /* pattern-repeat-6.png in Resources */,
@@ -531,6 +538,7 @@
 				898B2EDE1CB6683F00AD764A /* EditViewController.swift in Sources */,
 				897DE8541CC9E73200EF85E6 /* RadioButton.swift in Sources */,
 				89F7957D1CB396420029FD32 /* CameraFocusView.swift in Sources */,
+				896F561A1CEAA92E00FFD8CA /* ImageScrollViewSampleVCViewController.swift in Sources */,
 				898B2EED1CBB903E00AD764A /* CameraPreview.swift in Sources */,
 				898B2F0C1CBF7D3200AD764A /* CollageView.swift in Sources */,
 				89A6F9A31CE0936500FB1CA9 /* RulerCell.swift in Sources */,

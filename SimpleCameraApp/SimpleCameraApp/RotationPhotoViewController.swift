@@ -48,6 +48,25 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.view.layoutIfNeeded()
+        
+        addMaskIfExist()
+        clearRuler()
+    }
+    
+    private func clearRuler() {
+        self.rulerCollectionView.hidden = true
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(100 * NSEC_PER_MSEC)), dispatch_get_main_queue()) {
+            UIView.animateWithDuration(0.1, animations: {
+                self.clearRotation(false)
+            }) { (complete) in
+                self.rulerCollectionView.hidden = false
+                self.ignoreRotation = false
+                self.cursorView.hidden = false
+            }
+        }
+    }
+    
+    private func addMaskIfExist() {
         if let innerPath = self.shapeLayerPath {
             let mask: CAShapeLayer = CAShapeLayer()
             mask.frame = self.contentView.bounds
@@ -63,19 +82,7 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
             self.maskView.hidden = false
             self.maskView.alpha = 1.0
         }
-        
-        self.rulerCollectionView.hidden = true
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(100 * NSEC_PER_MSEC)), dispatch_get_main_queue()) {
-            UIView.animateWithDuration(0.1, animations: {
-                self.clearRotation(false)
-                }) { (complete) in
-                    self.rulerCollectionView.hidden = false
-                    self.ignoreRotation = false
-                    self.cursorView.hidden = false
-            }
-        }
     }
-    
     
     private func clearRotation(animated: Bool) {
         self.rulerCollectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: CELL_MID_INDEX, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: animated)
@@ -169,7 +176,7 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
             
             let value = self.rulerCollectionView.center.x - start
             
-            // - 0.5 ~ 0.5
+            // - 2.5 ~ 2.5
             let floatPoint = 5 * (value / (end - start) - 0.5)
             
             let indexPath = self.rulerCollectionView.indexPathForCell(cell)!

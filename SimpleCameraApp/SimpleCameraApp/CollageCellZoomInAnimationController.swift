@@ -32,7 +32,6 @@ class CollageCellZoomInAnimationController: NSObject, UIViewControllerAnimatedTr
         
         let initialFrame = selectedCollageCell.superview!.convertRect(selectedCollageCell.frame, toView: collageVC.view)
         
-//        let finalPoint = CGPoint(x:rotationPhotoVC.view.center.x, y:(rotationPhotoVC.view.frame.size.height - 134) / 2)
         let finalPoint = rotationPhotoVC.imageScrollView.center
         
         let snapshot = collageVC.bubbleView.selectedCollageCell!.snapshotViewAfterScreenUpdates(true)
@@ -70,13 +69,15 @@ class CollageCellZoomInAnimationController: NSObject, UIViewControllerAnimatedTr
             rotationPhotoVC.imageScrollView.addSubview(imageView)
             rotationPhotoVC.imageView = imageView
             
-            rotationPhotoVC.imageScrollView.contentSize = selectedCollageCell.imageView.bounds.size
-            rotationPhotoVC.imageScrollView.contentOffset = selectedCollageCell.imageScrollView.contentOffset
-            rotationPhotoVC.imageScrollView.zoomScale = selectedCollageCell.imageScrollView.zoomScale
+            
             
             let polygon = selectedCollageCell.polygon.copy()
             rotationPhotoVC.shapeLayerPath = polygon.path()
             rotationPhotoVC.imageScrollView.hidden = false
+            
+            rotationPhotoVC.imageScrollView.contentSize = selectedCollageCell.imageView.bounds.size
+            rotationPhotoVC.imageScrollView.contentOffset = selectedCollageCell.imageScrollView.contentOffset
+            rotationPhotoVC.imageScrollView.zoomScale = selectedCollageCell.imageScrollView.zoomScale
             rotationPhotoVC.imageScrollViewWidth.constant = selectedCollageCell.frame.size.width
             rotationPhotoVC.imageScrollViewHeight.constant = selectedCollageCell.frame.size.height
             
