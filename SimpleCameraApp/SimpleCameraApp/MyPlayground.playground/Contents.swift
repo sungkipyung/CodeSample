@@ -3,23 +3,23 @@
 import UIKit
 
 
-typealias Polygon = [CGPoint]
+let rect = CGRectMake(100, 100, 100, 50)
+let p0 = rect.origin
+let p1 = CGPointMake(rect.origin.x + rect.size.width, rect.origin.y)
+let p2 = CGPointMake(rect.origin.x + rect.size.width, rect.origin.y + rect.size.height)
+let p3 = CGPointMake(rect.origin.x, rect.origin.y + rect.size.height)
 
-func ??<T>(optional: T?, defaultValue: () -> T) -> T {
-    if let x = optional {
-        return x
-    }
-    
-    return defaultValue()
-}
-
-let cities = ["Paries":2243, "Madrid": 3216, "Amsterdam": 881, "Berlin": 3397]
+let degree: CGFloat = 90
+let center = CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect))
 
 
+let t1 = CGAffineTransformMakeTranslation(-center.x, -center.y)
+let t2 = CGAffineTransformMakeRotation(degree / 180.0 * CGFloat(M_PI))
+let t3 = CGAffineTransformMakeTranslation(center.x, center.y)
 
-let madridPopulation = cities["Madrid"] ?? { 10 } // lazy loading을 하고 싶은거지...
-print(madridPopulation)
+var t = CGAffineTransformIdentity
+t = CGAffineTransformConcat(t, t1)
+t = CGAffineTransformConcat(t, t2)
+t = CGAffineTransformConcat(t, t3)
 
-//infix operator ??
-
-
+let newP0 = CGPointApplyAffineTransform(p0, t)

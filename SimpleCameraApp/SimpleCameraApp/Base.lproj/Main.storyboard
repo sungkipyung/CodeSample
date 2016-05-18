@@ -501,7 +501,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="HqU-df-rLf" secondAttribute="bottom" id="Lgz-dI-9zd"/>
                                     <constraint firstItem="HqU-df-rLf" firstAttribute="top" secondItem="P7q-al-jfX" secondAttribute="top" id="ZCa-YL-ArD"/>
@@ -556,13 +556,29 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Vp2-GX-Kja"/>
-                                    <barButtonItem title="left" id="OlD-Mo-kcV"/>
+                                    <barButtonItem title="left" id="OlD-Mo-kcV">
+                                        <connections>
+                                            <action selector="touchLeftButton:" destination="t60-HO-8AN" id="JyL-G7-9Za"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="HdC-M3-cKE"/>
-                                    <barButtonItem title="right" id="5Ny-nm-qKQ"/>
+                                    <barButtonItem title="right" id="5Ny-nm-qKQ">
+                                        <connections>
+                                            <action selector="touchRightButton:" destination="t60-HO-8AN" id="dJ9-6z-yUU"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="ZaG-ky-tVW"/>
-                                    <barButtonItem title="hM" id="epn-aS-EaP"/>
+                                    <barButtonItem title="hM" id="epn-aS-EaP">
+                                        <connections>
+                                            <action selector="touchHorizontalMirrorButton:" destination="t60-HO-8AN" id="PzK-uU-LD5"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Rmr-0x-Bh6"/>
-                                    <barButtonItem title="vM" id="gBF-hD-i4G"/>
+                                    <barButtonItem title="vM" id="gBF-hD-i4G">
+                                        <connections>
+                                            <action selector="touchVerticalMirrorButton:" destination="t60-HO-8AN" id="4G9-MY-mqR"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>

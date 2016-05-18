@@ -22,7 +22,14 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     @IBOutlet weak var imageScrollViewHeight: NSLayoutConstraint!
     
     var shapeLayerPath: UIBezierPath?
-    weak var imageView: UIImageView?
+    var imageViewOriginalFrame: CGRect?
+    weak var imageView: UIImageView? {
+        didSet {
+            if let imageView = self.imageView {
+                self.imageViewOriginalFrame = imageView.frame
+            }
+        }
+    }
     
     private let CELL_WIDTH: CGFloat = 50
     private let CELL_COUNT: Int = 19
@@ -104,6 +111,7 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     }
     */
 
+    // MARK: - IBAction
     @IBAction func touchCloseButton(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -111,6 +119,19 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     @IBAction func touchClearButton(sender: AnyObject) {
         clearRotation(true)
     }
+    
+    @IBAction func touchLeftButton(sender: AnyObject) {
+    }
+    
+    @IBAction func touchRightButton(sender: AnyObject) {
+    }
+    
+    @IBAction func touchHorizontalMirrorButton(sender: AnyObject) {
+    }
+    
+    @IBAction func touchVerticalMirrorButton(sender: AnyObject) {
+    }
+    
     
     // MARK: - UICollectionViewDelegate
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -138,17 +159,19 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
         
         return cell
     }
-    func degreeString(indexPath: NSIndexPath) -> String {
-        return "\(degree(indexPath))°"
-    }
-    
-    func degree(indexPath: NSIndexPath) -> Int {
-        return (indexPath.row - CELL_MID_INDEX) * 5
-    }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        hideDim()
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            hideDim()
+        }
+    }
+    private func hideDim() {
         self.maskView.alpha = 1.0
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1 * NSEC_PER_SEC)), dispatch_get_main_queue()) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1000 * NSEC_PER_MSEC)), dispatch_get_main_queue()) {
             self.degreeLabel.hidden = true
         }
     }
@@ -186,11 +209,78 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
             
             let radian = degree / 180.0 * CGFloat(M_PI)
             
-            if let imageView = self.imageView {
-                imageView.transform = CGAffineTransformMakeRotation(radian)
-            }
+            self.imageView!.transform = CGAffineTransformMakeRotation(radian)
             self.degreeLabel.text = String(format: "%.1f°", CGFloat(degree))
             self.degreeLabel.hidden = false
+            
+            guard
+            let imageView = self.imageView  else {
+                return
+            }
+            
+            guard
+                let originalFrame = imageViewOriginalFrame,
+                let _ = self.imageView else { return
+            }
+            
+            let p0 = originalFrame.origin
+            let p1 = CGPoint(x: originalFrame.origin.x + originalFrame.size.width, y: originalFrame.origin.y)
+            let p2 = CGPoint(x: originalFrame.origin.x + originalFrame.size.width, y: originalFrame.origin.y + originalFrame.size.height)
+            let p3 = CGPoint(x: originalFrame.origin.x, y: originalFrame.origin.y + originalFrame.size.height)
+            
+            var ps = [p0, p1, p2, p3]
+            let center = CGPointMake(CGRectGetMidX(self.imageScrollView.bounds), CGRectGetMidY(self.imageScrollView.bounds))
+            
+            ps = ps.map({ (point) -> CGPoint in
+                
+                let t1 = CGAffineTransformMakeTranslation(-center.x, -center.y)
+                let t2 = CGAffineTransformMakeRotation(degree / 180.0 * CGFloat(M_PI))
+                let t3 = CGAffineTransformMakeTranslation(center.x, center.y)
+                
+                var t = CGAffineTransformIdentity
+                t = CGAffineTransformConcat(t, t1)
+                t = CGAffineTransformConcat(t, t2)
+                t = CGAffineTransformConcat(t, t3)
+                
+                return CGPointApplyAffineTransform(point, t)
+            }) // converted
+            
+            
+            
+            let radius = center.distanceTo(CGPointZero)
+            
+            ps.enumerate().forEach({ (index: Int, element: CGPoint) in
+                var nextIndex =  index + 1
+                if nextIndex == ps.count {
+                    nextIndex = 0
+                }
+                self.test(ps[index], to: ps[nextIndex], center: center, radius: radius)
+            })
         }
+    }
+    
+    func test(from: CGPoint, to: CGPoint, center: CGPoint, radius: CGFloat) {
+        let f1 = OneDimentionalFunction.createFunctionBetweenFromPoint(from, to: to)
+        let f2 = f1.orthogonalFuncitonPassPoint(center)
+        
+        guard let intersectionPoint = f1.intersectionPointWith(f2) else {
+            return
+        }
+        let distance = intersectionPoint.distanceTo(center)
+        print("f1 : \(f1)\nf2: \(f2)\ninterSectionPoint : \(intersectionPoint)")
+        print("radius : \(radius), distance : \(distance)")
+        if distance < radius {
+            // have to scale
+            print("have to scale")
+        }
+    }
+    
+    // MARK : - Private
+    private func degreeString(indexPath: NSIndexPath) -> String {
+        return "\(degree(indexPath))°"
+    }
+    
+    private func degree(indexPath: NSIndexPath) -> Int {
+        return (indexPath.row - CELL_MID_INDEX) * 5
     }
 }
