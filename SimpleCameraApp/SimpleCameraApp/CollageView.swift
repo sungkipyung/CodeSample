@@ -145,12 +145,10 @@ class CollageView: UIView, CollageCellDelegate {
                 cell.polygon = polygons[index]
                 
                 let image = UIImage(named: "c\(index % 2 + 1).jpg")!
-//                cell.imageScrollView.contentSize = image.size
-                cell.imageScrollView.contentSize = self.bounds.size
-                
-//                cell.imageScrollView.frame = cell.bounds
-                cell.imageView.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: self.bounds.size)
                 cell.imageView.image = image
+                cell.imageView.sizeToFit()
+                cell.imageScrollView.frame = cell.bounds
+                cell.imageView.sizeThatFit(cell.imageScrollView)
                 
                 let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(collageCellLongPressed))
                 cell.addGestureRecognizer(longPressGesture)

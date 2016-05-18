@@ -28,7 +28,6 @@ class CollageCellZoomInAnimationController: NSObject, UIViewControllerAnimatedTr
         let collageVC = fromVC as! CollageViewController
         let rotationPhotoVC = toVC as! RotationPhotoViewController
         let selectedCollageCell = collageVC.bubbleView.selectedCollageCell!
-        rotationPhotoVC.view.layoutIfNeeded()
         
         let initialFrame = selectedCollageCell.superview!.convertRect(selectedCollageCell.frame, toView: collageVC.view)
         
@@ -45,7 +44,7 @@ class CollageCellZoomInAnimationController: NSObject, UIViewControllerAnimatedTr
         
         rotationPhotoVC.imageScrollView.hidden = true
         
-        UIView.animateKeyframesWithDuration(duration, delay: 0, options: .CalculationModeCubic, animations: {
+        UIView.animateKeyframesWithDuration(duration, delay: 0, options: .CalculationModeCubicPaced, animations: {
             UIView.addKeyframeWithRelativeStartTime(0.0, relativeDuration: 1/3, animations: {
                 fromVC.view.hidden = true
             })
@@ -64,22 +63,22 @@ class CollageCellZoomInAnimationController: NSObject, UIViewControllerAnimatedTr
             
             containerView.addSubview(toVC.view)
             
+            rotationPhotoVC.imageScrollViewWidth.constant = selectedCollageCell.frame.size.width
+            rotationPhotoVC.imageScrollViewHeight.constant = selectedCollageCell.frame.size.height
+            rotationPhotoVC.view.layoutIfNeeded()
+            
             let imageView = UIImageView(image: selectedCollageCell.imageView.image)
-            imageView.contentMode = UIViewContentMode.ScaleAspectFill
+            imageView.contentMode = UIViewContentMode.ScaleToFill
             rotationPhotoVC.imageScrollView.addSubview(imageView)
             rotationPhotoVC.imageView = imageView
-            
-            
+            imageView.sizeThatFit(rotationPhotoVC.imageScrollView)
             
             let polygon = selectedCollageCell.polygon.copy()
             rotationPhotoVC.shapeLayerPath = polygon.path()
             rotationPhotoVC.imageScrollView.hidden = false
             
-            rotationPhotoVC.imageScrollView.contentSize = selectedCollageCell.imageView.bounds.size
             rotationPhotoVC.imageScrollView.contentOffset = selectedCollageCell.imageScrollView.contentOffset
             rotationPhotoVC.imageScrollView.zoomScale = selectedCollageCell.imageScrollView.zoomScale
-            rotationPhotoVC.imageScrollViewWidth.constant = selectedCollageCell.frame.size.width
-            rotationPhotoVC.imageScrollViewHeight.constant = selectedCollageCell.frame.size.height
             
             snapshot.removeFromSuperview()
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled())

@@ -55,7 +55,7 @@ class ImageScrollViewSampleVCViewController: UIViewController {
             
             self.imageView.frame.size = CGSize(width: img_p / 0.5 * 500, height: img_ip / 0.5 * 500)
             
-            self.applyContentSize()
+            self.imageView.sizeThatFit(self.scrollview)
         }
         
         self.scrollViewRatioButton.onChangeLocation = { (view: RadioButton, originalPosition: CGPoint, incX: CGFloat, incY: CGFloat) -> (Void) in
@@ -80,41 +80,10 @@ class ImageScrollViewSampleVCViewController: UIViewController {
 
             print("scrollView : \(self.scrollview.frame)")
             self.view.layoutIfNeeded()
-            self.applyContentSize()
+            
+            
+            self.imageView.sizeThatFit(self.scrollview)
         }
-    }
-    
-    private func applyContentSize() {
-        
-        let h = self.imageView.frame.size.height
-        let w = self.imageView.frame.size.width
-        
-        let sh = self.scrollview.frame.size.height
-        let sw = self.scrollview.frame.size.width
-        
-        
-        var contentSize: CGSize!
-        
-        if (sw > sh && w < h) {
-            contentSize = CGSize(width: sw, height: sw * h / w)
-        } else if (sw < sh && w > h) {
-            contentSize = CGSize(width: sh * w / h, height: sh)
-        } else {
-            contentSize = CGSize(width: sw, height: sw * h / w)
-            if (contentSize.width < sw || contentSize.height < sh) {
-                contentSize = CGSize(width: sh * w / h, height: sh)
-            }
-        }
-        
-        let ratio = contentSize.width / contentSize.height
-
-        print("contentSize : \(ratio)")
-        print("imageRatio : \(1400 / 2149.0)")
-        // 보정
-        print("containerRatio : \(contentSize.width / contentSize.height)")
-        
-        self.scrollview.contentSize = contentSize
-        self.imageView.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: contentSize)
     }
     
     override func viewDidLoad() {

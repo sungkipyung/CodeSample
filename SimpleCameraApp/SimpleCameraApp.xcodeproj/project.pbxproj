@@ -51,6 +51,7 @@
 		89BFB7D81CB257CB0011A04A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 89BFB7D61CB257CB0011A04A /* LaunchScreen.storyboard */; };
 		89BFB7E31CB257CB0011A04A /* SimpleCameraAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BFB7E21CB257CB0011A04A /* SimpleCameraAppTests.swift */; };
 		89BFB7EE1CB257CB0011A04A /* SimpleCameraAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BFB7ED1CB257CB0011A04A /* SimpleCameraAppUITests.swift */; };
+		89CD86A71CEBFD02001F5341 /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CD86A61CEBFD02001F5341 /* UIImageView+Extensions.swift */; };
 		89DA462E1CC74E0E00EFD940 /* pattern-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 89DA46271CC74E0E00EFD940 /* pattern-7.png */; };
 		89DA462F1CC74E0E00EFD940 /* pattern-reapeat-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 89DA46281CC74E0E00EFD940 /* pattern-reapeat-3.png */; };
 		89DA46301CC74E0E00EFD940 /* pattern-reapeat-5.png in Resources */ = {isa = PBXBuildFile; fileRef = 89DA46291CC74E0E00EFD940 /* pattern-reapeat-5.png */; };
@@ -139,6 +140,7 @@
 		89BFB7E91CB257CB0011A04A /* SimpleCameraAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleCameraAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		89BFB7ED1CB257CB0011A04A /* SimpleCameraAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleCameraAppUITests.swift; sourceTree = "<group>"; };
 		89BFB7EF1CB257CB0011A04A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		89CD86A61CEBFD02001F5341 /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
 		89DA46271CC74E0E00EFD940 /* pattern-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pattern-7.png"; sourceTree = "<group>"; };
 		89DA46281CC74E0E00EFD940 /* pattern-reapeat-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pattern-reapeat-3.png"; sourceTree = "<group>"; };
 		89DA46291CC74E0E00EFD940 /* pattern-reapeat-5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pattern-reapeat-5.png"; sourceTree = "<group>"; };
@@ -358,6 +360,7 @@
 			isa = PBXGroup;
 			children = (
 				89FCAF401CD09E1700D630AA /* CGPoint+Extensions.swift */,
+				89CD86A61CEBFD02001F5341 /* UIImageView+Extensions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -535,6 +538,7 @@
 				898B2EE81CB78F0800AD764A /* ImageDecorationView.swift in Sources */,
 				892B766D1CD87ADA00959571 /* RotationPhotoViewController.swift in Sources */,
 				898B2F181CC0D4FB00AD764A /* LayoutGripView.swift in Sources */,
+				89CD86A71CEBFD02001F5341 /* UIImageView+Extensions.swift in Sources */,
 				898B2EDE1CB6683F00AD764A /* EditViewController.swift in Sources */,
 				897DE8541CC9E73200EF85E6 /* RadioButton.swift in Sources */,
 				89F7957D1CB396420029FD32 /* CameraFocusView.swift in Sources */,

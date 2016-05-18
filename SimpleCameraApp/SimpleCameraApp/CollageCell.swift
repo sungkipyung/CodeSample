@@ -30,6 +30,7 @@ class CollageCell: UIView, UIScrollViewDelegate {
                 let path = p.path()
                 self.frame = CGRect(origin: p.origin, size: path.bounds.size)
                 self.imageScrollView.frame = self.bounds
+                self.imageView.sizeThatFit(self.imageScrollView)
                 self.cameraPreview.frame = self.bounds
                 self.shapeLayerPath = path
             }
@@ -97,7 +98,7 @@ class CollageCell: UIView, UIScrollViewDelegate {
     override func awakeFromNib() {
         self.imageScrollView.delegate = self
         let imageView = UIImageView(frame: self.bounds)
-        imageView.contentMode = UIViewContentMode.ScaleAspectFill
+        imageView.contentMode = UIViewContentMode.ScaleToFill
         self.imageScrollView.addSubview(imageView)
         self.imageView = imageView
     }
