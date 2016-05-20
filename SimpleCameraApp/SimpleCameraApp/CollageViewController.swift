@@ -136,15 +136,8 @@ class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDe
     }
     
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return nil
-//        return collageCellZoomOutAnimationController
-    }
-    
-    @IBAction func exitFromRotationPhotoViewController(segue : UIStoryboardSegue) {
-        // RotationPhotoViewControllerUnwindSegue
-        let destVC = segue.destinationViewController
-        destVC.transitioningDelegate = self
-        destVC.modalPresentationStyle = UIModalPresentationStyle.Custom
+        return collageCellZoomOutAnimationController
+//        return nil
     }
     
     // MARK: - BubbleViewDelegate

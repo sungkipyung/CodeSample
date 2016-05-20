@@ -21,6 +21,7 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     @IBOutlet weak var imageScrollViewWidth: NSLayoutConstraint!
     @IBOutlet weak var imageScrollViewHeight: NSLayoutConstraint!
     
+    private var applyChanges: Bool = false
     var shapeLayerPath: UIBezierPath?
     var imageViewOriginalFrame: CGRect?
     weak var imageView: UIImageView? {
@@ -36,6 +37,16 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     private let CELL_MID_INDEX: Int = 9
     private var ignoreRotation: Bool = true
     
+    
+    /// test
+    @IBOutlet weak var cropView: UIView!
+    @IBOutlet weak var testImageView: UIImageView!
+    
+    @IBAction func touchCropMode(sender: AnyObject) {
+        self.cropView.hidden = false
+        self.cropView.layer.borderColor = UIColor.orangeColor().CGColor
+        self.cropView.layer.borderWidth = 3.0
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -113,6 +124,7 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
 
     // MARK: - IBAction
     @IBAction func touchCloseButton(sender: AnyObject) {
+        applyChanges = false
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -132,6 +144,10 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     @IBAction func touchVerticalMirrorButton(sender: AnyObject) {
     }
     
+    @IBAction func touchDoneButton(sender: AnyObject) {
+        applyChanges = true
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     
     // MARK: - UICollectionViewDelegate
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -208,10 +224,33 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
             let degree = floor(10 * (CGFloat(self.degree(indexPath)) + floatPoint)) / 10
             
             let radian = degree / 180.0 * CGFloat(M_PI)
+            let absRad = abs(degree) / 180.0 * CGFloat(M_PI)
             
             self.imageView!.transform = CGAffineTransformMakeRotation(radian)
             self.degreeLabel.text = String(format: "%.1f°", CGFloat(degree))
             self.degreeLabel.hidden = false
+            
+            
+            let image_rect_width = self.cropView.frame.size.width
+            let image_rect_height = self.cropView.frame.size.height
+            
+            let a = image_rect_height * sin(absRad)
+            let b = image_rect_width * cos(absRad)
+            let c = image_rect_width * sin(absRad)
+            let d = image_rect_height * cos(absRad)
+            
+            let crop_rect_width = self.cropView.frame.size.width
+            let crop_rect_height = self.cropView.frame.size.height
+            
+            // http://stackoverflow.com/questions/26824513/zoom-a-rotated-image-inside-scroll-view-to-fit-fill-frame-of-overlay-rect
+            let scaleFactor = max(crop_rect_width / (a + b), crop_rect_height / (c + d))
+            print("scale factor : \(scaleFactor)")
+            let t = CGAffineTransformMakeRotation(radian)
+            let t2 = CGAffineTransformMakeScale(1 / scaleFactor, 1/scaleFactor)
+            self.testImageView.transform = CGAffineTransformConcat(t, t2)
+//            self.imageViewWidth.constant = 240 * scaleFactor
+//            self.imageViweHeight.constant = 128 * scaleFactor
+            
             
             guard
             let imageView = self.imageView  else {
@@ -223,6 +262,7 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
                 let _ = self.imageView else { return
             }
             
+            let contentOffset = self.imageScrollView.contentOffset
             let p0 = originalFrame.origin
             let p1 = CGPoint(x: originalFrame.origin.x + originalFrame.size.width, y: originalFrame.origin.y)
             let p2 = CGPoint(x: originalFrame.origin.x + originalFrame.size.width, y: originalFrame.origin.y + originalFrame.size.height)
@@ -236,11 +276,13 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
                 let t1 = CGAffineTransformMakeTranslation(-center.x, -center.y)
                 let t2 = CGAffineTransformMakeRotation(degree / 180.0 * CGFloat(M_PI))
                 let t3 = CGAffineTransformMakeTranslation(center.x, center.y)
+                let t4 = CGAffineTransformMakeTranslation(contentOffset.x, contentOffset.y)
                 
                 var t = CGAffineTransformIdentity
                 t = CGAffineTransformConcat(t, t1)
                 t = CGAffineTransformConcat(t, t2)
                 t = CGAffineTransformConcat(t, t3)
+                t = CGAffineTransformConcat(t, t4)
                 
                 return CGPointApplyAffineTransform(point, t)
             }) // converted
@@ -267,8 +309,7 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
             return
         }
         let distance = intersectionPoint.distanceTo(center)
-        print("f1 : \(f1)\nf2: \(f2)\ninterSectionPoint : \(intersectionPoint)")
-        print("radius : \(radius), distance : \(distance)")
+        
         if distance < radius {
             // have to scale
             print("have to scale")

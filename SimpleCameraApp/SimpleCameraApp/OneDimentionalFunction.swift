@@ -31,9 +31,9 @@ extension OneDimentionalFunction {
     }
     
     static func createFunctionBetweenFromPoint(from: CGPoint, to: CGPoint) -> OneDimentionalFunction {
-        let a = (to.y - from.y) / (to.x - from.x)
-        let b: CGFloat = -1
-        let c = (from.y - a * from.x)
+        let a = to.y - from.y
+        let b = from.x - to.y
+        let c = from.y * to.x - to.y * from.x
         return OneDimentionalFunction(a: a, b: b, c: c)
     }
     

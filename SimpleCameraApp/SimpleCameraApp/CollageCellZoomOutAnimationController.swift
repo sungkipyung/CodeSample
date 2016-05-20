@@ -31,61 +31,55 @@ class CollageCellZoomOutAnimationController: NSObject, UIViewControllerAnimatedT
             let selectedCollageCell = collageVC.bubbleView.selectedCollageCell else {
                 return
         }
-//
-//        let initialFrame = selectedCollageCell.superview!.convertRect(selectedCollageCell.frame, toView: collageVC.view)
-        let fromView = rotationPhotoVC.imageScrollView
-        let initailFrame = fromView.superview!.convertRect(fromView.frame, toView: fromView.superview!)
         
+        containerView.subviews.forEach { (subview) in
+            subview.removeFromSuperview()
+        }
+        
+
+        let fromView = rotationPhotoVC.imageScrollView
+        let initialFrame = fromView.superview!.convertRect(fromView.frame, toView: fromView.superview!)
+
         let finalPoint = selectedCollageCell.superview!.convertPoint(selectedCollageCell.center, toView: collageVC.view)
-//        
-//        let finalPoint = CGPoint(x:rotationPhotoVC.view.center.x, y:(rotationPhotoVC.view.frame.size.height - 134) / 2)
-//        
-//        let snapshot = collageVC.bubbleView.selectedCollageCell!.snapshotViewAfterScreenUpdates(true)
+//        let finalFrame = selectedCollageCell.superview!.convertRect(selectedCollageCell.frame, toView: collageVC.view)
+
         let snapshot = fromView.snapshotViewAfterScreenUpdates(true)
         
-//        snapshot.frame = initialFrame
-//        snapshot.layer.masksToBounds = true
-//        
-//        containerView.addSubview(snapshot)
-//        toVC.view.hidden = true
-//        
-//        let duration = transitionDuration(transitionContext)
-//        
-//        UIView.animateKeyframesWithDuration(duration, delay: 0, options: .CalculationModeCubic, animations: {
-//            UIView.addKeyframeWithRelativeStartTime(0.0, relativeDuration: 1/3, animations: {
-//                fromVC.view.hidden = true
-//            })
-//            
-//            UIView.addKeyframeWithRelativeStartTime(1/3, relativeDuration: 1/3, animations: {
-//                snapshot.center = finalPoint
-//            })
-//            
-//            UIView.addKeyframeWithRelativeStartTime(2/3, relativeDuration: 1/3, animations: {
-//                toVC.view.hidden = false
-//            })
-//            
-//        }) { (complete) in
-//            toVC.view.hidden = false
-//            fromVC.view.hidden = false
-//            
-//            containerView.addSubview(toVC.view)
-//            
-//            rotationPhotoVC.targetView.frame = snapshot.bounds
-//            
-//            rotationPhotoVC.targetView.imageScrollView.contentSize = selectedCollageCell.imageScrollView.contentSize
-//            rotationPhotoVC.targetView.imageScrollView.contentOffset = selectedCollageCell.imageScrollView.contentOffset
-//            rotationPhotoVC.targetView.imageScrollView.zoomScale = selectedCollageCell.imageScrollView.zoomScale
-//            rotationPhotoVC.targetView.imageView.image = selectedCollageCell.imageView.image
-//            rotationPhotoVC.targetView.imageView.frame = selectedCollageCell.imageView.bounds
-//            rotationPhotoVC.targetView.imageView.contentMode = selectedCollageCell.imageView.contentMode
-//            rotationPhotoVC.targetView.polygon = selectedCollageCell.polygon.copy()
-//            
-//            rotationPhotoVC.targetView.center = snapshot.center
-//            
-//            rotationPhotoVC.targetView.hidden = false
-//            
-//            snapshot.removeFromSuperview()
-//            transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
-//        }
+        snapshot.frame = initialFrame
+        snapshot.layer.masksToBounds = true
+
+        containerView.addSubview(snapshot)
+        toVC.view.hidden = true
+        
+        let duration = transitionDuration(transitionContext)
+        
+        UIView.animateKeyframesWithDuration(duration, delay: 0, options: .CalculationModeCubicPaced, animations: { 
+            UIView.addKeyframeWithRelativeStartTime(0.0, relativeDuration: 1/3, animations: {
+                fromVC.view.hidden = true
+            })
+            
+            UIView.addKeyframeWithRelativeStartTime(1/3, relativeDuration: 1/3, animations: { 
+                snapshot.center = finalPoint
+            })
+            
+            UIView.addKeyframeWithRelativeStartTime(2/3, relativeDuration: 1/3, animations: { 
+                
+            })
+            
+            }) { (complete) in
+                containerView.addSubview(toVC.view)
+                
+                selectedCollageCell.imageView.transform = rotationPhotoVC.imageView!.transform
+                selectedCollageCell.imageView.frame = rotationPhotoVC.imageView!.frame
+                
+                selectedCollageCell.imageScrollView.contentOffset = rotationPhotoVC.imageScrollView.contentOffset
+                selectedCollageCell.imageScrollView.zoomScale = rotationPhotoVC.imageScrollView.zoomScale
+                
+                snapshot.removeFromSuperview()
+
+                transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
+                toVC.view.hidden = false
+                fromVC.view.hidden = false
+        }
     }
 }

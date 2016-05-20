@@ -24,10 +24,11 @@ class CollageCellZoomInAnimationController: NSObject, UIViewControllerAnimatedTr
                 return
         }
         
-        
         let collageVC = fromVC as! CollageViewController
         let rotationPhotoVC = toVC as! RotationPhotoViewController
         let selectedCollageCell = collageVC.bubbleView.selectedCollageCell!
+        
+        rotationPhotoVC.view.layoutIfNeeded()
         
         let initialFrame = selectedCollageCell.superview!.convertRect(selectedCollageCell.frame, toView: collageVC.view)
         
@@ -43,7 +44,7 @@ class CollageCellZoomInAnimationController: NSObject, UIViewControllerAnimatedTr
         let duration = transitionDuration(transitionContext)
         
         rotationPhotoVC.imageScrollView.hidden = true
-        
+        collageVC.bubbleView.hidden = true
         UIView.animateKeyframesWithDuration(duration, delay: 0, options: .CalculationModeCubicPaced, animations: {
             UIView.addKeyframeWithRelativeStartTime(0.0, relativeDuration: 1/3, animations: {
                 fromVC.view.hidden = true
