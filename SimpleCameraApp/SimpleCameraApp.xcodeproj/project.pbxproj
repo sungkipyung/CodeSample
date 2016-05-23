@@ -59,6 +59,9 @@
 		89DA46331CC74E0E00EFD940 /* pattern-repeat-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 89DA462C1CC74E0E00EFD940 /* pattern-repeat-4.png */; };
 		89DA46341CC74E0E00EFD940 /* pattern-repeat-6.png in Resources */ = {isa = PBXBuildFile; fileRef = 89DA462D1CC74E0E00EFD940 /* pattern-repeat-6.png */; };
 		89DA46361CC7868700EFD940 /* LayoutFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DA46351CC7868700EFD940 /* LayoutFactory.swift */; };
+		89EC80B61CF299EA00DA6B64 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89EC80B51CF299EA00DA6B64 /* UIView+Extensions.swift */; };
+		89EC80BA1CF29D4500DA6B64 /* CGSize+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89EC80B91CF29D4500DA6B64 /* CGSize+Extensions.swift */; };
+		89EC80BC1CF2A44D00DA6B64 /* UIScrollView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89EC80BB1CF2A44D00DA6B64 /* UIScrollView+Extensions.swift */; };
 		89F7956E1CB356580029FD32 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F7956D1CB356580029FD32 /* HomeViewController.swift */; };
 		89F795731CB35C060029FD32 /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 89F795721CB35C060029FD32 /* Icons.xcassets */; };
 		89F795781CB38CE60029FD32 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F795771CB38CE60029FD32 /* CameraViewController.swift */; };
@@ -147,6 +150,9 @@
 		89DA462C1CC74E0E00EFD940 /* pattern-repeat-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pattern-repeat-4.png"; sourceTree = "<group>"; };
 		89DA462D1CC74E0E00EFD940 /* pattern-repeat-6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pattern-repeat-6.png"; sourceTree = "<group>"; };
 		89DA46351CC7868700EFD940 /* LayoutFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutFactory.swift; sourceTree = "<group>"; };
+		89EC80B51CF299EA00DA6B64 /* UIView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		89EC80B91CF29D4500DA6B64 /* CGSize+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+Extensions.swift"; sourceTree = "<group>"; };
+		89EC80BB1CF2A44D00DA6B64 /* UIScrollView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extensions.swift"; sourceTree = "<group>"; };
 		89F7956D1CB356580029FD32 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		89F795721CB35C060029FD32 /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
 		89F795771CB38CE60029FD32 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
@@ -243,8 +249,6 @@
 				898B2F2C1CC634E100AD764A /* CollageCell.xib */,
 				898B2F0B1CBF7D3200AD764A /* CollageView.swift */,
 				898B2F091CBF6BF600AD764A /* CollageViewController.swift */,
-				898B2F191CC0F1BF00AD764A /* Layout.swift */,
-				89DA46351CC7868700EFD940 /* LayoutFactory.swift */,
 				898B2F171CC0D4FB00AD764A /* LayoutGripView.swift */,
 				898B2F1B1CC4744600AD764A /* MyPlayground.playground */,
 				897DE8531CC9E73200EF85E6 /* RadioButton.swift */,
@@ -314,17 +318,27 @@
 			name = Pattern;
 			sourceTree = "<group>";
 		};
+		89EC80BD1CF2A7F400DA6B64 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				898B2F191CC0F1BF00AD764A /* Layout.swift */,
+				89DA46351CC7868700EFD940 /* LayoutFactory.swift */,
+				898B2F151CC0917C00AD764A /* OneDimentionalFunction.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		89F7956B1CB355DC0029FD32 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
 				89BFB7CD1CB257CB0011A04A /* AppDelegate.swift */,
 				89A8AAEC1CCE22790081FF71 /* CollageCellMenuView.swift */,
 				89F7956D1CB356580029FD32 /* HomeViewController.swift */,
-				898B2F151CC0917C00AD764A /* OneDimentionalFunction.swift */,
 				89A8AAEE1CCE22AF0081FF71 /* CollageCellMenuView.xib */,
 				89F795791CB393590029FD32 /* Camera */,
 				898B2EF61CBF618900AD764A /* Collage */,
 				898B2EF31CBCF40A00AD764A /* Edit */,
+				89EC80BD1CF2A7F400DA6B64 /* Model */,
 				89FCAF3F1CD09D6800D630AA /* Extensions */,
 			);
 			name = Classes;
@@ -358,6 +372,9 @@
 			children = (
 				89FCAF401CD09E1700D630AA /* CGPoint+Extensions.swift */,
 				89CD86A61CEBFD02001F5341 /* UIImageView+Extensions.swift */,
+				89EC80B51CF299EA00DA6B64 /* UIView+Extensions.swift */,
+				89EC80B91CF29D4500DA6B64 /* CGSize+Extensions.swift */,
+				89EC80BB1CF2A44D00DA6B64 /* UIScrollView+Extensions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -527,8 +544,11 @@
 			files = (
 				89DA46361CC7868700EFD940 /* LayoutFactory.swift in Sources */,
 				89A8AAED1CCE22790081FF71 /* CollageCellMenuView.swift in Sources */,
+				89EC80B61CF299EA00DA6B64 /* UIView+Extensions.swift in Sources */,
 				898B2F0A1CBF6BF600AD764A /* CollageViewController.swift in Sources */,
+				89EC80BA1CF29D4500DA6B64 /* CGSize+Extensions.swift in Sources */,
 				898B2EF21CBB956600AD764A /* Camera.swift in Sources */,
+				89EC80BC1CF2A44D00DA6B64 /* UIScrollView+Extensions.swift in Sources */,
 				89FCAF411CD09E1700D630AA /* CGPoint+Extensions.swift in Sources */,
 				898B2F1A1CC0F1BF00AD764A /* Layout.swift in Sources */,
 				897E66381CE5961700A1A3DB /* CollageCellZoomOutAnimationController.swift in Sources */,

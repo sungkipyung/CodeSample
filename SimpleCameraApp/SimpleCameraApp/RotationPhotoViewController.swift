@@ -205,116 +205,19 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
         }
         
         if cells.count > 0 {
-            let cell = cells[0] as! RulerCell
-            let cellFrame = cell.frame
-            
-            let cellFrameInSuperView = self.rulerCollectionView.convertRect(cellFrame, toView: self.rulerCollectionView.superview!)
-            
-            let start = cellFrameInSuperView.origin.x
-            let end = cellFrameInSuperView.size.width + start
-            
-            let value = self.rulerCollectionView.center.x - start
-            
-            // - 2.5 ~ 2.5
-            let floatPoint = 5 * (value / (end - start) - 0.5)
-            
-            let indexPath = self.rulerCollectionView.indexPathForCell(cell)!
-
-            // 소수점 1번째 자리 까지 유효함
-            let degree = floor(10 * (CGFloat(self.degree(indexPath)) + floatPoint)) / 10
-            
+            let degree = degreeOf(cells[0] as! RulerCell)
             let radian = degree / 180.0 * CGFloat(M_PI)
-            let absRad = abs(degree) / 180.0 * CGFloat(M_PI)
-            
             self.imageView!.transform = CGAffineTransformMakeRotation(radian)
+            
+            
+            self.imageScrollView.adjustContentSizeAndInset(self.imageView!)
             self.degreeLabel.text = String(format: "%.1f°", CGFloat(degree))
             self.degreeLabel.hidden = false
             
-            
-            let image_rect_width = self.cropView.frame.size.width
-            let image_rect_height = self.cropView.frame.size.height
-            
-            let a = image_rect_height * sin(absRad)
-            let b = image_rect_width * cos(absRad)
-            let c = image_rect_width * sin(absRad)
-            let d = image_rect_height * cos(absRad)
-            
-            let crop_rect_width = self.cropView.frame.size.width
-            let crop_rect_height = self.cropView.frame.size.height
-            
-            // http://stackoverflow.com/questions/26824513/zoom-a-rotated-image-inside-scroll-view-to-fit-fill-frame-of-overlay-rect
-            let scaleFactor = max(crop_rect_width / (a + b), crop_rect_height / (c + d))
-            print("scale factor : \(scaleFactor)")
-            let t = CGAffineTransformMakeRotation(radian)
-            let t2 = CGAffineTransformMakeScale(1 / scaleFactor, 1/scaleFactor)
-            self.testImageView.transform = CGAffineTransformConcat(t, t2)
-//            self.imageViewWidth.constant = 240 * scaleFactor
-//            self.imageViweHeight.constant = 128 * scaleFactor
-            
-            
-            guard
-            let imageView = self.imageView  else {
-                return
-            }
-            
-            guard
-                let originalFrame = imageViewOriginalFrame,
-                let _ = self.imageView else { return
-            }
-            
-            let contentOffset = self.imageScrollView.contentOffset
-            let p0 = originalFrame.origin
-            let p1 = CGPoint(x: originalFrame.origin.x + originalFrame.size.width, y: originalFrame.origin.y)
-            let p2 = CGPoint(x: originalFrame.origin.x + originalFrame.size.width, y: originalFrame.origin.y + originalFrame.size.height)
-            let p3 = CGPoint(x: originalFrame.origin.x, y: originalFrame.origin.y + originalFrame.size.height)
-            
-            var ps = [p0, p1, p2, p3]
-            let center = CGPointMake(CGRectGetMidX(self.imageScrollView.bounds), CGRectGetMidY(self.imageScrollView.bounds))
-            
-            ps = ps.map({ (point) -> CGPoint in
-                
-                let t1 = CGAffineTransformMakeTranslation(-center.x, -center.y)
-                let t2 = CGAffineTransformMakeRotation(degree / 180.0 * CGFloat(M_PI))
-                let t3 = CGAffineTransformMakeTranslation(center.x, center.y)
-                let t4 = CGAffineTransformMakeTranslation(contentOffset.x, contentOffset.y)
-                
-                var t = CGAffineTransformIdentity
-                t = CGAffineTransformConcat(t, t1)
-                t = CGAffineTransformConcat(t, t2)
-                t = CGAffineTransformConcat(t, t3)
-                t = CGAffineTransformConcat(t, t4)
-                
-                return CGPointApplyAffineTransform(point, t)
-            }) // converted
-            
-            
-            
-            let radius = center.distanceTo(CGPointZero)
-            
-            ps.enumerate().forEach({ (index: Int, element: CGPoint) in
-                var nextIndex =  index + 1
-                if nextIndex == ps.count {
-                    nextIndex = 0
-                }
-                self.test(ps[index], to: ps[nextIndex], center: center, radius: radius)
-            })
+            self.testImageView.rotateAndSizeToFit(self.cropView.bounds.size, degree: degree)
         }
     }
-    
-    func test(from: CGPoint, to: CGPoint, center: CGPoint, radius: CGFloat) {
-        let f1 = OneDimentionalFunction.createFunctionBetweenFromPoint(from, to: to)
-        let f2 = f1.orthogonalFuncitonPassPoint(center)
-        
-        guard let intersectionPoint = f1.intersectionPointWith(f2) else {
-            return
-        }
-        let distance = intersectionPoint.distanceTo(center)
-        
-        if distance < radius {
-            // have to scale
-            print("have to scale")
-        }
-    }
+
     
     // MARK : - Private
     private func degreeString(indexPath: NSIndexPath) -> String {
@@ -324,4 +227,39 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     private func degree(indexPath: NSIndexPath) -> Int {
         return (indexPath.row - CELL_MID_INDEX) * 5
     }
+    
+    private func degreeOf(cell: RulerCell) -> CGFloat {
+        let cellFrame = cell.frame
+        
+        let cellFrameInSuperView = self.rulerCollectionView.convertRect(cellFrame, toView: self.rulerCollectionView.superview!)
+        
+        let start = cellFrameInSuperView.origin.x
+        let end = cellFrameInSuperView.size.width + start
+        
+        let value = self.rulerCollectionView.center.x - start
+        
+        // - 2.5 ~ 2.5
+        let floatPoint = 5 * (value / (end - start) - 0.5)
+        
+        let indexPath = self.rulerCollectionView.indexPathForCell(cell)!
+        
+        // 소수점 1번째 자리 까지 유효함
+        let degree = floor(10 * (CGFloat(self.degree(indexPath)) + floatPoint)) / 10
+        return degree
+    }
+    
+//    private func test(from: CGPoint, to: CGPoint, center: CGPoint, radius: CGFloat) {
+//        let f1 = OneDimentionalFunction.createFunctionBetweenFromPoint(from, to: to)
+//        let f2 = f1.orthogonalFuncitonPassPoint(center)
+//        
+//        guard let intersectionPoint = f1.intersectionPointWith(f2) else {
+//            return
+//        }
+//        let distance = intersectionPoint.distanceTo(center)
+//        
+//        if distance < radius {
+//            // have to scale
+//            print("have to scale")
+//        }
+//    }
 }

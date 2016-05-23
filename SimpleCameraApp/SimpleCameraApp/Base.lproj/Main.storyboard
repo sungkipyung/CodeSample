@@ -497,7 +497,7 @@
                                     <constraint firstItem="idT-pv-ank" firstAttribute="centerY" secondItem="McW-Ja-4bK" secondAttribute="centerY" id="rik-da-spv"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P7q-al-jfX">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P7q-al-jfX">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="434"/>
                                 <subviews>
                                     <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Jl-2t-HFD" userLabel="imageScrollView">
