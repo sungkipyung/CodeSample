@@ -57,12 +57,55 @@ extension UIImageView {
         scrollView.contentInset = UIEdgeInsets(top: dSize.height, left: dSize.width, bottom: -dSize.height, right: -dSize.width)
     }
     
-    static func copyImageView (that: UIImageView) -> UIImageView {
+    static func copyImageView(that: UIImageView) -> UIImageView {
         let imageView = UIImageView(image: that.image)
         imageView.transform = that.transform
         imageView.contentMode = that.contentMode
         imageView.frame = that.frame
         return imageView
     }
+}
+
+extension UIImageOrientation {
+    func mirroredImageOrientation() -> UIImageOrientation {
+        switch(self) {
+        case .Up:
+            return UIImageOrientation.UpMirrored
+        case .Down:
+            return UIImageOrientation.DownMirrored
+        case .Left:
+            return UIImageOrientation.LeftMirrored
+        case .Right:
+            return UIImageOrientation.RightMirrored
+        case .UpMirrored:
+            return UIImageOrientation.Up
+        case .DownMirrored:
+            return UIImageOrientation.Down
+        case .LeftMirrored:
+            return UIImageOrientation.Left
+        case .RightMirrored:
+            return UIImageOrientation.Right
+        }
+    }
     
+    func verticalMirroredImageOrientation() -> UIImageOrientation {
+        switch(self) {
+        case .Up:
+            return UIImageOrientation.DownMirrored
+        case .Down:
+            return UIImageOrientation.UpMirrored
+        case .Left:
+            return UIImageOrientation.RightMirrored
+        case .Right:
+            return UIImageOrientation.LeftMirrored
+        case .UpMirrored:
+            return UIImageOrientation.Down
+        case .DownMirrored:
+            return UIImageOrientation.Up
+        case .LeftMirrored:
+            return UIImageOrientation.Right
+        case .RightMirrored:
+            return UIImageOrientation.Left
+        }
+    }
 }

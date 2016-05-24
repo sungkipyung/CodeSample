@@ -154,6 +154,8 @@ class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDe
         let selectedCollageCell = self.bubbleView.selectedCollageCell!
         let imageView = vc.imageView!
         let imageScrollView = selectedCollageCell.imageScrollView
+        let image = imageView.image!
+        selectedCollageCell.imageView.image = UIImage(CGImage: image.CGImage!, scale: image.scale, orientation: image.imageOrientation)
         selectedCollageCell.imageView.applyTransform(imageView.transform, andSizeToFitScrollView: imageScrollView)
         imageScrollView.copyContentOffsetInsetSizeFromOtherScrollView(vc.imageScrollView)
         self.bubbleView.hidden = true

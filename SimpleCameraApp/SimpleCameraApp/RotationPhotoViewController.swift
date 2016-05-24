@@ -42,7 +42,7 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     private let CELL_COUNT: Int = 19
     private let CELL_MID_INDEX: Int = 9
     private var ignoreRotation: Bool = true
-    
+    private var additionalDegreeForRotation: CGFloat = 0
     
     /// test
     @IBOutlet weak var cropView: UIView!
@@ -109,7 +109,17 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     }
     
     private func clearRotation(animated: Bool) {
-        self.rulerCollectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: CELL_MID_INDEX, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: animated)
+        let animations = {
+            self.additionalDegreeForRotation = 0
+            self.rulerCollectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: self.CELL_MID_INDEX, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
+        }
+        
+        if animated {
+            UIView.animateWithDuration(0.5, animations: animations, completion:nil)
+        } else {
+            animations()
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -139,15 +149,37 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     }
     
     @IBAction func touchLeftButton(sender: AnyObject) {
+        additionalDegreeForRotation = additionalDegreeForRotation - 90
+        if (additionalDegreeForRotation < 0) {
+            additionalDegreeForRotation = additionalDegreeForRotation + 360
+        }
+        rotationImageView(true)
     }
     
     @IBAction func touchRightButton(sender: AnyObject) {
+        additionalDegreeForRotation = additionalDegreeForRotation + 90
+        additionalDegreeForRotation = additionalDegreeForRotation % 360
+        rotationImageView(true)
     }
     
     @IBAction func touchHorizontalMirrorButton(sender: AnyObject) {
+        if let imageView = self.imageView where imageView.image != nil {
+            let image = imageView.image!
+            let scale = image.scale
+            let changedImage = UIImage(CGImage: image.CGImage!, scale: scale, orientation: image.imageOrientation.mirroredImageOrientation())
+            self.imageView?.image = changedImage
+        }
+        clearRotation(false)
     }
     
     @IBAction func touchVerticalMirrorButton(sender: AnyObject) {
+        if let imageView = self.imageView where imageView.image != nil {
+            let image = imageView.image!
+            let scale = image.scale
+            let changedImage = UIImage(CGImage: image.CGImage!, scale: scale, orientation: image.imageOrientation.verticalMirroredImageOrientation())
+            self.imageView?.image = changedImage
+        }
+        clearRotation(false)
     }
     
     @IBAction func touchDoneButton(sender: AnyObject) {
@@ -204,25 +236,48 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
         }
         
         self.maskView.alpha = 0.5
+        
+        self.rotationImageView(false)
+    }
+
+    
+    // MARK : - Private
+    private func calcDegree() -> CGFloat {
         let cells = self.rulerCollectionView.visibleCells().filter { (cell) -> Bool in
             let cellFrame = cell.frame
             let cellFrameInSuperView = self.rulerCollectionView.convertRect(cellFrame, toView: self.rulerCollectionView.superview!)
             return CGRectContainsPoint(cellFrameInSuperView, self.rulerCollectionView.center)
         }
         
-        if cells.count > 0 {
-            let degree = degreeOf(cells[0] as! RulerCell)
-            let radian = degree / 180.0 * CGFloat(M_PI)
+        if cells.count == 0 {
+            return 0
+        }
+        
+        let degree = degreeOf(cells[0] as! RulerCell)
+        
+        return degree
+    }
+    
+    private func rotationImageView(animate: Bool) {
+        let degree = self.calcDegree()
+        let radian = (degree + self.additionalDegreeForRotation) / 180.0 * CGFloat(M_PI)
+        
+        let animations: (() -> Void) = {
             self.imageView!.applyTransform(CGAffineTransformMakeRotation(radian), andSizeToFitScrollView: self.imageScrollView)
             self.degreeLabel.text = String(format: "%.1f°", CGFloat(degree))
             self.degreeLabel.hidden = false
-            
+        }
+        
+        if animate {
+            UIView.animateWithDuration(0.5, animations: animations, completion: { (complete) in
+                self.testImageView.rotateAndSizeToFit(self.cropView.bounds.size, degree: degree)
+            })
+        } else {
+            animations()
             self.testImageView.rotateAndSizeToFit(self.cropView.bounds.size, degree: degree)
         }
     }
-
     
-    // MARK : - Private
     private func degreeString(indexPath: NSIndexPath) -> String {
         return "\(degree(indexPath))°"
     }
