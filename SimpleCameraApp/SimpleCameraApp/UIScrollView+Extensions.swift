@@ -21,4 +21,10 @@ extension UIScrollView {
         self.contentSize = contentViewOfScrollView.frame.size
         self.contentInset = UIEdgeInsets(top: dSize.height, left: dSize.width, bottom: -dSize.height, right: -dSize.width)
     }
+    
+    func copyContentOffsetInsetSizeFromOtherScrollView(scrollView: UIScrollView) {
+        self.contentInset = scrollView.contentInset
+        self.contentSize = scrollView.contentSize
+        self.contentOffset = scrollView.contentOffset
+    }
 }

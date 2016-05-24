@@ -428,7 +428,7 @@
                         <outlet property="layoutControlView" destination="Jo4-8Z-txf" id="P6k-F3-hAC"/>
                         <outlet property="roundControlButton" destination="a9H-eM-CR4" id="4N7-na-Nmy"/>
                         <outlet property="roundProgressView" destination="OrH-zI-neB" id="ZOK-QL-jgW"/>
-                        <segue destination="t60-HO-8AN" kind="show" identifier="RotationPhotoViewControllerSegue" id="JLl-Gx-VCj"/>
+                        <segue destination="t60-HO-8AN" kind="presentation" identifier="RotationPhotoViewControllerSegue" id="JLl-Gx-VCj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HNG-0V-ql2" userLabel="First Responder" sceneMemberID="firstResponder"/>

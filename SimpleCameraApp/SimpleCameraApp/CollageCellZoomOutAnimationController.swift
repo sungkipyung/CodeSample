@@ -24,6 +24,7 @@ class CollageCellZoomOutAnimationController: NSObject, UIViewControllerAnimatedT
             let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) else {
                 return
         }
+        let toView = toVC.view
         
         guard
             let collageVC = toVC as? CollageViewController,
@@ -32,23 +33,24 @@ class CollageCellZoomOutAnimationController: NSObject, UIViewControllerAnimatedT
                 return
         }
         
-        containerView.subviews.forEach { (subview) in
-            subview.removeFromSuperview()
-        }
+//        containerView.subviews.forEach { (subview) in
+//            subview.removeFromSuperview()
+//        }
         
-
-        let fromView = rotationPhotoVC.imageScrollView
-        let initialFrame = fromView.superview!.convertRect(fromView.frame, toView: fromView.superview!)
+        let imageScrollView = rotationPhotoVC.imageScrollView
+        let initialFrame = imageScrollView.superview!.convertRect(imageScrollView.frame, toView: imageScrollView.superview!)
 
         let finalPoint = selectedCollageCell.superview!.convertPoint(selectedCollageCell.center, toView: collageVC.view)
 //        let finalFrame = selectedCollageCell.superview!.convertRect(selectedCollageCell.frame, toView: collageVC.view)
 
-        let snapshot = fromView.snapshotViewAfterScreenUpdates(true)
+        let snapshot = imageScrollView.snapshotViewAfterScreenUpdates(true)
         
         snapshot.frame = initialFrame
         snapshot.layer.masksToBounds = true
 
+        containerView.addSubview(toVC.view)
         containerView.addSubview(snapshot)
+        
         toVC.view.hidden = true
         
         let duration = transitionDuration(transitionContext)
@@ -67,17 +69,20 @@ class CollageCellZoomOutAnimationController: NSObject, UIViewControllerAnimatedT
             })
             
             }) { (complete) in
-                containerView.addSubview(toVC.view)
-                
-                selectedCollageCell.imageView.transform = rotationPhotoVC.imageView!.transform
-                selectedCollageCell.imageView.frame = rotationPhotoVC.imageView!.frame
-                
-                selectedCollageCell.imageScrollView.contentOffset = rotationPhotoVC.imageScrollView.contentOffset
-                selectedCollageCell.imageScrollView.zoomScale = rotationPhotoVC.imageScrollView.zoomScale
-                
                 snapshot.removeFromSuperview()
+                fromVC.view.removeFromSuperview()
 
-                transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
+                let success = !transitionContext.transitionWasCancelled()
+                
+                if success {
+                    toView.removeFromSuperview()
+                }
+                
+                transitionContext.completeTransition(success)
+                /**
+                 http://stackoverflow.com/questions/24338700/from-view-controller-disappears-using-uiviewcontrollercontexttransitioning
+                 */
+                UIApplication.sharedApplication().keyWindow!.addSubview(toVC.view)
                 toVC.view.hidden = false
                 fromVC.view.hidden = false
         }

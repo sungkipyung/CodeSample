@@ -39,12 +39,11 @@ class CollageCellZoomInAnimationController: NSObject, UIViewControllerAnimatedTr
         snapshot.layer.masksToBounds = true
         
         containerView.addSubview(snapshot)
-        toVC.view.hidden = true
+        
         
         let duration = transitionDuration(transitionContext)
         
-        rotationPhotoVC.imageScrollView.hidden = true
-        collageVC.bubbleView.hidden = true
+        toVC.view.hidden = true
         UIView.animateKeyframesWithDuration(duration, delay: 0, options: .CalculationModeCubicPaced, animations: {
             UIView.addKeyframeWithRelativeStartTime(0.0, relativeDuration: 1/3, animations: {
                 fromVC.view.hidden = true
@@ -62,27 +61,15 @@ class CollageCellZoomInAnimationController: NSObject, UIViewControllerAnimatedTr
             toVC.view.hidden = false
             fromVC.view.hidden = false
             
-            containerView.addSubview(toVC.view)
+            containerView.addSubview(toVC.view)    
             
-            rotationPhotoVC.imageScrollViewWidth.constant = selectedCollageCell.frame.size.width
-            rotationPhotoVC.imageScrollViewHeight.constant = selectedCollageCell.frame.size.height
-            rotationPhotoVC.view.layoutIfNeeded()
+            let success = !transitionContext.transitionWasCancelled()
             
-            let imageView = UIImageView(image: selectedCollageCell.imageView.image)
-            imageView.contentMode = UIViewContentMode.ScaleToFill
-            rotationPhotoVC.imageScrollView.addSubview(imageView)
-            rotationPhotoVC.imageView = imageView
-            imageView.sizeThatFit(rotationPhotoVC.imageScrollView)
-            
-            let polygon = selectedCollageCell.polygon.copy()
-            rotationPhotoVC.shapeLayerPath = polygon.path()
-            rotationPhotoVC.imageScrollView.hidden = false
-            
-            rotationPhotoVC.imageScrollView.contentOffset = selectedCollageCell.imageScrollView.contentOffset
-            rotationPhotoVC.imageScrollView.zoomScale = selectedCollageCell.imageScrollView.zoomScale
-            
+            if (success == false) {
+                toVC.view.removeFromSuperview()
+            }
             snapshot.removeFromSuperview()
-            transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
+            transitionContext.completeTransition(success)
         }
     }
 }

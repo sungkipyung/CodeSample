@@ -247,6 +247,8 @@
 				892B76661CD8666E00959571 /* BubbleView.xib */,
 				898B2F111CBF87C300AD764A /* CollageCell.swift */,
 				898B2F2C1CC634E100AD764A /* CollageCell.xib */,
+				89A8AAEC1CCE22790081FF71 /* CollageCellMenuView.swift */,
+				89A8AAEE1CCE22AF0081FF71 /* CollageCellMenuView.xib */,
 				898B2F0B1CBF7D3200AD764A /* CollageView.swift */,
 				898B2F091CBF6BF600AD764A /* CollageViewController.swift */,
 				898B2F171CC0D4FB00AD764A /* LayoutGripView.swift */,
@@ -331,15 +333,13 @@
 		89F7956B1CB355DC0029FD32 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				89BFB7CD1CB257CB0011A04A /* AppDelegate.swift */,
-				89A8AAEC1CCE22790081FF71 /* CollageCellMenuView.swift */,
 				89F7956D1CB356580029FD32 /* HomeViewController.swift */,
-				89A8AAEE1CCE22AF0081FF71 /* CollageCellMenuView.xib */,
+				89BFB7CD1CB257CB0011A04A /* AppDelegate.swift */,
 				89F795791CB393590029FD32 /* Camera */,
 				898B2EF61CBF618900AD764A /* Collage */,
 				898B2EF31CBCF40A00AD764A /* Edit */,
-				89EC80BD1CF2A7F400DA6B64 /* Model */,
 				89FCAF3F1CD09D6800D630AA /* Extensions */,
+				89EC80BD1CF2A7F400DA6B64 /* Model */,
 			);
 			name = Classes;
 			sourceTree = "<group>";

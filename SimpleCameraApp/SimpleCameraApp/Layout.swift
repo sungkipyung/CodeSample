@@ -192,8 +192,3 @@ class Layout : Copy {
         return Layout(size: size, curvature: curvature, border: border, xs: Array(xs), ys: Array(ys), generatePS: generatePS, cellCount: cellCount, generatePolygons: generatePolygons, generateGS: generateGS, gsChangeHandlers: gsChangeHandlers)
     }
 }
-
-// MARK: Utilities
-func PointObj(x:CGFloat, y:CGFloat) -> NSValue {
-    return NSValue(CGPoint: CGPoint(x: x, y: y))
-}

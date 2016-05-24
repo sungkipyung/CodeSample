@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol RotationPhotoViewControllerDelegate : class {
+    func rotationPhotoVCWillFinish(viewController: RotationPhotoViewController, applyChanges: Bool)
+    
+}
+
 class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var maskView: UIView!
@@ -21,7 +26,8 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     @IBOutlet weak var imageScrollViewWidth: NSLayoutConstraint!
     @IBOutlet weak var imageScrollViewHeight: NSLayoutConstraint!
     
-    private var applyChanges: Bool = false
+    weak var rpvcDelegate: RotationPhotoViewControllerDelegate?
+    
     var shapeLayerPath: UIBezierPath?
     var imageViewOriginalFrame: CGRect?
     weak var imageView: UIImageView? {
@@ -112,7 +118,7 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -120,11 +126,11 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+    
 
     // MARK: - IBAction
     @IBAction func touchCloseButton(sender: AnyObject) {
-        applyChanges = false
+        rpvcDelegate?.rotationPhotoVCWillFinish(self, applyChanges: false)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -145,7 +151,7 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     }
     
     @IBAction func touchDoneButton(sender: AnyObject) {
-        applyChanges = true
+        rpvcDelegate?.rotationPhotoVCWillFinish(self, applyChanges: true)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -207,10 +213,7 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
         if cells.count > 0 {
             let degree = degreeOf(cells[0] as! RulerCell)
             let radian = degree / 180.0 * CGFloat(M_PI)
-            self.imageView!.transform = CGAffineTransformMakeRotation(radian)
-            
-            
-            self.imageScrollView.adjustContentSizeAndInset(self.imageView!)
+            self.imageView!.applyTransform(CGAffineTransformMakeRotation(radian), andSizeToFitScrollView: self.imageScrollView)
             self.degreeLabel.text = String(format: "%.1f°", CGFloat(degree))
             self.degreeLabel.hidden = false
             

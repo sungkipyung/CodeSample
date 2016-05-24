@@ -30,7 +30,7 @@ class CollageCell: UIView, UIScrollViewDelegate {
                 let path = p.path()
                 self.frame = CGRect(origin: p.origin, size: path.bounds.size)
                 self.imageScrollView.frame = self.bounds
-                self.imageView.sizeThatFit(self.imageScrollView)
+//                self.imageView.sizeThatFit(self.imageScrollView)
                 self.cameraPreview.frame = self.bounds
                 self.shapeLayerPath = path
             }

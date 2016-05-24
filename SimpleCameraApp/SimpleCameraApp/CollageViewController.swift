@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDelegate, UIViewControllerTransitioningDelegate {
+class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDelegate, UIViewControllerTransitioningDelegate, RotationPhotoViewControllerDelegate {
 
     @IBOutlet weak var collageView: CollageView!
     
@@ -126,18 +126,58 @@ class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDe
         // Pass the selected object to the new view controller.
 //        super.prepareForSegue(segue, sender: sender)
         
-        let destVC = segue.destinationViewController
+        let destVC = segue.destinationViewController as! RotationPhotoViewController
         destVC.transitioningDelegate = self
         destVC.modalPresentationStyle = UIModalPresentationStyle.Custom
+        destVC.view.layoutIfNeeded()
+        destVC.rpvcDelegate = self
+        
+        let selectedCollageCell = self.bubbleView.selectedCollageCell!
+        destVC.imageScrollViewWidth.constant = selectedCollageCell.frame.size.width
+        destVC.imageScrollViewHeight.constant = selectedCollageCell.frame.size.height
+        
+        //
+        let imageView = UIImageView.copyImageView(selectedCollageCell.imageView)
+        
+        destVC.imageView = imageView
+        destVC.imageScrollView.addSubview(imageView)
+        destVC.imageScrollViewWidth.constant = selectedCollageCell.imageScrollView.bounds.width
+        destVC.imageScrollViewHeight.constant = selectedCollageCell.imageScrollView.bounds.height
+        destVC.imageScrollView.copyContentOffsetInsetSizeFromOtherScrollView(selectedCollageCell.imageScrollView)
+
+        let polygon = selectedCollageCell.polygon.copy()
+        destVC.shapeLayerPath = polygon.path()
     }
     
+    // MARK: - RotationPhotoViewControllerDelegate
+    func rotationPhotoVCWillFinish(vc: RotationPhotoViewController, applyChanges: Bool) {
+        let selectedCollageCell = self.bubbleView.selectedCollageCell!
+        let imageView = vc.imageView!
+        let imageScrollView = selectedCollageCell.imageScrollView
+        selectedCollageCell.imageView.applyTransform(imageView.transform, andSizeToFitScrollView: imageScrollView)
+        imageScrollView.copyContentOffsetInsetSizeFromOtherScrollView(vc.imageScrollView)
+        self.bubbleView.hidden = true
+    }
+    
+    // MARK: - UIViewControllerTransitioningDelegate
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return collageCellZoomInAnimationController
     }
     
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return collageCellZoomOutAnimationController
-//        return nil
+    }
+    
+    func interactionControllerForPresentation(animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return nil
+    }
+
+    func interactionControllerForDismissal(animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return nil
+    }
+
+    func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController, sourceViewController source: UIViewController) -> UIPresentationController? {
+        return nil
     }
     
     // MARK: - BubbleViewDelegate
