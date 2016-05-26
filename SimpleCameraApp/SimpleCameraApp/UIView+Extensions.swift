@@ -39,7 +39,7 @@ extension UIView {
         let scaleFactor = max(crop_rect_width / (a + b), crop_rect_height / (c + d))
         
         let t = CGAffineTransformMakeRotation(radian)
-        let t2 = CGAffineTransformMakeScale(1 / scaleFactor, 1/scaleFactor)
+        let t2 = CGAffineTransformMakeScale(1 / scaleFactor, 1 / scaleFactor)
         self.transform = CGAffineTransformConcat(t, t2)
     }
 }

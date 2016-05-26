@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDelegate, UIViewControllerTransitioningDelegate, RotationPhotoViewControllerDelegate {
+class CollageViewController: UIViewController {
 
     @IBOutlet weak var collageView: CollageView!
     
@@ -28,13 +28,15 @@ class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.bubbleView.delegate = self
+        bubbleView.delegate = self
         
         let image = UIImage(named: "pattern-repeat-4.png")!
-        self.collageView.backgroundColor = UIColor(patternImage: image)
+        collageView.backgroundColor = UIColor(patternImage: image)
         // Do any additional setup after loading the view.
         
-        intervalControlButton.onChangeLocation = { (view: RadioButton, originalPosition: CGPoint, incX: CGFloat, incY: CGFloat) -> (Void) in
+        intervalControlButton.onChangeLocation = { [weak self] (view: RadioButton, originalPosition: CGPoint, incX: CGFloat, incY: CGFloat) -> (Void) in
+            guard let strongSelf = self else { return }
+            
             let buttonRadious = view.frame.size.width / 2
             
             let start = buttonRadious
@@ -43,12 +45,14 @@ class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDe
             view.center.x = min(max(originalPosition.x + incX, start), end)
             
             let progress: Float = (Float)(view.center.x - start)/(Float)(end - start)
-            self.collageView.layout?.border = CGFloat(progress) * CollageViewController.MAX_BORDER_WIDTH
-            self.intervalProgressView.setProgress(progress, animated: false)
-            self.collageView.redraw()
+            strongSelf.collageView.layout?.border = CGFloat(progress) * CollageViewController.MAX_BORDER_WIDTH
+            strongSelf.intervalProgressView.setProgress(progress, animated: false)
+            strongSelf.collageView.redraw()
         }
         
-        roundControlButton.onChangeLocation = { (view: RadioButton, originalPosition: CGPoint, incX: CGFloat, incY: CGFloat) -> (Void) in
+        roundControlButton.onChangeLocation = { [weak self] (view: RadioButton, originalPosition: CGPoint, incX: CGFloat, incY: CGFloat) -> (Void) in
+            guard let strongSelf = self else { return }
+            
             let buttonRadious = view.frame.size.width / 2
             
             let start = buttonRadious
@@ -56,9 +60,9 @@ class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDe
             
             view.center.x = min(max(originalPosition.x + incX, start), end)
             let progress: Float = (Float)(view.center.x - start)/(Float)(end - start)
-            self.collageView.layout?.curvature = CGFloat(progress)
-            self.roundProgressView.setProgress(progress, animated: false)
-            self.collageView.redraw()
+            strongSelf.collageView.layout?.curvature = CGFloat(progress)
+            strongSelf.roundProgressView.setProgress(progress, animated: false)
+            strongSelf.collageView.redraw()
         }
         
         let layout = LayoutFactory.sharedInstance.getLayout(0, limit: 1)![0]
@@ -70,12 +74,12 @@ class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDe
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.layoutControlView.addObserver(self, forKeyPath: "hidden", options: NSKeyValueObservingOptions.New, context: nil)
+        layoutControlView.addObserver(self, forKeyPath: "hidden", options: NSKeyValueObservingOptions.New, context: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        self.layoutControlView.removeObserver(self, forKeyPath: "hidden")
+        layoutControlView.removeObserver(self, forKeyPath: "hidden")
     }
 
     override func didReceiveMemoryWarning() {
@@ -86,7 +90,7 @@ class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDe
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         
         if let view = object as? UIView {
-            if view == self.layoutControlView {
+            if view == layoutControlView {
                 updateLayoutcontrolView()
             }
         }
@@ -98,26 +102,15 @@ class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDe
     }
     
     @IBAction func onTapGesture(sender: UITapGestureRecognizer) {
-        if self.view == sender.view {
+        if view == sender.view {
             layoutControlView.hidden = true
             clearBubbleView()
         }
     }
-    // MARK: -CollageViewDelegate
-    func collageCellSelected(collageView: CollageView, selectedCell: CollageCell) {
-        self.bubbleView.selectedCollageCell = selectedCell
-        self.bubbleView.hidden = false
-        
-        let axisView = self.bubbleView.superview!
-        
-        // transfer coordinate collageView to axisView
-        let point = axisView.convertPoint(selectedCell.center, fromView:selectedCell.superview)
-        self.bubbleView.center = point
-        
-        // bubbleView's tail will be located at selectedCollageCell's center
-    }
-
     
+    @IBAction func onTouchBackButton(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -132,7 +125,7 @@ class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDe
         destVC.view.layoutIfNeeded()
         destVC.rpvcDelegate = self
         
-        let selectedCollageCell = self.bubbleView.selectedCollageCell!
+        let selectedCollageCell = bubbleView.selectedCollageCell!
         destVC.imageScrollViewWidth.constant = selectedCollageCell.frame.size.width
         destVC.imageScrollViewHeight.constant = selectedCollageCell.frame.size.height
         
@@ -149,19 +142,58 @@ class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDe
         destVC.shapeLayerPath = polygon.path()
     }
     
-    // MARK: - RotationPhotoViewControllerDelegate
+    // MARK: - private
+    private func clearBubbleView() {
+        bubbleView.selectedCollageCell = nil
+        bubbleView.hidden = true
+    }
+    
+    private func updateLayoutcontrolView() {
+        if (layoutControlView.hidden) {
+            collageView.drawGrapButtons = false
+            collageView.swappable = true
+        } else {
+            collageView.drawGrapButtons = true
+            collageView.cellGrapButtons.forEach({ (button) in
+                collageView.bringSubviewToFront(button)
+            })
+            collageView.swappable = false
+        }
+    }
+}
+
+// MARK: - RotationPhotoViewControllerDelegate
+extension CollageViewController : RotationPhotoViewControllerDelegate {
     func rotationPhotoVCWillFinish(vc: RotationPhotoViewController, applyChanges: Bool) {
-        let selectedCollageCell = self.bubbleView.selectedCollageCell!
+        let selectedCollageCell = bubbleView.selectedCollageCell!
         let imageView = vc.imageView!
         let imageScrollView = selectedCollageCell.imageScrollView
         let image = imageView.image!
         selectedCollageCell.imageView.image = UIImage(CGImage: image.CGImage!, scale: image.scale, orientation: image.imageOrientation)
         selectedCollageCell.imageView.applyTransform(imageView.transform, andSizeToFitScrollView: imageScrollView)
         imageScrollView.copyContentOffsetInsetSizeFromOtherScrollView(vc.imageScrollView)
-        self.bubbleView.hidden = true
+        bubbleView.hidden = true
     }
-    
-    // MARK: - UIViewControllerTransitioningDelegate
+}
+
+// MARK: -CollageViewDelegate
+extension CollageViewController : CollageViewDelegate {
+    func collageCellSelected(collageView: CollageView, selectedCell: CollageCell) {
+        bubbleView.selectedCollageCell = selectedCell
+        bubbleView.hidden = false
+        
+        let axisView = bubbleView.superview!
+        
+        // transfer coordinate collageView to axisView
+        let point = axisView.convertPoint(selectedCell.center, fromView:selectedCell.superview)
+        bubbleView.center = point
+        
+        // bubbleView's tail will be located at selectedCollageCell's center
+    }
+}
+
+// MARK: - UIViewControllerTransitioningDelegate
+extension CollageViewController : UIViewControllerTransitioningDelegate {
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return collageCellZoomInAnimationController
     }
@@ -169,45 +201,14 @@ class CollageViewController: UIViewController, BubbleViewDelegate, CollageViewDe
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return collageCellZoomOutAnimationController
     }
-    
-    func interactionControllerForPresentation(animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return nil
-    }
 
-    func interactionControllerForDismissal(animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return nil
-    }
+}
 
-    func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController, sourceViewController source: UIViewController) -> UIPresentationController? {
-        return nil
-    }
-    
-    // MARK: - BubbleViewDelegate
+// MARK: - BubbleViewDelegate
+extension CollageViewController : BubbleViewDelegate {
     func bubbleViewRotationButtonTouched(bubbleView: BubbleView, sender:AnyObject) {
         // RotationPhotoViewControllerSegue
-        self.performSegueWithIdentifier("RotationPhotoViewControllerSegue", sender: self)
+        performSegueWithIdentifier("RotationPhotoViewControllerSegue", sender: self)
     }
     
-    @IBAction func onTouchBackButton(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    // MARK: - private
-    private func clearBubbleView() {
-        self.bubbleView.selectedCollageCell = nil
-        self.bubbleView.hidden = true
-    }
-    
-    private func updateLayoutcontrolView() {
-        if (layoutControlView.hidden) {
-            collageView.drawGrapButtons = false
-            self.collageView.swappable = true
-        } else {
-            collageView.drawGrapButtons = true
-            collageView.cellGrapButtons.forEach({ (button) in
-                collageView.bringSubviewToFront(button)
-            })
-            self.collageView.swappable = false
-        }
-    }
 }
