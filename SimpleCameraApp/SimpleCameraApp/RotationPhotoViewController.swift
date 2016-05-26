@@ -13,7 +13,7 @@ protocol RotationPhotoViewControllerDelegate : class {
     
 }
 
-class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class RotationPhotoViewController: UIViewController {
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var maskView: UIView!
     @IBOutlet weak var degreeLabel: UILabel!
@@ -30,6 +30,7 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     
     var shapeLayerPath: UIBezierPath?
     var imageViewOriginalFrame: CGRect?
+    
     weak var imageView: UIImageView? {
         didSet {
             if let imageView = self.imageView {
@@ -38,9 +39,9 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
         }
     }
     
-    private let CELL_WIDTH: CGFloat = 50
-    private let CELL_COUNT: Int = 19
-    private let CELL_MID_INDEX: Int = 9
+    private let cellWidth: CGFloat = 50.0
+    private let numberOfCells: Int = 19
+    private let middleIndexOfCells: Int = 9
     private var ignoreRotation: Bool = true
     private var additionalDegreeForRotation: CGFloat = 0
     
@@ -48,18 +49,13 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     @IBOutlet weak var cropView: UIView!
     @IBOutlet weak var testImageView: UIImageView!
     
-    @IBAction func touchCropMode(sender: AnyObject) {
-        self.cropView.hidden = false
-        self.cropView.layer.borderColor = UIColor.orangeColor().CGColor
-        self.cropView.layer.borderWidth = 3.0
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let nib = UINib(nibName: "RulerCell", bundle: NSBundle.mainBundle())
         self.rulerCollectionView.registerNib(nib, forCellWithReuseIdentifier: "rulerCell")
         self.rulerCollectionView.decelerationRate = UIScrollViewDecelerationRateNormal
-        let hw = self.view.bounds.size.width / 2 - CELL_WIDTH / 2
+        let hw = self.view.bounds.size.width / 2 - cellWidth / 2
         self.rulerCollectionView.contentInset = UIEdgeInsets(top: 0, left: hw, bottom: 0, right: hw)
         // Do any additional setup after loading the view.
         self.ignoreRotation = true
@@ -77,68 +73,28 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
         clearRuler()
     }
     
-    private func clearRuler() {
-        self.rulerCollectionView.hidden = true
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(100 * NSEC_PER_MSEC)), dispatch_get_main_queue()) {
-            UIView.animateWithDuration(0.1, animations: {
-                self.clearRotation(false)
-            }) { (complete) in
-                self.rulerCollectionView.hidden = false
-                self.ignoreRotation = false
-                self.cursorView.hidden = false
-            }
-        }
-    }
-    
-    private func addMaskIfExist() {
-        if let innerPath = self.shapeLayerPath {
-            let mask: CAShapeLayer = CAShapeLayer()
-            mask.frame = self.contentView.bounds
-            
-            let path = UIBezierPath(rect: self.contentView.bounds)
-            innerPath.applyTransform(CGAffineTransformMakeTranslation(self.imageScrollView.frame.origin.x, self.imageScrollView.frame.origin.y))
-            path.appendPath(innerPath)
-            
-            mask.path = path.CGPath
-            mask.fillRule = kCAFillRuleEvenOdd
-            
-            self.maskView.layer.mask = mask
-            self.maskView.hidden = false
-            self.maskView.alpha = 1.0
-        }
-    }
-    
-    private func clearRotation(animated: Bool) {
-        let animations = {
-            self.additionalDegreeForRotation = 0
-            self.rulerCollectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: self.CELL_MID_INDEX, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
-        }
-        
-        if animated {
-            UIView.animateWithDuration(0.5, animations: animations, completion:nil)
-        } else {
-            animations()
-        }
-        
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
 
-    
+    /*
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    
-
+     */
     // MARK: - IBAction
+    
+    @IBAction func touchCropMode(sender: AnyObject) {
+        self.cropView.hidden = false
+        self.cropView.layer.borderColor = UIColor.orangeColor().CGColor
+        self.cropView.layer.borderWidth = 3.0
+    }
+    
     @IBAction func touchCloseButton(sender: AnyObject) {
         rpvcDelegate?.rotationPhotoVCWillFinish(self, applyChanges: false)
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -186,59 +142,6 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
         rpvcDelegate?.rotationPhotoVCWillFinish(self, applyChanges: true)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    // MARK: - UICollectionViewDelegate
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return CELL_COUNT
-    }
-    
-    // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell: RulerCell = collectionView.dequeueReusableCellWithReuseIdentifier("rulerCell", forIndexPath: indexPath) as! RulerCell
-        
-        cell.degreeLabel.text = degreeString(indexPath)
-        
-        cell.showLeft = true
-        cell.showRight = true
-        
-        if (indexPath.row == 0) {
-            cell.showLeft = false
-        } else if (indexPath.row == CELL_COUNT - 1) {
-            cell.showRight = false
-        }
-        
-        return cell
-    }
-    
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        hideDim()
-    }
-    
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate {
-            hideDim()
-        }
-    }
-    private func hideDim() {
-        self.maskView.alpha = 1.0
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1000 * NSEC_PER_MSEC)), dispatch_get_main_queue()) {
-            self.degreeLabel.hidden = true
-        }
-    }
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        if self.ignoreRotation {
-            return
-        }
-        
-        self.maskView.alpha = 0.5
-        
-        self.rotationImageView(false)
-    }
 
     
     // MARK : - Private
@@ -283,7 +186,7 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
     }
     
     private func degree(indexPath: NSIndexPath) -> Int {
-        return (indexPath.row - CELL_MID_INDEX) * 5
+        return (indexPath.row - middleIndexOfCells) * 5
     }
     
     private func degreeOf(cell: RulerCell) -> CGFloat {
@@ -306,18 +209,105 @@ class RotationPhotoViewController: UIViewController, UICollectionViewDelegate, U
         return degree
     }
     
-//    private func test(from: CGPoint, to: CGPoint, center: CGPoint, radius: CGFloat) {
-//        let f1 = OneDimentionalFunction.createFunctionBetweenFromPoint(from, to: to)
-//        let f2 = f1.orthogonalFuncitonPassPoint(center)
-//        
-//        guard let intersectionPoint = f1.intersectionPointWith(f2) else {
-//            return
-//        }
-//        let distance = intersectionPoint.distanceTo(center)
-//        
-//        if distance < radius {
-//            // have to scale
-//            print("have to scale")
-//        }
-//    }
+    private func clearRuler() {
+        self.rulerCollectionView.hidden = true
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(100 * NSEC_PER_MSEC)), dispatch_get_main_queue()) {
+            UIView.animateWithDuration(0.1, animations: {
+                self.clearRotation(false)
+            }) { (complete) in
+                self.rulerCollectionView.hidden = false
+                self.ignoreRotation = false
+                self.cursorView.hidden = false
+            }
+        }
+    }
+    
+    private func addMaskIfExist() {
+        if let innerPath = self.shapeLayerPath {
+            let mask: CAShapeLayer = CAShapeLayer()
+            mask.frame = self.contentView.bounds
+            
+            let path = UIBezierPath(rect: self.contentView.bounds)
+            innerPath.applyTransform(CGAffineTransformMakeTranslation(self.imageScrollView.frame.origin.x, self.imageScrollView.frame.origin.y))
+            path.appendPath(innerPath)
+            
+            mask.path = path.CGPath
+            mask.fillRule = kCAFillRuleEvenOdd
+            
+            self.maskView.layer.mask = mask
+            self.maskView.hidden = false
+            self.maskView.alpha = 1.0
+        }
+    }
+    
+    private func clearRotation(animated: Bool) {
+        let animations = {
+            self.additionalDegreeForRotation = 0
+            self.rulerCollectionView.scrollToItemAtIndexPath(NSIndexPath(forRow: self.middleIndexOfCells, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
+        }
+        
+        if animated {
+            UIView.animateWithDuration(0.5, animations: animations, completion:nil)
+        } else {
+            animations()
+        }
+        
+    }
+
+}
+
+extension RotationPhotoViewController : UICollectionViewDelegate, UICollectionViewDataSource {
+    // MARK: - UICollectionViewDelegate
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return numberOfCells
+    }
+    
+    // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell: RulerCell = collectionView.dequeueReusableCellWithReuseIdentifier("rulerCell", forIndexPath: indexPath) as! RulerCell
+        
+        cell.degreeLabel.text = degreeString(indexPath)
+        
+        cell.showLeft = true
+        cell.showRight = true
+        
+        if (indexPath.row == 0) {
+            cell.showLeft = false
+        } else if (indexPath.row == numberOfCells - 1) {
+            cell.showRight = false
+        }
+        
+        return cell
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        hideDim()
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            hideDim()
+        }
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if self.ignoreRotation {
+            return
+        }
+        
+        self.maskView.alpha = 0.5
+        
+        self.rotationImageView(false)
+    }
+    
+    private func hideDim() {
+        self.maskView.alpha = 1.0
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1000 * NSEC_PER_MSEC)), dispatch_get_main_queue()) {
+            self.degreeLabel.hidden = true
+        }
+    }
 }

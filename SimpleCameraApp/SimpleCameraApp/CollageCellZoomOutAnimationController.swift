@@ -33,15 +33,10 @@ class CollageCellZoomOutAnimationController: NSObject, UIViewControllerAnimatedT
                 return
         }
         
-//        containerView.subviews.forEach { (subview) in
-//            subview.removeFromSuperview()
-//        }
-        
         let imageScrollView = rotationPhotoVC.imageScrollView
         let initialFrame = imageScrollView.superview!.convertRect(imageScrollView.frame, toView: imageScrollView.superview!)
 
         let finalPoint = selectedCollageCell.superview!.convertPoint(selectedCollageCell.center, toView: collageVC.view)
-//        let finalFrame = selectedCollageCell.superview!.convertRect(selectedCollageCell.frame, toView: collageVC.view)
 
         let snapshot = imageScrollView.snapshotViewAfterScreenUpdates(true)
         
