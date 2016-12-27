@@ -14,6 +14,16 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        let path = "/System/Library/Audio/UISounds/photoShutter.caf"
+        let docs = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).last!
+        do  {
+            var data: Data? = nil
+            try data = Data(contentsOf: URL(fileURLWithPath: path), options: NSData.ReadingOptions.mappedIfSafe)
+            try? data!.write(to: URL(fileURLWithPath: docs + "/photoShutter.caf"), options: [.atomic])
+        } catch {
+            
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {

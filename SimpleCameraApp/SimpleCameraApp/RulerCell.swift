@@ -14,9 +14,9 @@ class RulerCell: UICollectionViewCell {
     var showLeft: Bool! = false {
         didSet {
             if showLeft! == true {
-               self.leftLayer.hidden = false
+               self.leftLayer.isHidden = false
             } else {
-               self.leftLayer.hidden = true
+               self.leftLayer.isHidden = true
             }
         }
     }
@@ -24,19 +24,19 @@ class RulerCell: UICollectionViewCell {
     var showRight: Bool! = false {
         didSet {
             if showRight! == true {
-                self.rightLayer.hidden = false
+                self.rightLayer.isHidden = false
             } else {
-                self.rightLayer.hidden = true
+                self.rightLayer.isHidden = true
             }
         }
     }
 
-    private weak var leftLayer: CALayer!
-    private weak var centerLayer: CALayer!
-    private weak var rightLayer: CALayer!
+    fileprivate weak var leftLayer: CALayer!
+    fileprivate weak var centerLayer: CALayer!
+    fileprivate weak var rightLayer: CALayer!
     
-    private let SMALL_H: CGFloat = 20
-    private let CENTER_H: CGFloat = 29
+    fileprivate let SMALL_H: CGFloat = 20
+    fileprivate let CENTER_H: CGFloat = 29
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -60,55 +60,55 @@ class RulerCell: UICollectionViewCell {
         self.centerLayer = centerLayer
     }
     
-    private func createLeftLayer() -> CALayer {
+    fileprivate func createLeftLayer() -> CALayer {
         let lineShapeLayer = CAShapeLayer()
         
         lineShapeLayer.lineWidth = 0.5
-        lineShapeLayer.strokeColor = UIColor.whiteColor().CGColor
+        lineShapeLayer.strokeColor = UIColor.white.cgColor
         
         var cursor: CGFloat = 5
         
         let path: UIBezierPath = UIBezierPath()
         
-        path.moveToPoint(CGPoint(x: cursor, y: 0))
-        path.addLineToPoint(CGPoint(x: cursor, y: SMALL_H))
+        path.move(to: CGPoint(x: cursor, y: 0))
+        path.addLine(to: CGPoint(x: cursor, y: SMALL_H))
         
         cursor = 15
-        path.moveToPoint(CGPoint(x: cursor, y: 0))
-        path.addLineToPoint(CGPoint(x: cursor, y: SMALL_H))
+        path.move(to: CGPoint(x: cursor, y: 0))
+        path.addLine(to: CGPoint(x: cursor, y: SMALL_H))
         
         
-        lineShapeLayer.path = path.CGPath
+        lineShapeLayer.path = path.cgPath
         return lineShapeLayer
     }
     
-    private func createRightLayer() -> CALayer {
+    fileprivate func createRightLayer() -> CALayer {
         let lineShapeLayer = CAShapeLayer()
             
         lineShapeLayer.lineWidth = 0.5
-        lineShapeLayer.strokeColor = UIColor.whiteColor().CGColor
+        lineShapeLayer.strokeColor = UIColor.white.cgColor
         
         var cursor: CGFloat = 5
         
         let path: UIBezierPath = UIBezierPath()
         
         cursor = 35
-        path.moveToPoint(CGPoint(x: cursor, y: 0))
-        path.addLineToPoint(CGPoint(x: cursor, y: SMALL_H))
+        path.move(to: CGPoint(x: cursor, y: 0))
+        path.addLine(to: CGPoint(x: cursor, y: SMALL_H))
         
         cursor = 45
-        path.moveToPoint(CGPoint(x: cursor, y: 0))
-        path.addLineToPoint(CGPoint(x: cursor, y: SMALL_H))
+        path.move(to: CGPoint(x: cursor, y: 0))
+        path.addLine(to: CGPoint(x: cursor, y: SMALL_H))
         
-        lineShapeLayer.path = path.CGPath
+        lineShapeLayer.path = path.cgPath
         return lineShapeLayer
     }
     
-    private func createCenterLayer() -> CALayer {
+    fileprivate func createCenterLayer() -> CALayer {
         let lineShapeLayer = CAShapeLayer()
         
         lineShapeLayer.lineWidth = 0.5
-        lineShapeLayer.strokeColor = UIColor.whiteColor().CGColor
+        lineShapeLayer.strokeColor = UIColor.white.cgColor
         
         
         var cursor: CGFloat = 5
@@ -116,10 +116,10 @@ class RulerCell: UICollectionViewCell {
         let path: UIBezierPath = UIBezierPath()
         
         cursor = 25
-        path.moveToPoint(CGPoint(x: cursor, y: 0))
-        path.addLineToPoint(CGPoint(x: cursor, y: CENTER_H))
+        path.move(to: CGPoint(x: cursor, y: 0))
+        path.addLine(to: CGPoint(x: cursor, y: CENTER_H))
         
-        lineShapeLayer.path = path.CGPath
+        lineShapeLayer.path = path.cgPath
         return lineShapeLayer
     }
 }

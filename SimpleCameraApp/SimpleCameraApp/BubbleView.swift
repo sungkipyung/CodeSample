@@ -9,7 +9,7 @@
 import UIKit
 
 protocol BubbleViewDelegate {
-    func bubbleViewRotationButtonTouched(bubbleView: BubbleView, sender:AnyObject)
+    func bubbleViewRotationButtonTouched(_ bubbleView: BubbleView, sender:AnyObject)
 }
 
 @IBDesignable
@@ -45,11 +45,11 @@ class BubbleView: UIView {
     }
     
     func load() {
-        let bubbleView = NSBundle(forClass: self.dynamicType).loadNibNamed("BubbleView", owner: self, options: nil).first as! UIView
+        let bubbleView = Bundle(for: type(of: self)).loadNibNamed("BubbleView", owner: self, options: nil)?.first as! UIView
         self.addSubview(bubbleView)
     }
     
-    @IBAction func touchRotationButton(sender: AnyObject) {
+    @IBAction func touchRotationButton(_ sender: AnyObject) {
         self.delegate?.bubbleViewRotationButtonTouched(self, sender: sender)
     }
 }

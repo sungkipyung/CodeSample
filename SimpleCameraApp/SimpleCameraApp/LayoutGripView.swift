@@ -9,11 +9,11 @@
 import UIKit
 
 //typealias LayoutGripViewDidChangeLocation = (view:LayoutGripView, origin:CGPoint) -> (Void)
-typealias LayoutGripViewDidChangeLocation = (view: LayoutGripView, originalPosition: CGPoint, incX: CGFloat, incY: CGFloat) -> (Void)
+typealias LayoutGripViewDidChangeLocation = (_ view: LayoutGripView, _ originalPosition: CGPoint, _ incX: CGFloat, _ incY: CGFloat) -> (Void)
 
 class LayoutGripView: UIView {
-    private var originalPosition: CGPoint?
-    private var touchOffset: CGPoint?
+    fileprivate var originalPosition: CGPoint?
+    fileprivate var touchOffset: CGPoint?
     
     var onChangeLocation:LayoutGripViewDidChangeLocation?
     /*
@@ -33,27 +33,27 @@ class LayoutGripView: UIView {
         super.init(coder: aDecoder)
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         originalPosition = self.center
-        if let position:CGPoint = touches.first?.locationInView(self.superview)  {
+        if let position:CGPoint = touches.first?.location(in: self.superview)  {
             touchOffset = position
         }
         self.alpha = 0.8
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        if let loc:CGPoint = touches.first!.locationInView(self.superview) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let loc:CGPoint = touches.first!.location(in: self.superview) {
             let deltaX = loc.x - self.touchOffset!.x
             let deltaY = loc.y - self.touchOffset!.y
-            self.onChangeLocation?(view: self, originalPosition:self.originalPosition!, incX: deltaX, incY: deltaY)
+            self.onChangeLocation?(self, self.originalPosition!, deltaX, deltaY)
         }
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.alpha = 1.0
     }
     
-    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         
     }
     

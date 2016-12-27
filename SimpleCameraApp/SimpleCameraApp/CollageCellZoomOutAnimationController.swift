@@ -11,17 +11,17 @@ import UIKit
 class CollageCellZoomOutAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
     // This is used for percent driven interactive transitions, as well as for container controllers that have companion animations that might need to
     // synchronize with the main animation.
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 2.0
     }
     
     // This method can only  be a nop if the transition is interactive and not a percentDriven interactive transition.
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        let containerView = transitionContext.containerView
         
         guard
-            let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) ,
-            let containerView = transitionContext.containerView(),
-            let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) else {
+            let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) ,
+            let toVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else {
                 return
         }
         let toView = toVC.view
@@ -34,32 +34,32 @@ class CollageCellZoomOutAnimationController: NSObject, UIViewControllerAnimatedT
         }
         
         let imageScrollView = rotationPhotoVC.imageScrollView
-        let initialFrame = imageScrollView.superview!.convertRect(imageScrollView.frame, toView: imageScrollView.superview!)
+        let initialFrame = imageScrollView?.superview!.convert((imageScrollView?.frame)!, to: imageScrollView?.superview!)
 
-        let finalPoint = selectedCollageCell.superview!.convertPoint(selectedCollageCell.center, toView: collageVC.view)
+        let finalPoint = selectedCollageCell.superview!.convert(selectedCollageCell.center, to: collageVC.view)
 
-        let snapshot = imageScrollView.snapshotViewAfterScreenUpdates(true)
+        guard let snapshot = imageScrollView?.snapshotView(afterScreenUpdates: true) else { return }
         
-        snapshot.frame = initialFrame
+        snapshot.frame = initialFrame!
         snapshot.layer.masksToBounds = true
 
         containerView.addSubview(toVC.view)
         containerView.addSubview(snapshot)
         
-        toVC.view.hidden = true
+        toVC.view.isHidden = true
         
-        let duration = transitionDuration(transitionContext)
+        let duration = transitionDuration(using: transitionContext)
         
-        UIView.animateKeyframesWithDuration(duration, delay: 0, options: .CalculationModeCubicPaced, animations: { 
-            UIView.addKeyframeWithRelativeStartTime(0.0, relativeDuration: 1/3, animations: {
-                fromVC.view.hidden = true
+        UIView.animateKeyframes(withDuration: duration, delay: 0, options: .calculationModeCubicPaced, animations: { 
+            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 1/3, animations: {
+                fromVC.view.isHidden = true
             })
             
-            UIView.addKeyframeWithRelativeStartTime(1/3, relativeDuration: 1/3, animations: { 
+            UIView.addKeyframe(withRelativeStartTime: 1/3, relativeDuration: 1/3, animations: { 
                 snapshot.center = finalPoint
             })
             
-            UIView.addKeyframeWithRelativeStartTime(2/3, relativeDuration: 1/3, animations: { 
+            UIView.addKeyframe(withRelativeStartTime: 2/3, relativeDuration: 1/3, animations: { 
                 
             })
             
@@ -67,19 +67,19 @@ class CollageCellZoomOutAnimationController: NSObject, UIViewControllerAnimatedT
                 snapshot.removeFromSuperview()
                 fromVC.view.removeFromSuperview()
 
-                let success = !transitionContext.transitionWasCancelled()
+                let success = !transitionContext.transitionWasCancelled
                 
                 if success {
-                    toView.removeFromSuperview()
+                    toView?.removeFromSuperview()
                 }
                 
                 transitionContext.completeTransition(success)
                 /**
                  http://stackoverflow.com/questions/24338700/from-view-controller-disappears-using-uiviewcontrollercontexttransitioning
                  */
-                UIApplication.sharedApplication().keyWindow!.addSubview(toVC.view)
-                toVC.view.hidden = false
-                fromVC.view.hidden = false
+                UIApplication.shared.keyWindow!.addSubview(toVC.view)
+                toVC.view.isHidden = false
+                fromVC.view.isHidden = false
         }
     }
 }

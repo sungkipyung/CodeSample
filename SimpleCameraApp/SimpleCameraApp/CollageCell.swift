@@ -9,7 +9,7 @@
 import UIKit
 
 protocol CollageCellDelegate {
-    func collageCellDidSelect(cell: CollageCell)
+    func collageCellDidSelect(_ cell: CollageCell)
 }
 
 class CollageCell: UIView, UIScrollViewDelegate {
@@ -22,7 +22,7 @@ class CollageCell: UIView, UIScrollViewDelegate {
     var enableMask: Bool? = true
     
     @IBOutlet weak var lineView: UIView!
-    private static let BORDER_WIDTH:CGFloat = 0
+    fileprivate static let BORDER_WIDTH:CGFloat = 0
     
     var polygon: Polygon! {
         didSet {
@@ -37,11 +37,11 @@ class CollageCell: UIView, UIScrollViewDelegate {
         }
     }
     
-    internal private(set) var shapeLayerPath : UIBezierPath? {
+    internal fileprivate(set) var shapeLayerPath : UIBezierPath? {
         didSet (newLayer) {
             let shapeLayerPath = self.shapeLayerPath!
             
-            let path = shapeLayerPath.CGPath
+            let path = shapeLayerPath.cgPath
             
             if self.enableMask! {
                 let mask: CAShapeLayer = CAShapeLayer()
@@ -57,25 +57,25 @@ class CollageCell: UIView, UIScrollViewDelegate {
                 line.path = path
                 line.lineDashPattern = [8, 8]
                 line.lineWidth = 2
-                line.fillColor = UIColor.clearColor().CGColor
-                line.strokeColor = UIColor.whiteColor().CGColor
+                line.fillColor = UIColor.clear.cgColor
+                line.strokeColor = UIColor.white.cgColor
                 self.lineView.layer.addSublayer(line)
             }
         }
     }
     
-    func pointInside(point: CGPoint) -> Bool {
+    func pointInside(_ point: CGPoint) -> Bool {
         if let path:UIBezierPath =  self.shapeLayerPath {
-            return path.containsPoint(point)
+            return path.contains(point)
         }
         return false
     }
     
-    override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         if let path:UIBezierPath =  self.shapeLayerPath {
-            return path.containsPoint(point)
+            return path.contains(point)
         } else {
-            return super.pointInside(point, withEvent: event)
+            return super.point(inside: point, with: event)
         }
     }
     
@@ -98,21 +98,21 @@ class CollageCell: UIView, UIScrollViewDelegate {
     override func awakeFromNib() {
         self.imageScrollView.delegate = self
         let imageView = UIImageView(frame: self.bounds)
-        imageView.contentMode = UIViewContentMode.ScaleToFill
+        imageView.contentMode = UIViewContentMode.scaleToFill
         self.imageScrollView.addSubview(imageView)
         self.imageView = imageView
     }
 
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.imageView
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesBegan(touches, withEvent: event)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
 //        self.superview?.bringSubviewToFront(self)
     }
     
-    @IBAction func imageScrollViewTapped(sender: AnyObject) {
+    @IBAction func imageScrollViewTapped(_ sender: AnyObject) {
         delegate?.collageCellDidSelect(self)
     }
 }

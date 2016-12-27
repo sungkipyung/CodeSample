@@ -8,11 +8,11 @@
 
 import UIKit
 
-typealias RaioButtonOnChangeLocation = (view: RadioButton, originalPosition: CGPoint, incX: CGFloat, incY: CGFloat) -> (Void)
+typealias RaioButtonOnChangeLocation = (_ view: RadioButton, _ originalPosition: CGPoint, _ incX: CGFloat, _ incY: CGFloat) -> (Void)
 
 class RadioButton: UIButton {
-    private var originalPosition: CGPoint?
-    private var touchOffset: CGPoint?
+    fileprivate var originalPosition: CGPoint?
+    fileprivate var touchOffset: CGPoint?
     
     var onChangeLocation:RaioButtonOnChangeLocation?
     /*
@@ -32,27 +32,27 @@ class RadioButton: UIButton {
         super.init(coder: aDecoder)
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         originalPosition = self.center
-        if let position:CGPoint = touches.first?.locationInView(self.superview)  {
+        if let position:CGPoint = touches.first?.location(in: self.superview)  {
             touchOffset = position
         }
         self.alpha = 0.8
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        if let loc:CGPoint = touches.first!.locationInView(self.superview) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let loc:CGPoint = touches.first!.location(in: self.superview) {
             let deltaX = loc.x - self.touchOffset!.x
             let deltaY = loc.y - self.touchOffset!.y
-            self.onChangeLocation?(view: self, originalPosition:self.originalPosition!, incX: deltaX, incY: deltaY)
+            self.onChangeLocation?(self, self.originalPosition!, deltaX, deltaY)
             //            self.onChangeLocation?(view: self, origin: CGPoint(x: self.originalPosition!.x + deltaX, y: self.originalPosition!.y + deltaY))
         }
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.alpha = 1.0
     }
     
-    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         
     }}

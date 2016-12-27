@@ -18,7 +18,7 @@ extension OneDimentionalFunction {
     /**
      평행은 해를 뱉지 않는다.
      */
-    func intersectionPointWith(oneDimentionalFunction:OneDimentionalFunction) -> (CGPoint?) {
+    func intersectionPointWith(_ oneDimentionalFunction:OneDimentionalFunction) -> (CGPoint?) {
         
         if (self.a - oneDimentionalFunction.a == 0) {
             return nil
@@ -30,14 +30,14 @@ extension OneDimentionalFunction {
         return CGPoint(x:x, y:y)
     }
     
-    static func createFunctionBetweenFromPoint(from: CGPoint, to: CGPoint) -> OneDimentionalFunction {
+    static func createFunctionBetweenFromPoint(_ from: CGPoint, to: CGPoint) -> OneDimentionalFunction {
         let a = to.y - from.y
         let b = from.x - to.y
         let c = from.y * to.x - to.y * from.x
         return OneDimentionalFunction(a: a, b: b, c: c)
     }
     
-    func orthogonalFuncitonPassPoint(point: CGPoint) -> OneDimentionalFunction {
+    func orthogonalFuncitonPassPoint(_ point: CGPoint) -> OneDimentionalFunction {
         var a: CGFloat = 0
         var b: CGFloat = 0
         var c: CGFloat = 0

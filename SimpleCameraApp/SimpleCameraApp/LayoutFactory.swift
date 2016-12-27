@@ -10,7 +10,7 @@ import UIKit
 class LayoutFactory: NSObject {
     static let sharedInstance = LayoutFactory()
     
-    private var layouts:[Layout]!
+    fileprivate var layouts:[Layout]!
     
     override init() {
         super.init()
@@ -21,7 +21,7 @@ class LayoutFactory: NSObject {
         self.layouts = layoutArray
     }
     
-    private func twoCell_1() -> Layout {
+    fileprivate func twoCell_1() -> Layout {
         let xs: [CGFloat] = [0.0, 0.5, 1.0]
         let ys: [CGFloat] = [0.0, 1.0]
         
@@ -94,23 +94,23 @@ class LayoutFactory: NSObject {
         return 0;
     }
     
-    static func generatePolygon(points: [CGPoint]) -> Polygon {
+    static func generatePolygon(_ points: [CGPoint]) -> Polygon {
         var mutablePoints = Array(points)
-        var minX = CGFloat.max
-        var minY = CGFloat.max
+        var minX = CGFloat.greatestFiniteMagnitude
+        var minY = CGFloat.greatestFiniteMagnitude
         
         points.forEach({ (p) in
             minX = min(p.x, minX)
             minY = min(p.y, minY)
         })
-        for (index, _) in mutablePoints.enumerate() {
+        for (index, _) in mutablePoints.enumerated() {
             mutablePoints[index].x -= minX
             mutablePoints[index].y -= minY
         }
         return Polygon(origin: CGPoint(x:minX, y:minY), points: mutablePoints, curvature: 0)
     }
     
-    func getLayout(index:Int, limit: Int) -> [Layout]? {
+    func getLayout(_ index:Int, limit: Int) -> [Layout]? {
         if let result:ArraySlice<Layout> = layouts[index..<limit] {
             var copyResult: [Layout] = []
             result.forEach({ (layout) in

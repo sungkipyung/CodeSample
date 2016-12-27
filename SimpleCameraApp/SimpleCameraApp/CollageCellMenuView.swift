@@ -22,6 +22,6 @@ class CollageCellMenuView: UIView {
     
     override func awakeFromNib() {
         let image = UIImage(named: "bubble.png")
-        image?.resizableImageWithCapInsets(UIEdgeInsetsMake(35, 10, 10, 22), resizingMode: UIImageResizingMode.Stretch)
+        image?.resizableImage(withCapInsets: UIEdgeInsetsMake(35, 10, 10, 22), resizingMode: UIImageResizingMode.stretch)
     }
 }

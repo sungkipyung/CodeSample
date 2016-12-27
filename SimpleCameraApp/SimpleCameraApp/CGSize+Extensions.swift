@@ -15,16 +15,16 @@ extension CGSize {
  * Multiplies a CGPoint with a CGVector and returns the result as a new CGPoint.
  */
 public func * (left: CGFloat, right: CGSize) -> CGSize {
-    return CGSizeMake(left * right.width, left * right.height)
+    return CGSize(width: left * right.width, height: left * right.height)
 }
 
 /**
  * Multiplies a CGPoint with a CGVector and returns the result as a new CGPoint.
  */
 public func * (left: CGSize, right: CGFloat) -> CGSize {
-    return CGSizeMake(right * left.width, right * left.height)
+    return CGSize(width: right * left.width, height: right * left.height)
 }
 
 public func - (left: CGSize, right: CGSize) -> CGSize {
-    return CGSizeMake(left.width - right.width, left.height - right.height)
+    return CGSize(width: left.width - right.width, height: left.height - right.height)
 }

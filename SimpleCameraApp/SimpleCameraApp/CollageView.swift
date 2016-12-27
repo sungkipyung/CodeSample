@@ -19,20 +19,20 @@ struct CornerPoint {
 }
 extension CollageCell {
     func showShadow() {
-        self.layer.shadowOffset = CGSizeMake(-15, 20)
+        self.layer.shadowOffset = CGSize(width: -15, height: 20)
         self.layer.shadowRadius = 5
         self.layer.shadowOpacity = 0.5
     }
     
     func hideShadow() {
-        self.layer.shadowOffset = CGSizeMake(0, 0)
+        self.layer.shadowOffset = CGSize(width: 0, height: 0)
         self.layer.shadowRadius = 0
         self.layer.shadowOpacity = 0
     }
 }
 
 protocol CollageViewDelegate {
-    func collageCellSelected(collageView:CollageView, selectedCell:CollageCell)
+    func collageCellSelected(_ collageView:CollageView, selectedCell:CollageCell)
 }
 
 class CollageView: UIView, CollageCellDelegate {
@@ -44,7 +44,7 @@ class CollageView: UIView, CollageCellDelegate {
     var drawGrapButtons: Bool! = false {
         didSet {
             cellGrapButtons.forEach { (gripView) in
-                gripView.hidden = !drawGrapButtons
+                gripView.isHidden = !drawGrapButtons
             }
         }
     }
@@ -71,10 +71,10 @@ class CollageView: UIView, CollageCellDelegate {
             
             weak var weakSelf = self
             
-            for (index, grapPoint) in grapPoints.enumerate() {
+            for (index, grapPoint) in grapPoints.enumerated() {
                 let button: LayoutGripView = LayoutGripView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 20, height: 20)))
                 button.center = grapPoint
-                button.backgroundColor = UIColor.orangeColor()
+                button.backgroundColor = UIColor.orange
                 
                 button.onChangeLocation = {(view:LayoutGripView, originalPosition: CGPoint, incX: CGFloat, incY: CGFloat) -> (Void) in
                     if let s_self = weakSelf {
@@ -87,7 +87,7 @@ class CollageView: UIView, CollageCellDelegate {
                         s_self.applyCellPath()
                     }
                 }
-                button.hidden = true
+                button.isHidden = true
                 cellGrapButtons.append(button)
                 self.addSubview(button)
             }
@@ -114,7 +114,7 @@ class CollageView: UIView, CollageCellDelegate {
         applyCellPath()
     }
     
-    private func applyCellPath() {
+    fileprivate func applyCellPath() {
         let layout = self.layout!
         let collageCells = self.collageCells
         let cellGrapButtons = self.cellGrapButtons
@@ -123,23 +123,23 @@ class CollageView: UIView, CollageCellDelegate {
         let grapButtonPoints = layout.grapPoints()
 //
         // add cells
-        for (index, collageCell) in collageCells.enumerate() {
+        for (index, collageCell) in (collageCells?.enumerated())! {
             collageCell.polygon = polygons[index]
 //            collageCell.frame = CGRect(origin: polygons[index].origin, size: collageCellPaths[index].bounds.size)
         }
         
-        for (index, grapButton) in cellGrapButtons.enumerate() {
+        for (index, grapButton) in (cellGrapButtons?.enumerated())! {
             grapButton.center = grapButtonPoints[index]
         }
     }
     
-    private func createCollageCells(layout:Layout) -> [CollageCell] {
+    fileprivate func createCollageCells(_ layout:Layout) -> [CollageCell] {
         var collageCells: [CollageCell] = []
         var index = 0
         let polygons = layout.polygons()
         
         while (index < layout.cellCount) {
-            if let cell = UINib(nibName: "CollageCell", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? CollageCell {
+            if let cell = UINib(nibName: "CollageCell", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? CollageCell {
                 cell.frame = self.bounds
                 
                 cell.polygon = polygons[index]
@@ -165,29 +165,29 @@ class CollageView: UIView, CollageCellDelegate {
     var targetViewForSwap: CollageCell?
     
     // MARK: Objc
-    @objc private func collageCellLongPressed(sender: UILongPressGestureRecognizer) {
+    @objc fileprivate func collageCellLongPressed(_ sender: UILongPressGestureRecognizer) {
         if (self.swappable == false) {
             return
         }
         
         switch sender.state {
-        case .Began:
-            self.offset = sender.locationInView(self)
+        case .began:
+            self.offset = sender.location(in: self)
             self.selectedCollageCell = sender.view as! CollageCell
-            self.selectedCollageCell.superview?.bringSubviewToFront(self.selectedCollageCell)
+            self.selectedCollageCell.superview?.bringSubview(toFront: self.selectedCollageCell)
             
             self.targetViewForSwap = nil
             
-            UIView.animateWithDuration(0.2, animations: {
-                self.selectedCollageCell.transform = CGAffineTransformMakeScale(0.9, 0.9)
+            UIView.animate(withDuration: 0.2, animations: {
+                self.selectedCollageCell.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
                 self.selectedCollageCell.showShadow()
             })
             break
-        case .Changed:
-            let cursor = sender.locationInView(self)
+        case .changed:
+            let cursor = sender.location(in: self)
             let db = cursor - offset
             
-            self.selectedCollageCell.transform = CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation(db.x, db.y))
+            self.selectedCollageCell.transform = CGAffineTransform(scaleX: 0.9, y: 0.9).concatenating(CGAffineTransform(translationX: db.x, y: db.y))
             
             
             self.targetViewForSwap = nil
@@ -195,7 +195,7 @@ class CollageView: UIView, CollageCellDelegate {
                 if cell == self.selectedCollageCell {
                     return
                 }
-                if cell.pointInside(self.convertPoint(cursor, toView: cell)) {
+                if cell.pointInside(self.convert(cursor, to: cell)) {
                     cell.alpha = 0.5
                     self.targetViewForSwap = cell
                 } else {
@@ -203,20 +203,20 @@ class CollageView: UIView, CollageCellDelegate {
                 }
             })
             break
-        case .Ended, .Cancelled, .Failed:
+        case .ended, .cancelled, .failed:
             
-            UIView.animateWithDuration(0.5, animations: {
+            UIView.animate(withDuration: 0.5, animations: {
                 //Swap Operation
                 if let target = self.targetViewForSwap {
-                    let indexA = self.collageCells.indexOf(target)!
-                    let indexB = self.collageCells.indexOf(self.selectedCollageCell)!
-                    self.selectedCollageCell.transform = CGAffineTransformIdentity
+                    let indexA = self.collageCells.index(of: target)!
+                    let indexB = self.collageCells.index(of: self.selectedCollageCell)!
+                    self.selectedCollageCell.transform = CGAffineTransform.identity
                     swap(&self.collageCells[indexA], &self.collageCells[indexB]);
                     
                     self.applyCellPath()
                 } else {
                     // Rollback Position
-                    self.selectedCollageCell.transform = CGAffineTransformIdentity
+                    self.selectedCollageCell.transform = CGAffineTransform.identity
                 }
                 }, completion: { (complete) in
                     self.selectedCollageCell.hideShadow()
@@ -230,7 +230,7 @@ class CollageView: UIView, CollageCellDelegate {
         }
     }
     // MARK: - CollageCellDelegate
-    func collageCellDidSelect(cell: CollageCell) {
+    func collageCellDidSelect(_ cell: CollageCell) {
         // TODO: highlight selected cell
         delegate?.collageCellSelected(self, selectedCell: cell)
     }

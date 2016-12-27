@@ -13,7 +13,7 @@ extension UIScrollView {
      크기가 변경된 contentView(scrollView's subview)의 스크롤을 올바르게 할 수 있도록
      contentSize, contentInset을 재조정 한다.
      */
-    func adjustContentSizeAndInset(contentViewOfScrollView: UIView) {
+    func adjustContentSizeAndInset(_ contentViewOfScrollView: UIView) {
         let rotatedSize = contentViewOfScrollView.frame.size
         let originalSize = contentViewOfScrollView.bounds.size
         let dSize = 0.5 * (rotatedSize - originalSize)
@@ -22,7 +22,7 @@ extension UIScrollView {
         self.contentInset = UIEdgeInsets(top: dSize.height, left: dSize.width, bottom: -dSize.height, right: -dSize.width)
     }
     
-    func copyContentOffsetInsetSizeFromOtherScrollView(scrollView: UIScrollView) {
+    func copyContentOffsetInsetSizeFromOtherScrollView(_ scrollView: UIScrollView) {
         self.contentInset = scrollView.contentInset
         self.contentSize = scrollView.contentSize
         self.contentOffset = scrollView.contentOffset

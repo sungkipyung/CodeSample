@@ -80,23 +80,35 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rRP-Vj-vrY" userLabel="ControlView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rRP-Vj-vrY" userLabel="ControlView">
                                 <rect key="frame" x="0.0" y="471" width="320" height="97"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LyS-8o-dkZ">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LyS-8o-dkZ">
                                         <rect key="frame" x="8" y="25" width="48" height="48"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="48" id="4Tc-oC-NUh"/>
+                                            <constraint firstAttribute="height" constant="48" id="Z4c-PE-PUU"/>
+                                        </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="Button" image="ic_navigate_before_48pt"/>
                                         <connections>
                                             <action selector="onTouchBackButton:" destination="Wh9-KQ-eC3" eventType="touchUpInside" id="aWs-nU-9x5"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yFE-5Q-7EZ">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yFE-5Q-7EZ">
                                         <rect key="frame" x="288" y="37" width="24" height="24"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="24" id="6a8-lL-Ydr"/>
+                                            <constraint firstAttribute="height" constant="24" id="MF4-SA-Mso"/>
+                                        </constraints>
                                         <state key="normal" image="ic_camera_filter_64pt"/>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uqa-KB-lsv">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uqa-KB-lsv">
                                         <rect key="frame" x="136" y="25" width="48" height="48"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="48" id="0ej-TK-TFX"/>
+                                            <constraint firstAttribute="width" constant="48" id="fVC-2C-Jkn"/>
+                                        </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" image="ic_camera_48pt"/>
                                         <connections>
@@ -109,35 +121,69 @@
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="LyS-8o-dkZ" firstAttribute="leading" secondItem="rRP-Vj-vrY" secondAttribute="leading" constant="8" id="7mV-y3-CPK"/>
+                                    <constraint firstItem="LyS-8o-dkZ" firstAttribute="centerY" secondItem="rRP-Vj-vrY" secondAttribute="centerY" id="9fV-jp-cbN"/>
+                                    <constraint firstItem="Uqa-KB-lsv" firstAttribute="centerY" secondItem="rRP-Vj-vrY" secondAttribute="centerY" id="Yhx-81-uKn"/>
+                                    <constraint firstAttribute="trailing" secondItem="yFE-5Q-7EZ" secondAttribute="trailing" constant="8" id="ka1-gn-7Nt"/>
+                                    <constraint firstItem="yFE-5Q-7EZ" firstAttribute="centerY" secondItem="rRP-Vj-vrY" secondAttribute="centerY" id="uqZ-98-HQp"/>
+                                    <constraint firstItem="Uqa-KB-lsv" firstAttribute="centerX" secondItem="rRP-Vj-vrY" secondAttribute="centerX" id="xz4-an-0Iz"/>
+                                </constraints>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Opn-c2-aFb" customClass="CameraPreview" customModule="SimpleCameraApp" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Opn-c2-aFb" customClass="CameraPreview" customModule="SimpleCameraApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="427" width="320" height="44"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zIU-6a-8Qa">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zIU-6a-8Qa">
                                         <rect key="frame" x="136" y="10" width="48" height="24"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="24" id="8Xd-F9-VWf"/>
+                                            <constraint firstAttribute="width" constant="48" id="XAx-uK-Y4m"/>
+                                        </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" image="ic_timer"/>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1kp-DT-uKE">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1kp-DT-uKE">
                                         <rect key="frame" x="225" y="10" width="48" height="24"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="48" id="Bim-Nt-9Gr"/>
+                                            <constraint firstAttribute="height" constant="24" id="Igg-RZ-dPp"/>
+                                        </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" image="ic_wb_sunny"/>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="1kp-DT-uKE" firstAttribute="centerY" secondItem="Opn-c2-aFb" secondAttribute="centerY" id="0Oh-V9-fAq"/>
+                                    <constraint firstItem="zIU-6a-8Qa" firstAttribute="centerX" secondItem="Opn-c2-aFb" secondAttribute="centerX" id="I7S-Yd-8XE"/>
+                                    <constraint firstItem="1kp-DT-uKE" firstAttribute="leading" secondItem="zIU-6a-8Qa" secondAttribute="trailing" constant="41" id="TSq-eI-h6F"/>
+                                    <constraint firstItem="zIU-6a-8Qa" firstAttribute="centerY" secondItem="Opn-c2-aFb" secondAttribute="centerY" id="rFg-Pm-LqX"/>
+                                    <constraint firstAttribute="height" constant="44" id="tTu-VA-sdS"/>
+                                </constraints>
                             </view>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sge-mN-90b" customClass="CameraPreview" customModule="SimpleCameraApp" customModuleProvider="target">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sge-mN-90b" customClass="CameraPreview" customModule="SimpleCameraApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="427"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Sge-mN-90b" secondAttribute="height" multiplier="320:427" id="DCf-c7-lvl"/>
+                                </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J5u-fZ-dkV">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J5u-fZ-dkV">
                                 <rect key="frame" x="268" y="16" width="36" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="DCN-Kz-ngQ"/>
+                                    <constraint firstAttribute="width" constant="36" id="o3Y-uI-IhC"/>
+                                </constraints>
                                 <state key="normal" image="ic_flash_auto"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wNn-Sm-quI">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wNn-Sm-quI">
                                 <rect key="frame" x="16" y="16" width="36" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="diR-kg-eSn"/>
+                                    <constraint firstAttribute="width" constant="36" id="hcv-7e-ztu"/>
+                                </constraints>
                                 <state key="normal" image="ic_cached"/>
                                 <connections>
                                     <action selector="onTouchCameraToggleButton:" destination="Wh9-KQ-eC3" eventType="touchUpInside" id="zdW-Fj-yxh"/>
@@ -146,6 +192,22 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Sge-mN-90b" firstAttribute="top" secondItem="jhL-7R-uUI" secondAttribute="bottom" id="8J4-4D-Ohe"/>
+                            <constraint firstItem="Sge-mN-90b" firstAttribute="leading" secondItem="1Iu-ua-p0Q" secondAttribute="leading" id="Dey-FS-C9U"/>
+                            <constraint firstAttribute="trailing" secondItem="Sge-mN-90b" secondAttribute="trailing" id="KOs-CX-v5C"/>
+                            <constraint firstItem="wNn-Sm-quI" firstAttribute="leading" secondItem="1Iu-ua-p0Q" secondAttribute="leading" constant="16" id="SFd-Fg-PEB"/>
+                            <constraint firstItem="Opn-c2-aFb" firstAttribute="leading" secondItem="1Iu-ua-p0Q" secondAttribute="leading" id="VnL-UV-MPe"/>
+                            <constraint firstItem="Opn-c2-aFb" firstAttribute="top" secondItem="Sge-mN-90b" secondAttribute="bottom" id="YpA-nh-Ecn"/>
+                            <constraint firstAttribute="trailing" secondItem="Opn-c2-aFb" secondAttribute="trailing" id="Zdx-hN-11I"/>
+                            <constraint firstItem="rRP-Vj-vrY" firstAttribute="top" secondItem="Opn-c2-aFb" secondAttribute="bottom" id="dfM-51-tHV"/>
+                            <constraint firstAttribute="trailing" secondItem="rRP-Vj-vrY" secondAttribute="trailing" id="gQ7-0Z-Xgg"/>
+                            <constraint firstAttribute="trailing" secondItem="J5u-fZ-dkV" secondAttribute="trailing" constant="16" id="qPg-Pn-YNd"/>
+                            <constraint firstItem="F0v-Hi-mTx" firstAttribute="top" secondItem="rRP-Vj-vrY" secondAttribute="bottom" id="rvm-QT-ZOd"/>
+                            <constraint firstItem="J5u-fZ-dkV" firstAttribute="top" secondItem="jhL-7R-uUI" secondAttribute="bottom" constant="16" id="tu4-4G-fNT"/>
+                            <constraint firstItem="rRP-Vj-vrY" firstAttribute="leading" secondItem="1Iu-ua-p0Q" secondAttribute="leading" id="yQL-Jc-Qmv"/>
+                            <constraint firstItem="wNn-Sm-quI" firstAttribute="top" secondItem="jhL-7R-uUI" secondAttribute="bottom" constant="16" id="ygX-GB-Lmi"/>
+                        </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
@@ -201,7 +263,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kuu-bL-8JQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1606" y="660"/>
+            <point key="canvasLocation" x="1232" y="655"/>
         </scene>
         <!--Collage View Controller-->
         <scene sceneID="bgz-Vs-Duz">

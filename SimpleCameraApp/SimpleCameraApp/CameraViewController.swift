@@ -24,12 +24,12 @@ class CameraViewController: UIViewController {
         avLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
         cameraToggleButton.layer.cornerRadius = cameraToggleButton.frame.width / 2
         cameraToggleButton.layer.masksToBounds = true
-        cameraToggleButton.layer.borderColor = cameraPreview.tintColor.CGColor
+        cameraToggleButton.layer.borderColor = cameraPreview.tintColor.cgColor
         cameraToggleButton.layer.borderWidth = 1
         
         cameraFlashButton.layer.cornerRadius = cameraFlashButton.frame.width / 2
         cameraFlashButton.layer.masksToBounds = true
-        cameraFlashButton.layer.borderColor = cameraPreview.tintColor.CGColor
+        cameraFlashButton.layer.borderColor = cameraPreview.tintColor.cgColor
         cameraFlashButton.layer.borderWidth = 1
     }
     
@@ -45,7 +45,7 @@ class CameraViewController: UIViewController {
         })
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         camera.turnOff { () -> (Void) in
             
         }
@@ -56,7 +56,7 @@ class CameraViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
     /*
@@ -69,11 +69,11 @@ class CameraViewController: UIViewController {
     }
     */
 
-    @IBAction func onTouchBackButton(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil);
+    @IBAction func onTouchBackButton(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil);
     }
-    @IBAction func onTouchShotButton(sender: UIButton) {
-        self.camera.takePicture({ (imageData:NSData?) -> (Void) in
+    @IBAction func onTouchShotButton(_ sender: UIButton) {
+        self.camera.takePicture({ (imageData:Data?) -> (Void) in
             if (imageData == nil) {
                 return
             }            
@@ -82,19 +82,19 @@ class CameraViewController: UIViewController {
             }, withPreview: self.cameraPreview)
     }
     
-    @IBAction func onTouchDownControl(sender: UIControl) {
+    @IBAction func onTouchDownControl(_ sender: UIControl) {
     }
     
-    @IBAction func onTouchUpControl(sender: UIControl) {
+    @IBAction func onTouchUpControl(_ sender: UIControl) {
     }
     
-    @IBAction func onTouchCameraToggleButton(sender: UIControl) {
-        cameraShotButton.enabled = false
-        cameraToggleButton.enabled = false
+    @IBAction func onTouchCameraToggleButton(_ sender: UIControl) {
+        cameraShotButton.isEnabled = false
+        cameraToggleButton.isEnabled = false
         
         self.camera.toggleCamera { (error) -> (Void) in
-            self.cameraShotButton.enabled = true
-            self.cameraToggleButton.enabled = true
+            self.cameraShotButton.isEnabled = true
+            self.cameraToggleButton.isEnabled = true
         }
     }
 }

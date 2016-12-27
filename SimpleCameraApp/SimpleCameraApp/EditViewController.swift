@@ -34,37 +34,37 @@ class EditViewController: UIViewController, UITextFieldDelegate {
     }
     */
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         let text:String = textField.text!
         if (text.characters.count > 0) {
             self.pictureImageView.image = drawText(text, image: self.pictureImageView.image!, atPoint: self.pictureImageView.center)
             NSLog("write text : \(text)")
-            textView.hidden = true
+            textView.isHidden = true
         }
     }
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if (string == "\n") {
             textView.resignFirstResponder()
-            textView.hidden = true;
+            textView.isHidden = true;
             return false
         }
         
         return true
     }
     
-    func drawText(text: String, image:UIImage, atPoint point:CGPoint) -> UIImage {
+    func drawText(_ text: String, image:UIImage, atPoint point:CGPoint) -> UIImage {
 //        var textStyle:NSMutableAttributedString = NSMutableParagraphStyle.defaultParagraphStyle()
         let textStyle = NSMutableAttributedString.init(string: text)
-        textStyle.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, textStyle.length))
-        textStyle.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(20.0), range: NSMakeRange(0, textStyle.length))
+        textStyle.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSMakeRange(0, textStyle.length))
+        textStyle.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 20.0), range: NSMakeRange(0, textStyle.length))
         
         UIGraphicsBeginImageContext(image.size)
-        image.drawInRect(CGRectMake(0, 0, image.size.width, image.size.height))
-        let rect: CGRect = CGRectMake(point.x, point.y, image.size.width, image.size.height)
-        UIColor.whiteColor().set()
+        image.draw(in: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
+        let rect: CGRect = CGRect(x: point.x, y: point.y, width: image.size.width, height: image.size.height)
+        UIColor.white.set()
         
-        textStyle.drawInRect(CGRectIntegral(rect))
-        let newImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        textStyle.draw(in: rect.integral)
+        let newImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         return newImage
     }

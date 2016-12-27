@@ -15,7 +15,7 @@ extension UIImageView {
      콜라주의 이미지가 변경(설정) 되었을 때 호출한다.
      @param imageViewContainerScrollView : imageView container scrollView
      */
-    func sizeThatFit(imageViewContainerScrollView:UIScrollView) {
+    func sizeThatFit(_ imageViewContainerScrollView:UIScrollView) {
         let scrollView = imageViewContainerScrollView
         
         let h = self.frame.size.height
@@ -46,7 +46,7 @@ extension UIImageView {
         self.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: contentSize)
     }
     
-    func applyTransform(transform: CGAffineTransform, andSizeToFitScrollView scrollView: UIScrollView) {
+    func applyTransform(_ transform: CGAffineTransform, andSizeToFitScrollView scrollView: UIScrollView) {
         self.transform = transform
         
         let rotatedSize = self.frame.size
@@ -57,7 +57,7 @@ extension UIImageView {
         scrollView.contentInset = UIEdgeInsets(top: dSize.height, left: dSize.width, bottom: -dSize.height, right: -dSize.width)
     }
     
-    static func copyImageView(that: UIImageView) -> UIImageView {
+    static func copyImageView(_ that: UIImageView) -> UIImageView {
         let imageView = UIImageView(image: that.image)
         imageView.transform = that.transform
         imageView.contentMode = that.contentMode
@@ -69,43 +69,43 @@ extension UIImageView {
 extension UIImageOrientation {
     func mirroredImageOrientation() -> UIImageOrientation {
         switch(self) {
-        case .Up:
-            return UIImageOrientation.UpMirrored
-        case .Down:
-            return UIImageOrientation.DownMirrored
-        case .Left:
-            return UIImageOrientation.LeftMirrored
-        case .Right:
-            return UIImageOrientation.RightMirrored
-        case .UpMirrored:
-            return UIImageOrientation.Up
-        case .DownMirrored:
-            return UIImageOrientation.Down
-        case .LeftMirrored:
-            return UIImageOrientation.Left
-        case .RightMirrored:
-            return UIImageOrientation.Right
+        case .up:
+            return UIImageOrientation.upMirrored
+        case .down:
+            return UIImageOrientation.downMirrored
+        case .left:
+            return UIImageOrientation.leftMirrored
+        case .right:
+            return UIImageOrientation.rightMirrored
+        case .upMirrored:
+            return UIImageOrientation.up
+        case .downMirrored:
+            return UIImageOrientation.down
+        case .leftMirrored:
+            return UIImageOrientation.left
+        case .rightMirrored:
+            return UIImageOrientation.right
         }
     }
     
     func verticalMirroredImageOrientation() -> UIImageOrientation {
         switch(self) {
-        case .Up:
-            return UIImageOrientation.DownMirrored
-        case .Down:
-            return UIImageOrientation.UpMirrored
-        case .Left:
-            return UIImageOrientation.RightMirrored
-        case .Right:
-            return UIImageOrientation.LeftMirrored
-        case .UpMirrored:
-            return UIImageOrientation.Down
-        case .DownMirrored:
-            return UIImageOrientation.Up
-        case .LeftMirrored:
-            return UIImageOrientation.Right
-        case .RightMirrored:
-            return UIImageOrientation.Left
+        case .up:
+            return UIImageOrientation.downMirrored
+        case .down:
+            return UIImageOrientation.upMirrored
+        case .left:
+            return UIImageOrientation.rightMirrored
+        case .right:
+            return UIImageOrientation.leftMirrored
+        case .upMirrored:
+            return UIImageOrientation.down
+        case .downMirrored:
+            return UIImageOrientation.up
+        case .leftMirrored:
+            return UIImageOrientation.right
+        case .rightMirrored:
+            return UIImageOrientation.left
         }
     }
 }

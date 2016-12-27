@@ -21,7 +21,7 @@ extension UIView {
     /**
      // http://stackoverflow.com/questions/26824513/zoom-a-rotated-image-inside-scroll-view-to-fit-fill-frame-of-overlay-rect
      */
-    func rotateAndSizeToFit(size : CGSize, degree: CGFloat) {
+    func rotateAndSizeToFit(_ size : CGSize, degree: CGFloat) {
         let image_rect_width = size.width
         let image_rect_height = size.height
         
@@ -38,8 +38,8 @@ extension UIView {
         
         let scaleFactor = max(crop_rect_width / (a + b), crop_rect_height / (c + d))
         
-        let t = CGAffineTransformMakeRotation(radian)
-        let t2 = CGAffineTransformMakeScale(1 / scaleFactor, 1 / scaleFactor)
-        self.transform = CGAffineTransformConcat(t, t2)
+        let t = CGAffineTransform(rotationAngle: radian)
+        let t2 = CGAffineTransform(scaleX: 1 / scaleFactor, y: 1 / scaleFactor)
+        self.transform = t.concatenating(t2)
     }
 }

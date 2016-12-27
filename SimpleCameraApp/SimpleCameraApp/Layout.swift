@@ -20,7 +20,7 @@ import UIKit
     intersection of two function
     Points ref intersection
  */
-typealias GeneratePS = (xs:[CGFloat], ys:[CGFloat], border: CGFloat, size: CGSize) -> [CGPoint]
+typealias GeneratePS = (_ xs:[CGFloat], _ ys:[CGFloat], _ border: CGFloat, _ size: CGSize) -> [CGPoint]
 //typealias Polygon = [CGPoint]
 struct Polygon {
     var origin: CGPoint
@@ -41,16 +41,16 @@ extension Polygon {
     func path() -> UIBezierPath {
         let path = UIBezierPath()
         
-        for (index, value) in self.points.enumerate() {
+        for (index, value) in self.points.enumerated() {
             let newPoint = value
             
             if (index == 0) {
-                path.moveToPoint(newPoint)
+                path.move(to: newPoint)
             }
             
             if (curvature == 0) {
                 if (index != 0) {
-                    path.addLineToPoint(newPoint)
+                    path.addLine(to: newPoint)
                 }
             }
             else {
@@ -62,16 +62,16 @@ extension Polygon {
                 if (maxRadius > 0) {
                     let radius = self.curvature * maxRadius
                     let cornerPoint = self.roundedCorner(from, via: via, to: to, radius: radius)
-                    path.addArcWithCenter(cornerPoint.centerPoint, radius: radius, startAngle: cornerPoint.startAngle, endAngle: cornerPoint.endAngle, clockwise: true)
+                    path.addArc(withCenter: cornerPoint.centerPoint, radius: radius, startAngle: cornerPoint.startAngle, endAngle: cornerPoint.endAngle, clockwise: true)
                 }
             }
         }
-        path.closePath()
+        path.close()
         
         return path
     }
     
-    private func roundedCorner(from: CGPoint, via: CGPoint, to: CGPoint, radius: CGFloat) -> CornerPoint {
+    fileprivate func roundedCorner(_ from: CGPoint, via: CGPoint, to: CGPoint, radius: CGFloat) -> CornerPoint {
         let fromAngle = atan2f(Float(via.y - from.y), Float(via.x - from.x))
         let toAngle = atan2f(Float(to.y - via.y), Float(to.x - via.x))
         
@@ -93,7 +93,7 @@ extension Polygon {
         let intersectionX = ((x1*y2-y1*x2)*(x3-x4) - (x1-x2)*(x3*y4-y3*x4)) / ((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4));
         let intersectionY = ((x1*y2-y1*x2)*(y3-y4) - (y1-y2)*(x3*y4-y3*x4)) / ((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4));
         
-        let intersection = CGPointMake(intersectionX, intersectionY);
+        let intersection = CGPoint(x: intersectionX, y: intersectionY);
         
         let pi = Float(M_PI_2)
         let corner = CornerPoint(centerPoint: intersection, startAngle: CGFloat(fromAngle - pi), endAngle: CGFloat(toAngle - pi))
@@ -103,9 +103,9 @@ extension Polygon {
     }
 }
 
-typealias GeneratePolygons = (ps: [CGPoint]) -> [Polygon]
-typealias GenerateGS = (xs: [CGFloat], ys: [CGFloat], size: CGSize) -> [CGPoint]
-typealias GrapPointChangeHandler = (newUnitGrapPoint: CGPoint, xs: [CGFloat], ys: [CGFloat]) -> ([CGFloat], [CGFloat])
+typealias GeneratePolygons = (_ ps: [CGPoint]) -> [Polygon]
+typealias GenerateGS = (_ xs: [CGFloat], _ ys: [CGFloat], _ size: CGSize) -> [CGPoint]
+typealias GrapPointChangeHandler = (_ newUnitGrapPoint: CGPoint, _ xs: [CGFloat], _ ys: [CGFloat]) -> ([CGFloat], [CGFloat])
 
 protocol Copy {
     func copy() -> AnyObject
@@ -135,7 +135,7 @@ class Layout : Copy {
         }
     }
     
-    private var ps: [CGPoint]!
+    fileprivate var ps: [CGPoint]!
     
     let generatePS: GeneratePS!
 
@@ -151,10 +151,10 @@ class Layout : Copy {
         , border: CGFloat
         , xs: [CGFloat]
         , ys:[CGFloat]
-        , generatePS: GeneratePS
+        , generatePS: @escaping GeneratePS
         , cellCount: Int
-        , generatePolygons: GeneratePolygons
-        , generateGS: GenerateGS
+        , generatePolygons: @escaping GeneratePolygons
+        , generateGS: @escaping GenerateGS
         , gsChangeHandlers: [GrapPointChangeHandler]) {
         
         self.size = size
@@ -169,23 +169,24 @@ class Layout : Copy {
         self.gsChangeHandlers = gsChangeHandlers
         updatePS()
     }
-    private func updatePS() {
-        self.ps = self.generatePS(xs:xs, ys:ys, border: border, size: size)
+    fileprivate func updatePS() {
+//        self.ps = self.generatePS(xs:xs, ys:ys, border: border, size: size)
     }
 
     func polygons() -> [Polygon] {
-        var polygons = self.generatePolygons(ps:self.ps)
-        
-        for (index, _) in polygons.enumerate() {
-            polygons[index].curvature = self.curvature
-        }
-        return polygons
+        return []
+//        var polygons = self.generatePolygons(ps:self.ps)
+//        
+//        for (index, _) in polygons.enumerated() {
+//            polygons[index].curvature = self.curvature
+//        }
+//        return polygons
     }
     func grapPoints() -> [CGPoint] {
-        return self.generateGS(xs: xs, ys: ys, size: size)
+        return self.generateGS(xs, ys, size)
     }
-    func changeGrapPoints(index: Int, unitPoint: CGPoint) -> ([CGFloat], [CGFloat]) {
-        return self.gsChangeHandlers[index](newUnitGrapPoint: unitPoint, xs: xs, ys: ys)
+    func changeGrapPoints(_ index: Int, unitPoint: CGPoint) -> ([CGFloat], [CGFloat]) {
+        return self.gsChangeHandlers[index](unitPoint, xs, ys)
     }
     
     func copy() -> AnyObject {

@@ -45,6 +45,7 @@
 		89A8AAEB1CCE21240081FF71 /* bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 89A8AAEA1CCE21240081FF71 /* bubble.png */; };
 		89A8AAED1CCE22790081FF71 /* CollageCellMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A8AAEC1CCE22790081FF71 /* CollageCellMenuView.swift */; };
 		89A8AAEF1CCE22AF0081FF71 /* CollageCellMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89A8AAEE1CCE22AF0081FF71 /* CollageCellMenuView.xib */; };
+		89B385431CFE7F8500868662 /* photoShutter2.caf in Resources */ = {isa = PBXBuildFile; fileRef = 89B385421CFE7F3600868662 /* photoShutter2.caf */; };
 		89BFB7CE1CB257CB0011A04A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BFB7CD1CB257CB0011A04A /* AppDelegate.swift */; };
 		89BFB7D31CB257CB0011A04A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 89BFB7D11CB257CB0011A04A /* Main.storyboard */; };
 		89BFB7D81CB257CB0011A04A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 89BFB7D61CB257CB0011A04A /* LaunchScreen.storyboard */; };
@@ -130,6 +131,7 @@
 		89A8AAEA1CCE21240081FF71 /* bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble.png; sourceTree = "<group>"; };
 		89A8AAEC1CCE22790081FF71 /* CollageCellMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollageCellMenuView.swift; sourceTree = "<group>"; };
 		89A8AAEE1CCE22AF0081FF71 /* CollageCellMenuView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollageCellMenuView.xib; sourceTree = "<group>"; };
+		89B385421CFE7F3600868662 /* photoShutter2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = photoShutter2.caf; sourceTree = "<group>"; };
 		89BFB7CA1CB257CB0011A04A /* SimpleCameraApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleCameraApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		89BFB7CD1CB257CB0011A04A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		89BFB7D21CB257CB0011A04A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -347,6 +349,7 @@
 		89F7956F1CB356780029FD32 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				89B385421CFE7F3600868662 /* photoShutter2.caf */,
 				898B2EDF1CB73F1800AD764A /* images */,
 				89BFB7D91CB257CB0011A04A /* Info.plist */,
 				89BFB7D61CB257CB0011A04A /* LaunchScreen.storyboard */,
@@ -448,13 +451,16 @@
 					89BFB7C91CB257CB0011A04A = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = GST65JV9LK;
+						LastSwiftMigration = 0820;
 					};
 					89BFB7DD1CB257CB0011A04A = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0820;
 						TestTargetID = 89BFB7C91CB257CB0011A04A;
 					};
 					89BFB7E81CB257CB0011A04A = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0820;
 						TestTargetID = 89BFB7C91CB257CB0011A04A;
 					};
 				};
@@ -484,6 +490,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89B385431CFE7F8500868662 /* photoShutter2.caf in Resources */,
 				898B2F271CC611BF00AD764A /* 3.jpg in Resources */,
 				89DA462E1CC74E0E00EFD940 /* pattern-7.png in Resources */,
 				89F7957B1CB395150029FD32 /* CameraFocusView.xib in Resources */,
@@ -719,6 +726,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wendies.hothead.SimpleCameraApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -736,6 +744,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wendies.hothead.SimpleCameraApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -748,6 +757,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wendies.hothead.SimpleCameraAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SimpleCameraApp.app/SimpleCameraApp";
 			};
 			name = Debug;
@@ -760,6 +770,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wendies.hothead.SimpleCameraAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SimpleCameraApp.app/SimpleCameraApp";
 			};
 			name = Release;
@@ -771,6 +782,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wendies.hothead.SimpleCameraAppUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = SimpleCameraApp;
 			};
 			name = Debug;
@@ -782,6 +794,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wendies.hothead.SimpleCameraAppUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = SimpleCameraApp;
 			};
 			name = Release;
